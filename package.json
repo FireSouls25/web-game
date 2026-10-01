@@ -1,0 +1,27 @@
+{
+  "name": "manor-loop",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Victorian manor 3-day time-loop top-down web game (Vite + TS + Phaser + React)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:dev": "vite build --mode development",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "check:prod-leak": "node scripts/check-prod-leak.mjs"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.1.7"
+  }
+}

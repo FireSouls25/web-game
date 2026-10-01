@@ -1,0 +1,4 @@
+docs/idea.md
+node_modules/
+dist/
+*.local

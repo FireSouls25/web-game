@@ -7,8 +7,8 @@ diorama (`src/ui/MenuScene.tsx` — real game sprites, slow drift, vignette
 melt) with the title and buttons overlaid on top of it. No boxed card, no
 control cheatsheets, no character in the scene.
 
-- `MainMenu.tsx` — overline, `MANSION MYSTERY`, subtitle, buttons
-  (New / Continue / Settings / Credits / Fullscreen), save-footnote.
+- `MainMenu.tsx` — `MANSION MYSTERY` + buttons only
+  (New / Continue / Settings / Credits / Fullscreen). No taglines, no hints.
 - `Settings.tsx` — language setting (+ title, back). Same fullscreen scene.
 - `Credits.tsx` — Kenney/CC0 credit. Text-heavy blocks (credits, settings
   rows) sit on translucent panels for readability; the main menu stays bare.

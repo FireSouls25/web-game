@@ -25,10 +25,8 @@ export function MainMenu({
     <div className={`menu${leaving ? ' exit' : ''}`}>
       <MenuScene />
       <div className="menu-card">
-        <div className="menu-over">{tr('menu.over')}</div>
         {/* The title is never translated (see settings note). */}
         <h1 className="menu-title">MANSION MYSTERY</h1>
-        <div className="menu-sub">{tr('menu.sub')}</div>
         <nav className="menu-buttons">
           <button onClick={onNewGame} autoFocus>
             {tr('menu.new')}
@@ -40,7 +38,6 @@ export function MainMenu({
             {tr('menu.fullscreen')}
           </button>
         </nav>
-        <div className="menu-foot">{tr('menu.foot')}</div>
       </div>
     </div>
   );

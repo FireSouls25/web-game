@@ -19,14 +19,12 @@ type Dict = Record<string, string>;
 
 const en: Dict = {
   'menu.over': 'Anno 1897 · somewhere in England',
-  'menu.sub': 'A Victorian time-loop mystery — prototype',
   'menu.new': 'New game',
   'menu.continue': 'Continue',
   'menu.credits': 'Credits',
   'menu.settings': 'Settings',
   'menu.fullscreen': 'Fullscreen',
   'menu.back': 'Back',
-  'menu.foot': 'Move: WASD / arrows · Esc returns here · progress autosaves in this browser',
   'credits.heading': 'Credits',
   'credits.art': 'Prototype art — Kenney · Prototype Pack',
   'credits.cc0': 'Free for personal, educational and commercial projects. Credited here with thanks (not mandatory under CC0).',
@@ -43,14 +41,12 @@ const en: Dict = {
 
 const es: Dict = {
   'menu.over': 'Anno 1897 · en algún lugar de Inglaterra',
-  'menu.sub': 'Un misterio victoriano con bucle temporal — prototipo',
   'menu.new': 'Nueva partida',
   'menu.continue': 'Continuar',
   'menu.credits': 'Créditos',
   'menu.settings': 'Ajustes',
   'menu.fullscreen': 'Pantalla completa',
   'menu.back': 'Volver',
-  'menu.foot': 'Mover: WASD / flechas · Esc vuelve aquí · el progreso se guarda en este navegador',
   'credits.heading': 'Créditos',
   'credits.art': 'Arte del prototipo — Kenney · Prototype Pack',
   'credits.cc0': 'Gratis para proyectos personales, educativos y comerciales. Agradecido aquí con mención (no obligatorio bajo CC0).',

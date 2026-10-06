@@ -150,7 +150,6 @@ body {
 }
 .menu-buttons button:hover { border-color: #c9a227; background: #332a40; }
 .menu-buttons button.ghost { opacity: 0.65; font-size: 13px; padding: 8px; }
-.menu-foot { margin-top: 20px; font-size: 12px; color: #b8a888; }
 
 /* Translucent panels behind text-heavy overlay blocks (readability). */
 .credits-body,

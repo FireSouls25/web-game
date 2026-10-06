@@ -10,7 +10,6 @@
 
 const BASE = import.meta.env.BASE_URL;
 const ISO = `${BASE}prototype_sprites/Isometric`;
-const HUMAN = `${BASE}prototype_sprites/Characters/Human`;
 
 // Menu diamond footprint (px). Source sprites are 256x512.
 const DW = 112;
@@ -58,8 +57,6 @@ const PROPS: Placed[] = [
   { key: 'col-r', src: `${ISO}/column_S.png`, x: 5, y: 1 },
   { key: 'crate', src: `${ISO}/crate_S.png`, x: 1, y: 4 },
   { key: 'slab', src: `${ISO}/slab_S.png`, x: 4, y: 4 },
-  // the investigator, facing the open door (N = up-right)
-  { key: 'hero', src: `${HUMAN}/Human_0_Idle0.png`, x: 4, y: 5 },
 ];
 
 function styleFor(p: Placed): React.CSSProperties {

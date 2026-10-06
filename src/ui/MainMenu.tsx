@@ -40,7 +40,6 @@ export function MainMenu({
             {tr('menu.fullscreen')}
           </button>
         </nav>
-        <div className="menu-controls">{tr('menu.controls')}</div>
         <div className="menu-foot">{tr('menu.foot')}</div>
       </div>
     </div>

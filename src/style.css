@@ -48,46 +48,39 @@ body {
 }
 .dialogue button:hover { border-color: #c9a227; }
 
-/* ---- main menu / credits / settings ---- */
+/* ---- main menu / credits / settings: full-page game view + overlay ---- */
 .menu {
   position: fixed;
   inset: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  background:
-    radial-gradient(ellipse at 50% 30%, #241c33 0%, #0d0a14 70%);
   padding: 20px;
   overflow-y: auto;
   transition: opacity 0.42s ease;
 }
 .menu.exit { opacity: 0; }
 
-/* Living manor vignette: real game sprites, slow drift, melting edges. */
+/* The game view IS the page: living manor vignette as fullscreen backdrop. */
 .menu-scene {
-  position: relative;
-  width: min(720px, 94vw);
-  height: 250px;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  border: 1px solid #4a3b5c;
   background: #14101c;
-  box-shadow: 0 0 60px rgba(201, 162, 39, 0.1);
   animation: sceneIn 0.6s ease both;
 }
 .menu-scene-pan {
   position: absolute;
   left: 50%;
-  top: 55%;
+  top: 50%;
   width: 952px;
   height: 644px;
   animation: scenePan 26s ease-in-out infinite alternate;
 }
 .menu-scene-pan img { position: absolute; }
 @keyframes scenePan {
-  from { transform: translate(-48%, -59%); }
-  to { transform: translate(-52%, -63%); }
+  from { transform: translate(-48%, -48%); }
+  to { transform: translate(-52%, -52%); }
 }
 @keyframes sceneIn {
   from { opacity: 0; }
@@ -98,17 +91,20 @@ body {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(to bottom, rgba(13, 10, 20, 0.55), transparent 22%, transparent 62%, rgba(13, 10, 20, 0.9)),
-    radial-gradient(ellipse at center, transparent 45%, rgba(13, 10, 20, 0.75) 100%);
+    linear-gradient(to bottom, rgba(13, 10, 20, 0.6), transparent 26%, transparent 55%, rgba(13, 10, 20, 0.88)),
+    radial-gradient(ellipse at center, rgba(13, 10, 20, 0.25) 30%, rgba(13, 10, 20, 0.8) 100%);
 }
 .menu-card {
+  position: relative;
+  z-index: 1;
   text-align: center;
-  border: 1px solid #4a3b5c;
-  background: rgba(20, 16, 28, 0.85);
-  padding: 36px 64px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 24px;
   max-width: 560px;
-  box-shadow: 0 0 80px rgba(201, 162, 39, 0.08);
   animation: cardUp 0.5s ease both;
+  text-shadow: 0 2px 12px rgba(13, 10, 20, 0.9), 0 0 32px rgba(13, 10, 20, 0.8);
 }
 @keyframes cardUp {
   from { opacity: 0; transform: translateY(14px); }
@@ -142,7 +138,8 @@ body {
   max-width: 260px;
 }
 .menu-buttons button {
-  background: #2a2233;
+  background: rgba(42, 34, 51, 0.82);
+  backdrop-filter: blur(3px);
   color: #ffe9a3;
   border: 1px solid #4a3b5c;
   padding: 12px 10px;
@@ -153,13 +150,16 @@ body {
 }
 .menu-buttons button:hover { border-color: #c9a227; background: #332a40; }
 .menu-buttons button.ghost { opacity: 0.65; font-size: 13px; padding: 8px; }
-.menu-foot { margin-top: 20px; font-size: 12px; color: #8a7a5c; }
-.menu-controls {
-  margin-top: 16px;
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #b8a888;
+.menu-foot { margin-top: 20px; font-size: 12px; color: #b8a888; }
+
+/* Translucent panels behind text-heavy overlay blocks (readability). */
+.credits-body,
+.settings-body {
+  background: rgba(20, 16, 28, 0.72);
+  border: 1px solid #4a3b5c;
+  backdrop-filter: blur(3px);
+  border-radius: 6px;
+  padding: 16px 20px;
 }
 
 /* ---- settings page ---- */

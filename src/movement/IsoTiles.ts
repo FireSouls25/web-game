@@ -23,8 +23,6 @@ import type { TilePos } from './types';
 /** Displayed diamond footprint (native 256x128 scaled by SPRITE_SCALE). */
 export const TILE_W = 64;
 export const TILE_H = 32;
-/** Back-compat alias (square-tile callers). */
-export const TILE = TILE_W;
 /** Native Kenney sprite width (256) -> displayed width. */
 export const SPRITE_SCALE = TILE_W / 256;
 
@@ -49,12 +47,6 @@ export const ISO_DIRS: Record<IsoDirKey, IsoDir> = {
   W: { key: 'W', dx: -1, dy: 0, facing: 6, sx: -TILE_W / 2, sy: -TILE_H / 2 },
 };
 
-/** N/E/S/W in cycle order. */
-export const ISO_DIR_LIST: IsoDir[] = [ISO_DIRS.N, ISO_DIRS.E, ISO_DIRS.S, ISO_DIRS.W];
-
-/** Human facings used by 4-directional tile movement. */
-export const ISO_FACINGS = [0, 2, 4, 6] as const;
-
 /**
  * True only for edge-to-edge tile steps (|dx|+|dy| === 1).
  * Diagonal grid steps touch at a vertex and are not legal tile moves.
@@ -72,9 +64,77 @@ export function facingForStep(dx: number, dy: number): number | null {
   return null;
 }
 
+/**
+ * Width-bound isometric projection: the only tile-projection home.
+ * All five helpers close over the same tileW (tileH is always tileW / 2,
+ * spriteScale always tileW / 256) so callers can render at any diamond
+ * size (game tiles, menu diorama, native-res preview) without
+ * re-deriving the math. The module-level helpers below are the default
+ * 64x32 projection (makeProjection(64)) — rendered output is unchanged.
+ */
+export interface IsoProjection {
+  readonly tileW: number;
+  readonly tileH: number;
+  readonly spriteScale: number;
+  /** Grid (x,y) -> screen position of the diamond CENTER. */
+  tileToScreen(x: number, y: number): { sx: number; sy: number };
+  /**
+   * Screen (ground point) -> tile containing that point. Pure inverse of
+   * tileToScreen — no sprite-anchor offset. Use this for pointer
+   * picking / hover (world points on the ground plane).
+   */
+  screenToTile(wx: number, wy: number): { x: number; y: number };
+  /**
+   * Screen position for the bottom-center anchor (origin 0.5, 1) of an
+   * entity standing ON tile (x, y): diamond center + tileH / 2.
+   */
+  tileFootScreen(x: number, y: number): { tx: number; ty: number };
+  /**
+   * Tile for a bottom-anchored sprite position: subtracts the anchor
+   * offset first, then does the ground-plane inverse.
+   */
+  tileFromFoot(wx: number, wy: number): { x: number; y: number };
+  /** Y-sort key: tiles behind (smaller x+y) draw first. */
+  depthFor(x: number, y: number, layer?: number): number;
+}
+
+export function makeProjection(tileW = TILE_W): IsoProjection {
+  const tileH = tileW / 2;
+  const spriteScale = tileW / 256;
+  const tileToScreen = (x: number, y: number): { sx: number; sy: number } => ({
+    sx: ((x - y) * tileW) / 2,
+    sy: ((x + y) * tileH) / 2,
+  });
+  const screenToTile = (wx: number, wy: number): { x: number; y: number } => {
+    const fx = wx / (tileW / 2);
+    const fy = wy / (tileH / 2);
+    return { x: Math.floor((fx + fy) / 2), y: Math.floor((fy - fx) / 2) };
+  };
+  const tileFootScreen = (x: number, y: number): { tx: number; ty: number } => {
+    const { sx, sy } = tileToScreen(x, y);
+    return { tx: sx, ty: sy + tileH / 2 };
+  };
+  const tileFromFoot = (wx: number, wy: number): { x: number; y: number } =>
+    screenToTile(wx, wy - tileH / 2);
+  const depthFor = (x: number, y: number, layer = 0): number => (x + y) * 10 + layer;
+  return {
+    tileW,
+    tileH,
+    spriteScale,
+    tileToScreen,
+    screenToTile,
+    tileFootScreen,
+    tileFromFoot,
+    depthFor,
+  };
+}
+
+/** Default 64x32 projection backing the module-level helpers. */
+const DEFAULT_PROJECTION = makeProjection(64);
+
 /** Grid (x,y) -> screen position of the diamond CENTER. */
 export function tileToScreen(x: number, y: number): { sx: number; sy: number } {
-  return { sx: ((x - y) * TILE_W) / 2, sy: ((x + y) * TILE_H) / 2 };
+  return DEFAULT_PROJECTION.tileToScreen(x, y);
 }
 
 /**
@@ -83,9 +143,7 @@ export function tileToScreen(x: number, y: number): { sx: number; sy: number } {
  * pointer picking / hover (world points on the ground plane).
  */
 export function screenToTile(wx: number, wy: number): { x: number; y: number } {
-  const fx = wx / (TILE_W / 2);
-  const fy = wy / (TILE_H / 2);
-  return { x: Math.floor((fx + fy) / 2), y: Math.floor((fy - fx) / 2) };
+  return DEFAULT_PROJECTION.screenToTile(wx, wy);
 }
 
 /**
@@ -96,8 +154,7 @@ export function screenToTile(wx: number, wy: number): { x: number; y: number } {
  * tall props) must use this, so spawn and movement share one anchor.
  */
 export function tileFootScreen(x: number, y: number): { tx: number; ty: number } {
-  const { sx, sy } = tileToScreen(x, y);
-  return { tx: sx, ty: sy + TILE_H / 2 };
+  return DEFAULT_PROJECTION.tileFootScreen(x, y);
 }
 
 /**
@@ -106,20 +163,12 @@ export function tileFootScreen(x: number, y: number): { tx: number; ty: number }
  * then does the ground-plane inverse.
  */
 export function tileFromFoot(wx: number, wy: number): { x: number; y: number } {
-  return screenToTile(wx, wy - TILE_H / 2);
+  return DEFAULT_PROJECTION.tileFromFoot(wx, wy);
 }
 
 /** Y-sort key: tiles behind (smaller x+y) draw first. */
 export function depthFor(x: number, y: number, layer = 0): number {
-  return (x + y) * 10 + layer;
-}
-
-export function tileKey(p: TilePos): string {
-  return `${p.x},${p.y}`;
-}
-
-export function tileEquals(a: TilePos, b: TilePos): boolean {
-  return a.x === b.x && a.y === b.y;
+  return DEFAULT_PROJECTION.depthFor(x, y, layer);
 }
 
 /**

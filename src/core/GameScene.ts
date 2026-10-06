@@ -2,26 +2,36 @@ import Phaser from 'phaser';
 import { Grid } from '../movement/Grid';
 import {
   ISO_DIRS,
-  facingForStep as isoFacingForStep,
-  isIsoStep,
+  TileActor,
   tileFootScreen,
   tileFromFoot as tileFromFootPos,
-  tileToScreen as isoTileToScreen,
-  screenToTile as isoScreenToTile,
-  depthFor as isoDepthFor,
+  tileToScreen,
+  screenToTile,
+  depthFor,
+  SPRITE_SCALE,
   TILE_W as ISO_TILE_W,
   TILE_H as ISO_TILE_H,
 } from '../movement/IsoTiles';
-import { COST, LOOP_START_WALL_MINUTES, MINUTES_PER_DAY } from '../time/types';
-import { timeManager } from '../time/TimeManager';
+import { timeManager, type Clock } from '../time/TimeManager';
 import { RoomRegistry, type LockKey } from '../rooms/types';
 import type { RoomDef, RoomProp } from '../rooms/types';
 import { createProdRegistry } from '../rooms/manor';
-import { textEngine } from '../text/TextEngine';
+import { textEngine, type Dialogue } from '../text/TextEngine';
 import { tr } from '../text/i18n';
 import { writeSave } from '../save/SaveManager';
 import type { GameInit } from './boot';
+import type {
+  EditorBrush,
+  EditorCommand,
+  EditorQuery,
+  EditorTool,
+  ManorBridge,
+  PortalPatch,
+  QueryResult,
+  RoomSnapshot,
+} from './bridge';
 import { SPRITE_BASES, parsePropSprite } from '../rooms/spriteCatalog';
+import { noonsCrossed, resolveStep } from '../manor/turns';
 
 export const GAME_SCENE = 'game';
 
@@ -37,9 +47,6 @@ export const GAME_SCENE = 'game';
  */
 export const TILE_W = ISO_TILE_W;
 export const TILE_H = ISO_TILE_H;
-/** Back-compat alias (square-tile callers). */
-export const TILE = TILE_W;
-const SPRITE_SCALE = TILE_W / 256;
 const ISO = 'Isometric';
 const BASE = import.meta.env.BASE_URL;
 
@@ -56,9 +63,7 @@ const LOCK_KEYS: Record<LockKey, string> = {
  * Each step moves to the tile sharing a diamond SIDE — never to a
  * vertex-touching diagonal. Human facings for tile moves: N=0 E=2 S=4 W=6.
  */
-const ALL_DIRS = [0, 1, 2, 3, 4, 5, 6, 7]; // texture preload only
-const FACING_FOR_STEP = (dx: number, dy: number): number | null => isoFacingForStep(dx, dy);
-
+const ALL_DIRS = [0, 2, 4, 6]; // texture preload only (4-directional tile facings)
 /**
  * Stair autotile (mirrored by scripts/iso-preview.mjs stairVariantFor).
  * One '>' tile is a full 4-step flight. Wide flights (stairs side by side
@@ -258,23 +263,6 @@ function wallVariantFor(
   return 'wall:S';
 }
 
-/** Grid (x,y) -> world: diamond CENTER. One ground sprite == one tile. */
-export function tileToScreen(x: number, y: number): { sx: number; sy: number } {
-  return isoTileToScreen(x, y);
-}
-
-/**
- * World (ground point) -> tile containing it. Pure inverse of tileToScreen.
- * (The old version subtracted TILE_H/2 for a bottom-vertex anchor, which
- * shifted every click/hover by half a tile. Foot-anchored sprite positions
- * must use tileFromFoot instead.)
- */
-export function screenToTile(wx: number, wy: number): { x: number; y: number } {
-  return isoScreenToTile(wx, wy);
-}
-
-const depthFor = (x: number, y: number, layer = 0): number => isoDepthFor(x, y, layer);
-
 /** Per-room dev edits. Applied on top of the base RoomDef. */
 interface RoomOverride {
   tiles: string[];
@@ -283,49 +271,6 @@ interface RoomOverride {
   props: RoomProp[];
   /** explicit walkability flags ("x,y" -> walkable), win over ascii + props */
   walk: Map<string, boolean>;
-}
-
-/**
- * Bridge exposed on the Phaser game object for React (dev tools + editor).
- * Implemented here in prod-safe code; the dev-only LEVEL EDITOR (src/dev/)
- * calls these methods but is itself never bundled in production.
- */
-export interface ManorBridge {
-  jumpToRoom: (id: string) => void;
-  roomIds: () => string[];
-  currentRoom: () => string;
-  playerTile: () => { x: number; y: number };
-  unlock: (key: LockKey) => void;
-  lockAll: () => void;
-  unlocked: () => LockKey[];
-  // --- level-editor hooks (dev only callers, prod-safe implementation) ---
-  editorEnable: (on: boolean) => void;
-  editorIsEnabled: () => boolean;
-  editorSetTool: (tool: string, brush: string) => void;
-  editorGetRoom: (roomId: string) => {
-    tiles: string[];
-    spawn: { x: number; y: number };
-    portals: RoomDef['portals'];
-    props: RoomProp[];
-    walk: Record<string, boolean>;
-  };
-  editorExport: () => string;
-  editorImport: (json: string) => boolean;
-  editorSetHitboxesVisible: (v: boolean) => void;
-  editorSetPropWalk: (roomId: string, propId: string, walkable: boolean) => void;
-  editorSetPropSprite: (roomId: string, propId: string, sprite: string) => void;
-  editorDeleteProp: (roomId: string, propId: string) => void;
-  editorZoom: (factor: number) => void;
-  editorRecenter: () => void;
-  editorAddPortal: (roomId: string) => void;
-  editorUpdatePortal: (
-    roomId: string,
-    index: number,
-    patch: Partial<{ toRoom: string; toX: number; toY: number; label: string; lockedBy: string }>,
-  ) => void;
-  editorDeletePortal: (roomId: string, index: number) => void;
-  editorResize: (roomId: string, w: number, h: number, fill: string) => void;
-  editorClearWalk: (roomId: string) => void;
 }
 
 /**
@@ -348,6 +293,8 @@ export class GameScene extends Phaser.Scene {
   private grid!: Grid;
   private playerTile = { x: 0, y: 0 };
   private facing = 4; // S (down-left), a valid iso tile facing
+  private clock: Clock = timeManager;
+  private dialogue: Dialogue = textEngine;
   private playerSprite?: Phaser.GameObjects.Image;
   private moving = false;
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -363,8 +310,8 @@ export class GameScene extends Phaser.Scene {
 
   // editor state (only driven from src/dev/*, inert in prod)
   private editorMode = false;
-  private editorTool = 'paint';
-  private editorBrush = '#';
+  private editorTool: EditorTool = 'paint';
+  private editorBrush: EditorBrush = { kind: 'tile', ch: '#' };
   private overrides = new Map<string, RoomOverride>();
   private dragPropId: string | null = null;
   private dragPortalIdx = -1;
@@ -401,126 +348,22 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(data: GameInit): void {
+    // Injected seams (tests) or shared singletons (prod boot passes nothing).
+    this.clock = data.clock ?? timeManager;
+    this.dialogue = data.dialogue ?? textEngine;
     this.cursors = this.input.keyboard?.createCursorKeys();
     if (this.input.keyboard) {
       this.wasd = this.input.keyboard.addKeys('W,A,S,D,Q,E,Z,C') as Record<string, Phaser.Input.Keyboard.Key>;
     }
 
-    (this.game as unknown as { __manor?: ManorBridge }).__manor = {
-      jumpToRoom: (id: string) => this.loadRoom(id),
-      currentRoom: () => this.roomId,
-      roomIds: () => this.roomRegistry.ids(),
-      playerTile: () => ({ ...this.playerTile }),
-      unlock: (key: LockKey) => this.unlockedKeys.add(key),
-      lockAll: () => this.unlockedKeys.clear(),
-      unlocked: () => [...this.unlockedKeys],
-      editorEnable: (on: boolean) => {
-        this.editorMode = on;
-        this.dragPropId = null;
-        this.dragPortalIdx = -1;
-        this.drawHitboxes();
-        this.frameCamera();
-      },
-      editorIsEnabled: () => this.editorMode,
-      editorSetTool: (tool: string, brush: string) => {
-        this.editorTool = tool;
-        this.editorBrush = brush;
-      },
-      editorGetRoom: (id: string) => this.snapshotRoom(id),
-      editorExport: () => this.exportRooms(),
-      editorImport: (json: string) => this.importRooms(json),
-      editorSetHitboxesVisible: (v: boolean) => {
-        this.showHitboxes = v;
-        this.drawHitboxes();
-      },
-      editorSetPropWalk: (roomId: string, propId: string, walkable: boolean) => {
-        const ov = this.overrideFor(roomId);
-        const prop = ov.props.find((pr) => pr.id === propId);
-        if (prop) {
-          prop.walkable = walkable;
-          this.refreshAfterEdit();
-        }
-      },
-      editorSetPropSprite: (roomId: string, propId: string, sprite: string) => {
-        const ov = this.overrideFor(roomId);
-        const prop = ov.props.find((pr) => pr.id === propId);
-        if (prop && sprite) {
-          prop.sprite = sprite;
-          this.refreshAfterEdit();
-        }
-      },
-      editorDeleteProp: (roomId: string, propId: string) => {
-        const ov = this.overrideFor(roomId);
-        const i = ov.props.findIndex((pr) => pr.id === propId);
-        if (i >= 0) {
-          ov.props.splice(i, 1);
-          if (this.dragPropId === propId) this.dragPropId = null;
-          this.refreshAfterEdit();
-        }
-      },
-      editorAddPortal: (roomId: string) => {
-        const ov = this.overrideFor(roomId);
-        const ids = this.roomRegistry.ids().filter((id) => id !== roomId);
-        ov.portals.push({
-          from: { ...ov.spawn },
-          toRoom: ids[0] ?? roomId,
-          to: { x: 0, y: 0 },
-          label: 'new door',
-        });
-        this.refreshAfterEdit();
-      },
-      editorUpdatePortal: (roomId, index, patch) => {
-        const ov = this.overrideFor(roomId);
-        const pt = ov.portals[index];
-        if (!pt) return;
-        if (patch.toRoom !== undefined) pt.toRoom = patch.toRoom;
-        if (patch.toX !== undefined && Number.isFinite(patch.toX)) pt.to.x = Math.max(0, Math.round(patch.toX));
-        if (patch.toY !== undefined && Number.isFinite(patch.toY)) pt.to.y = Math.max(0, Math.round(patch.toY));
-        if (patch.label !== undefined) pt.label = patch.label || undefined;
-        if (patch.lockedBy !== undefined) {
-          const v = patch.lockedBy.trim();
-          pt.lockedBy = (v === '' ? undefined : (v as LockKey));
-        }
-        this.refreshAfterEdit();
-      },
-      editorDeletePortal: (roomId, index) => {
-        const ov = this.overrideFor(roomId);
-        if (index >= 0 && index < ov.portals.length) {
-          ov.portals.splice(index, 1);
-          this.refreshAfterEdit();
-        }
-      },
-      editorResize: (roomId, w, h, fill) => {
-        const cw = Math.max(3, Math.min(40, Math.round(w)));
-        const chh = Math.max(3, Math.min(40, Math.round(h)));
-        const f = fill.length === 1 ? fill : '.';
-        const ov = this.overrideFor(roomId);
-        const next: string[] = [];
-        for (let y = 0; y < chh; y++) {
-          const old = ov.tiles[y] ?? '';
-          let row = '';
-          for (let x = 0; x < cw; x++) row += old[x] ?? f;
-          next.push(row);
-        }
-        ov.tiles = next;
-        ov.spawn = {
-          x: Math.max(0, Math.min(cw - 1, ov.spawn.x)),
-          y: Math.max(0, Math.min(chh - 1, ov.spawn.y)),
-        };
-        this.refreshAfterEdit();
-      },
-      editorClearWalk: (roomId) => {
-        this.overrideFor(roomId).walk.clear();
-        this.refreshAfterEdit();
-      },
-      editorZoom: (factor: number) => {
-        const cam = this.cameras.main;
-        cam.setZoom(Math.max(0.25, Math.min(3, cam.zoom * factor)));
-      },
-      editorRecenter: () => {
-        this.frameRoomForEditor(true);
-      },
+    // Narrowed React<->Phaser seam (see src/core/bridge.ts): React code
+    // may only send() commands and ask() queries; the wider surface below
+    // stays private to this scene.
+    const bridge: ManorBridge = {
+      send: (command: EditorCommand): void => this.send(command),
+      ask: <Q extends EditorQuery>(query: Q): QueryResult<Q> => this.ask(query),
     };
+    (this.game as unknown as { __manor?: ManorBridge }).__manor = bridge;
 
     this.input.on('pointerdown', (ptr: Phaser.Input.Pointer) => this.onEditorPointerDown(ptr));
     this.input.on('pointermove', (ptr: Phaser.Input.Pointer) => this.onEditorPointerMove(ptr));
@@ -535,7 +378,7 @@ export class GameScene extends Phaser.Scene {
 
     // Keep world state fresh when time moves outside the scene
     // (e.g. dev wait buttons) + fire the great-clock noon chime.
-    timeManager.on((e) => {
+    this.clock.on((e) => {
       if (e.type === 'advanced') this.checkNoonChime(e.from, e.to);
       if (e.type === 'loopReset') this.chimedNoons.clear();
     });
@@ -543,14 +386,12 @@ export class GameScene extends Phaser.Scene {
     void this.initRegistryThenLoad(data);
   }
 
-  /** Noon each day (12:00 wall clock): the great clock in the main hall chimes. */
+  /** Noon each day (12:00 wall clock): the great clock in the main hall chimes.
+   * Trigger days come from the pure turn rules; the scene only renders them. */
   private checkNoonChime(from: number, to: number): void {
-    for (let day = 1; day <= 3; day++) {
-      const noonElapsed = 12 * 60 - LOOP_START_WALL_MINUTES + (day - 1) * MINUTES_PER_DAY;
-      if (!this.chimedNoons.has(day) && from < noonElapsed && to >= noonElapsed) {
-        this.chimedNoons.add(day);
-        textEngine.say(tr('chime.speaker'), tr('chime.text', { day }));
-      }
+    for (const day of noonsCrossed(from, to, this.chimedNoons)) {
+      this.chimedNoons.add(day);
+      this.dialogue.say(tr('chime.speaker'), tr('chime.text', { day }));
     }
   }
 
@@ -879,8 +720,8 @@ export class GameScene extends Phaser.Scene {
     writeSave({
       roomId: this.roomId,
       tile: { ...this.playerTile },
-      elapsedMinutes: timeManager.elapsedMinutes,
-      loops: timeManager.loops,
+      elapsedMinutes: this.clock.elapsedMinutes,
+      loops: this.clock.loops,
     });
   }
 
@@ -910,26 +751,43 @@ export class GameScene extends Phaser.Scene {
     return null;
   }
 
-  /** Attempt a single-tile step. Public so click-to-move / tests can reuse it. */
+  /**
+   * Attempt a single-tile step. Public so click-to-move / tests can reuse it.
+   * Thin rendering adapter over the pure turn rules (`resolveStep` in
+   * src/manor/turns.ts): the outcome decides, this method only renders
+   * (tween, facing texture, clock charge, portal fade, save). The player
+   * tile/facing ride in a short-lived TileActor — the first real adapter
+   * off the bespoke scene fields. Rules (order, costs) are unchanged.
+   */
   async tryStep(dx: number, dy: number): Promise<boolean> {
     if (this.moving || !this.playerSprite) return false;
-    // Tile invariant: only edge-to-edge (N/E/S/W) steps are legal.
-    // Vertex-touching diagonals (|dx|+|dy| !== 1) are rejected outright.
-    if (!isIsoStep(dx, dy)) return false;
-    const next = { x: this.playerTile.x + dx, y: this.playerTile.y + dy };
-    if (!this.grid.isWalkable(next)) return false;
-    // Locked doors bump with a message: no move, no time cost.
-    const ahead = this.roomRegistry.portalAt(this.roomId, next.x, next.y);
-    const effAhead = this.effectiveRoom(this.roomId).portals.find(
-      (pt) => pt.from.x === next.x && pt.from.y === next.y,
+    const outcome = resolveStep(
+      {
+        actor: new TileActor({ ...this.playerTile }, this.facing),
+        isWalkable: (t) => this.grid.isWalkable(t),
+        portalAt: (t) => {
+          const eff = this.effectiveRoom(this.roomId).portals.find(
+            (pt) => pt.from.x === t.x && pt.from.y === t.y,
+          );
+          const p = eff ?? this.roomRegistry.portalAt(this.roomId, t.x, t.y);
+          return p ? { toRoom: p.toRoom, to: { ...p.to }, lockedBy: p.lockedBy } : undefined;
+        },
+        isUnlocked: (key) => this.unlockedKeys.has(key),
+      },
+      dx,
+      dy,
     );
-    if ((effAhead ?? ahead)?.lockedBy && !this.unlockedKeys.has((effAhead ?? ahead)!.lockedBy!)) {
-      textEngine.say('', tr(LOCK_KEYS[(effAhead ?? ahead)!.lockedBy!]));
+    // Illegal (vertex-touching diagonal) and blocked (wall/prop) steps:
+    // no move, no time cost.
+    if (outcome.kind === 'illegal' || outcome.kind === 'blocked') return false;
+    // Locked doors bump with a message: no move, no time cost.
+    if (outcome.kind === 'locked') {
+      this.dialogue.say('', tr(LOCK_KEYS[outcome.lockKey]));
       return false;
     }
+    const next = outcome.to;
     this.moving = true;
-    const stepFacing = FACING_FOR_STEP(dx, dy);
-    if (stepFacing !== null) this.facing = stepFacing;
+    this.facing = outcome.facing;
     const { tx, ty } = this.playerScreen(next.x, next.y);
     // One calm footfall per tile step: opposite run phases mid-glide.
     // (Rapid run-frame cycling at this step rate reads as jitter.)
@@ -945,13 +803,11 @@ export class GameScene extends Phaser.Scene {
     this.playerTile = next;
     this.drawPlayerRing();
 
-    timeManager.advance(COST.MOVE, 'move');
+    this.clock.advance(outcome.timeCost, 'move');
 
-    // Portal check AFTER paying the move cost (uses edited portals).
+    // Portal check AFTER paying the move cost (resolved by the turn rules).
     // Room changes fade through darkness (fadeOut -> load -> fadeIn).
-    const portal = this.effectiveRoom(this.roomId).portals.find(
-      (pt) => pt.from.x === next.x && pt.from.y === next.y,
-    );
+    const portal = outcome.portal;
     if (portal) {
       this.cameras.main.fadeOut(160, 13, 10, 20);
       this.time.delayedCall(170, () => {
@@ -965,6 +821,199 @@ export class GameScene extends Phaser.Scene {
     // notify React HUD / dev tools
     this.game.events.emit('manor:tick');
     return true;
+  }
+
+  // ---------------------------------------------------------- bridge seam ---
+
+  /**
+   * Narrowed React<->Phaser seam: React (src/dev/*) reaches the scene only
+   * through send()/ask(). Every wider operation below stays private.
+   */
+  send(command: EditorCommand): void {
+    switch (command.kind) {
+      case 'jumpToRoom': return this.jumpToRoom(command.roomId);
+      case 'unlock': return this.unlock(command.key);
+      case 'lockAll': return this.lockAll();
+      case 'editorEnable': return this.editorEnable(command.enabled);
+      case 'editorSetTool': return this.editorSetTool(command.tool, command.brush);
+      case 'editorSetHitboxesVisible': return this.editorSetHitboxesVisible(command.visible);
+      case 'editorSetPropWalk': return this.editorSetPropWalk(command.roomId, command.propId, command.walkable);
+      case 'editorSetPropSprite': return this.editorSetPropSprite(command.roomId, command.propId, command.sprite);
+      case 'editorDeleteProp': return this.editorDeleteProp(command.roomId, command.propId);
+      case 'editorAddPortal': return this.editorAddPortal(command.roomId);
+      case 'editorUpdatePortal': return this.editorUpdatePortal(command.roomId, command.index, command.patch);
+      case 'editorDeletePortal': return this.editorDeletePortal(command.roomId, command.index);
+      case 'editorResize': return this.editorResize(command.roomId, command.w, command.h, command.fill);
+      case 'editorClearWalk': return this.editorClearWalk(command.roomId);
+      case 'editorZoom': return this.editorZoom(command.factor);
+      case 'editorRecenter': return this.editorRecenter();
+    }
+  }
+
+  ask<Q extends EditorQuery>(query: Q): QueryResult<Q> {
+    switch (query.kind) {
+      case 'roomIds': return this.roomIds() as QueryResult<Q>;
+      case 'currentRoom': return this.currentRoom() as QueryResult<Q>;
+      case 'playerTile': return { ...this.playerTile } as QueryResult<Q>;
+      case 'unlocked': return this.unlocked() as QueryResult<Q>;
+      case 'editorIsEnabled': return this.editorIsEnabled() as QueryResult<Q>;
+      case 'editorGetRoom': return this.snapshotRoom(query.roomId) as QueryResult<Q>;
+      case 'editorExport': return this.exportRooms() as QueryResult<Q>;
+      case 'editorImport': return this.importRooms(query.json) as QueryResult<Q>;
+    }
+  }
+
+  private jumpToRoom(id: string): void {
+    this.loadRoom(id);
+  }
+
+  private roomIds(): string[] {
+    return this.roomRegistry.ids();
+  }
+
+  private currentRoom(): string {
+    return this.roomId;
+  }
+
+  private unlock(key: LockKey): void {
+    this.unlockedKeys.add(key);
+  }
+
+  private lockAll(): void {
+    this.unlockedKeys.clear();
+  }
+
+  private unlocked(): LockKey[] {
+    return [...this.unlockedKeys];
+  }
+
+  private editorEnable(on: boolean): void {
+    this.editorMode = on;
+    this.dragPropId = null;
+    this.dragPortalIdx = -1;
+    this.drawHitboxes();
+    this.frameCamera();
+  }
+
+  private editorIsEnabled(): boolean {
+    return this.editorMode;
+  }
+
+  private editorSetTool(tool: EditorTool, brush: EditorBrush): void {
+    this.editorTool = tool;
+    this.editorBrush = brush;
+  }
+
+  private editorSetHitboxesVisible(v: boolean): void {
+    this.showHitboxes = v;
+    this.drawHitboxes();
+  }
+
+  private editorSetPropWalk(roomId: string, propId: string, walkable: boolean): void {
+    const ov = this.overrideFor(roomId);
+    const prop = ov.props.find((pr) => pr.id === propId);
+    if (prop) {
+      prop.walkable = walkable;
+      this.refreshAfterEdit();
+    }
+  }
+
+  private editorSetPropSprite(roomId: string, propId: string, sprite: string): void {
+    const ov = this.overrideFor(roomId);
+    const prop = ov.props.find((pr) => pr.id === propId);
+    if (prop && sprite) {
+      prop.sprite = sprite;
+      this.refreshAfterEdit();
+    }
+  }
+
+  private editorDeleteProp(roomId: string, propId: string): void {
+    const ov = this.overrideFor(roomId);
+    const i = ov.props.findIndex((pr) => pr.id === propId);
+    if (i >= 0) {
+      ov.props.splice(i, 1);
+      if (this.dragPropId === propId) this.dragPropId = null;
+      this.refreshAfterEdit();
+    }
+  }
+
+  private editorAddPortal(roomId: string): void {
+    const ov = this.overrideFor(roomId);
+    const ids = this.roomRegistry.ids().filter((id) => id !== roomId);
+    ov.portals.push({
+      from: { ...ov.spawn },
+      toRoom: ids[0] ?? roomId,
+      to: { x: 0, y: 0 },
+      label: 'new door',
+    });
+    this.refreshAfterEdit();
+  }
+
+  private editorUpdatePortal(roomId: string, index: number, patch: PortalPatch): void {
+    const ov = this.overrideFor(roomId);
+    const pt = ov.portals[index];
+    if (!pt) return;
+    if (patch.toRoom !== undefined) pt.toRoom = patch.toRoom;
+    if (patch.toX !== undefined && Number.isFinite(patch.toX)) pt.to.x = Math.max(0, Math.round(patch.toX));
+    if (patch.toY !== undefined && Number.isFinite(patch.toY)) pt.to.y = Math.max(0, Math.round(patch.toY));
+    if (patch.label !== undefined) pt.label = patch.label || undefined;
+    if (patch.lockedBy !== undefined) {
+      const v = patch.lockedBy.trim();
+      pt.lockedBy = (v === '' ? undefined : (v as LockKey));
+    }
+    this.refreshAfterEdit();
+  }
+
+  private editorDeletePortal(roomId: string, index: number): void {
+    const ov = this.overrideFor(roomId);
+    if (index >= 0 && index < ov.portals.length) {
+      ov.portals.splice(index, 1);
+      this.refreshAfterEdit();
+    }
+  }
+
+  private editorResize(roomId: string, w: number, h: number, fill: string): void {
+    const cw = Math.max(3, Math.min(40, Math.round(w)));
+    const chh = Math.max(3, Math.min(40, Math.round(h)));
+    const f = fill.length === 1 ? fill : '.';
+    const ov = this.overrideFor(roomId);
+    const next: string[] = [];
+    for (let y = 0; y < chh; y++) {
+      const old = ov.tiles[y] ?? '';
+      let row = '';
+      for (let x = 0; x < cw; x++) row += old[x] ?? f;
+      next.push(row);
+    }
+    ov.tiles = next;
+    ov.spawn = {
+      x: Math.max(0, Math.min(cw - 1, ov.spawn.x)),
+      y: Math.max(0, Math.min(chh - 1, ov.spawn.y)),
+    };
+    this.refreshAfterEdit();
+  }
+
+  private editorClearWalk(roomId: string): void {
+    this.overrideFor(roomId).walk.clear();
+    this.refreshAfterEdit();
+  }
+
+  private editorZoom(factor: number): void {
+    const cam = this.cameras.main;
+    cam.setZoom(Math.max(0.25, Math.min(3, cam.zoom * factor)));
+  }
+
+  private editorRecenter(): void {
+    this.frameRoomForEditor(true);
+  }
+
+  /** Tile char from the current brush (prop brushes carry no tile char). */
+  private brushTileChar(): string {
+    return this.editorBrush.kind === 'tile' ? this.editorBrush.ch : '';
+  }
+
+  /** Prop sprite from the current brush (tile brushes carry no sprite). */
+  private brushSprite(): string {
+    return this.editorBrush.kind === 'prop' && this.editorBrush.sprite ? this.editorBrush.sprite : 'crate';
   }
 
   // ---------------------------------------------------------------- editor ---
@@ -983,7 +1032,7 @@ export class GameScene extends Phaser.Scene {
     const ov = this.overrideFor(this.roomId);
     if (this.editorTool === 'paint') {
       this.painting = true;
-      this.paintTile(ov, t.x, t.y, this.editorBrush);
+      this.paintTile(ov, t.x, t.y, this.brushTileChar());
     } else if (this.editorTool === 'spawn') {
       ov.spawn = { ...t };
       this.refreshAfterEdit(true);
@@ -993,10 +1042,10 @@ export class GameScene extends Phaser.Scene {
       ov.walk.set(key, !cur);
       this.refreshAfterEdit();
     } else if (this.editorTool === 'prop-add') {
-      const sprite = this.editorBrush || 'crate';
+      const sprite = this.brushSprite();
       ov.props.push({ id: `prop_${Date.now()}_${ov.props.length}`, sprite, x: t.x, y: t.y, walkable: false });
       this.refreshAfterEdit();
-    } else if (this.editorTool === 'prop-move' || this.editorTool === 'prop-edit') {
+    } else if (this.editorTool === 'prop-edit') {
       const hit = [...ov.props].reverse().find((pr) => pr.x === t.x && pr.y === t.y);
       if (hit) {
         this.dragPropId = hit.id;
@@ -1029,7 +1078,7 @@ export class GameScene extends Phaser.Scene {
     const t = this.tileFromPointer(ptr);
     if (!t) return;
     if (this.painting && this.editorTool === 'paint' && ptr.leftButtonDown()) {
-      this.paintTile(this.overrideFor(this.roomId), t.x, t.y, this.editorBrush);
+      this.paintTile(this.overrideFor(this.roomId), t.x, t.y, this.brushTileChar());
       return;
     }
     if (this.dragPropId) {
@@ -1198,13 +1247,7 @@ export class GameScene extends Phaser.Scene {
     g.strokePath();
   }
 
-  private snapshotRoom(roomId: string): {
-    tiles: string[];
-    spawn: { x: number; y: number };
-    portals: RoomDef['portals'];
-    props: RoomProp[];
-    walk: Record<string, boolean>;
-  } {
+  private snapshotRoom(roomId: string): RoomSnapshot {
     const room = this.effectiveRoom(roomId);
     const ov = this.overrides.get(roomId);
     const walk: Record<string, boolean> = {};

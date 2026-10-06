@@ -24,6 +24,7 @@ library, no state library — all three are ~50-line hand modules.
 | `npm run build:dev` | Dev-mode bundle (keeps test rooms) |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run check:prod-leak` | Fails if prod code statically imports `src/dev/` |
+| `npm run check:gates` | Node conformance gates: turn rules (`check-turns.mjs`) + projection/autotile mirror (`check-projection.mjs`) |
 
 ## `scripts/`
 
@@ -53,4 +54,3 @@ library, no state library — all three are ~50-line hand modules.
 ## Leftovers
 
 - `lancedb/` (repo root) is an empty, unreferenced leftover — safe to delete.
-- `src/core/placeholder.ts` is legacy; the real boot path is `src/core/boot.ts`.

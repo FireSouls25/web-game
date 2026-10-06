@@ -8,16 +8,8 @@ import { useEffect, useState } from 'react';
 import { timeManager } from '../time/TimeManager';
 import { LOOP_MINUTES, LOOP_START_WALL_MINUTES, MINUTES_PER_DAY } from '../time/types';
 import type { LockKey } from '../rooms/types';
+import type { ManorBridge } from '../core/bridge';
 import { LevelEditor } from './LevelEditor';
-
-interface ManorBridge {
-  jumpToRoom: (id: string) => void;
-  roomIds: () => string[];
-  currentRoom: () => string;
-  unlock: (key: LockKey) => void;
-  lockAll: () => void;
-  unlocked: () => LockKey[];
-}
 
 const KEYS: LockKey[] = ['servant', 'master', 'kitchen'];
 
@@ -27,15 +19,15 @@ export function DevTools({ game }: { game: Phaser.Game | null }) {
   const [unlocked, setUnlocked] = useState<LockKey[]>([]);
 
   const bridge = () => (game as unknown as { __manor?: ManorBridge } | null)?.__manor;
-  const refreshKeys = () => setUnlocked(bridge()?.unlocked() ?? []);
+  const refreshKeys = () => setUnlocked(bridge()?.ask({ kind: 'unlocked' }) ?? []);
 
   useEffect(() => timeManager.on(() => setElapsed(timeManager.elapsedMinutes)), []);
   useEffect(() => {
     const id = window.setInterval(() => {
       const b = bridge();
       if (b) {
-        setRooms(b.roomIds());
-        setUnlocked(b.unlocked());
+        setRooms(b.ask({ kind: 'roomIds' }));
+        setUnlocked(b.ask({ kind: 'unlocked' }));
       }
     }, 500);
     return () => window.clearInterval(id);
@@ -75,7 +67,7 @@ export function DevTools({ game }: { game: Phaser.Game | null }) {
       <div className="row">
         <select
           onChange={(e) => {
-            bridge()?.jumpToRoom(e.target.value);
+            bridge()?.send({ kind: 'jumpToRoom', roomId: e.target.value });
           }}
           defaultValue=""
         >
@@ -91,12 +83,12 @@ export function DevTools({ game }: { game: Phaser.Game | null }) {
           <button
             key={k}
             disabled={unlocked.includes(k)}
-            onClick={() => { bridge()?.unlock(k); refreshKeys(); }}
+            onClick={() => { bridge()?.send({ kind: 'unlock', key: k }); refreshKeys(); }}
           >
             {unlocked.includes(k) ? `✓ ${k}` : k}
           </button>
         ))}
-        <button onClick={() => { bridge()?.lockAll(); refreshKeys(); }}>relock</button>
+        <button onClick={() => { bridge()?.send({ kind: 'lockAll' }); refreshKeys(); }}>relock</button>
       </div>
       <LevelEditor game={game} />
     </div>

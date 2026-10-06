@@ -7,7 +7,17 @@ export interface TextLine {
   text: string;
 }
 
-export class TextEngine {
+/**
+ * Minimal dialogue seam used by scenes. Satisfied by {@link TextEngine};
+ * fakes in tests only need these members.
+ */
+export interface Dialogue {
+  say(speaker: string, text: string): void;
+  current(): TextLine | undefined;
+  on(fn: () => void): () => void;
+}
+
+export class TextEngine implements Dialogue {
   private queue: TextLine[] = [];
   private listeners = new Set<() => void>();
 

@@ -8,12 +8,13 @@
  * player character facing the door. Painter's order (x+y) like the renderer.
  */
 
+import { makeProjection } from '../movement/IsoTiles';
+
 const BASE = import.meta.env.BASE_URL;
 const ISO = `${BASE}prototype_sprites/Isometric`;
 
 // Menu diamond footprint (px). Source sprites are 256x512.
-const DW = 112;
-const DH = 56;
+const MENU_PROJ = makeProjection(112);
 const IW = 112;
 const IH = 224;
 
@@ -60,13 +61,12 @@ const PROPS: Placed[] = [
 ];
 
 function styleFor(p: Placed): React.CSSProperties {
-  const sx = ((p.x - p.y) * DW) / 2;
-  const sy = ((p.x + p.y) * DH) / 2;
+  const { sx, sy } = MENU_PROJ.tileToScreen(p.x, p.y);
   // Content space runs x: -392..560, y: -196..448; shift into the
   // 952x644 pan box (origin at content min) so the CSS framing math holds.
   return {
     left: sx - IW / 2 + 392,
-    top: sy + DH / 2 - IH + 196,
+    top: sy + MENU_PROJ.tileH / 2 - IH + 196,
     width: IW,
     height: IH,
   };

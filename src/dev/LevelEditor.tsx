@@ -7,8 +7,8 @@
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type Phaser from 'phaser';
-import type { ManorBridge } from '../core/GameScene';
-import type { RoomProp } from '../rooms/types';
+import type { EditorBrush, EditorTool, ManorBridge, RoomSnapshot } from '../core/bridge';
+import type { LockKey, RoomProp } from '../rooms/types';
 import {
   DIRS_4,
   QUICK_PROPS,
@@ -22,7 +22,7 @@ import {
 
 const EDITOR_STORE_KEY = 'manor-loop-editor-v1';
 
-type Tool = 'paint' | 'spawn' | 'walk' | 'prop-add' | 'prop-edit' | 'prop-delete' | 'portal';
+type Tool = EditorTool;
 
 const TOOLS: Array<{ id: Tool; label: string; hint: string }> = [
   { id: 'paint', label: '🖌 Paint', hint: 'Left-click / drag diamonds to paint. Right-drag pans, wheel zooms.' },
@@ -36,22 +36,15 @@ const TOOLS: Array<{ id: Tool; label: string; hint: string }> = [
 
 const NEXT_DIR: Record<IsoDir, IsoDir> = { N: 'E', E: 'S', S: 'W', W: 'N' };
 
-interface RoomSnapshot {
-  tiles: string[];
-  spawn: { x: number; y: number };
-  portals: Array<{
-    from: { x: number; y: number };
-    toRoom: string;
-    to: { x: number; y: number };
-    label?: string;
-    lockedBy?: string;
-  }>;
-  props: RoomProp[];
-  walk: Record<string, boolean>;
-}
-
 function bridgeOf(game: Phaser.Game | null): ManorBridge | undefined {
   return (game as unknown as { __manor?: ManorBridge } | null)?.__manor;
+}
+
+/** Typed brush payload for the current tool (tile char for paint, sprite for prop-add). */
+function toolBrush(tool: Tool, brush: string, propBase: string, propDir: IsoDir): EditorBrush {
+  return tool === 'prop-add'
+    ? { kind: 'prop', sprite: propSpriteId(propBase, propDir) }
+    : { kind: 'tile', ch: brush };
 }
 
 /** Turn editor export JSON into a drop-in `src/rooms/manor.ts`. */
@@ -135,11 +128,11 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
   const refresh = useCallback(() => {
     const b = bridgeOf(game);
     if (!b) return;
-    setRooms(b.roomIds());
-    const cur = roomId || b.currentRoom();
+    setRooms(b.ask({ kind: 'roomIds' }));
+    const cur = roomId || b.ask({ kind: 'currentRoom' });
     if (!roomId) setRoomId(cur);
     try {
-      const s = b.editorGetRoom(cur);
+      const s = b.ask({ kind: 'editorGetRoom', roomId: cur });
       setSnap(s);
       setResizeW(s.tiles[0]?.length ?? 10);
       setResizeH(s.tiles.length);
@@ -171,8 +164,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
     if (!enabled) return;
     const b = bridgeOf(game);
     if (!b) return;
-    if (tool === 'prop-add') b.editorSetTool(tool, propSpriteId(propBase, propDir));
-    else b.editorSetTool(tool, brush);
+    b.send({ kind: 'editorSetTool', tool, brush: toolBrush(tool, brush, propBase, propDir) });
   }, [game, enabled, tool, brush, propBase, propDir]);
 
   // R = rotate facing, Del = delete selected prop (unless typing)
@@ -187,7 +179,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
       } else if ((e.key === 'Delete' || e.key === 'Backspace') && selectedProp && snap) {
         if (snap.props.some((p) => p.id === selectedProp) && roomId) {
           e.preventDefault();
-          bridgeOf(game)?.editorDeleteProp(roomId, selectedProp);
+          bridgeOf(game)?.send({ kind: 'editorDeleteProp', roomId, propId: selectedProp });
           setSelectedProp('');
         }
       }
@@ -203,7 +195,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
     const b = bridgeOf(game);
     if (b && roomId && selectedProp && tool === 'prop-edit') {
       const sel = snap?.props.find((p) => p.id === selectedProp);
-      if (sel) b.editorSetPropSprite(roomId, selectedProp, propSpriteId(parsePropSprite(sel.sprite).base, next));
+      if (sel) b.send({ kind: 'editorSetPropSprite', roomId, propId: selectedProp, sprite: propSpriteId(parsePropSprite(sel.sprite).base, next) });
     }
   }, [game, roomId, selectedProp, tool, snap, propDir]);
 
@@ -211,13 +203,13 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
     const b = bridgeOf(game);
     if (!b) return;
     setEnabled(on);
-    b.editorEnable(on);
-    b.editorSetHitboxesVisible(on && hitboxes);
+    b.send({ kind: 'editorEnable', enabled: on });
+    b.send({ kind: 'editorSetHitboxesVisible', visible: on && hitboxes });
     if (on) {
-      b.editorSetTool(tool, tool === 'prop-add' ? propSpriteId(propBase, propDir) : brush);
+      b.send({ kind: 'editorSetTool', tool, brush: toolBrush(tool, brush, propBase, propDir) });
       try {
         const saved = localStorage.getItem(EDITOR_STORE_KEY);
-        if (saved && b.editorImport(saved)) setMsg('restored persisted edits');
+        if (saved && b.ask({ kind: 'editorImport', json: saved })) setMsg('restored persisted edits');
       } catch {
         // ignore
       }
@@ -228,7 +220,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
   const doExport = () => {
     const b = bridgeOf(game);
     if (!b) return;
-    const json = b.editorExport();
+    const json = b.ask({ kind: 'editorExport' });
     setExportText(json);
     try {
       localStorage.setItem(EDITOR_STORE_KEY, json);
@@ -241,7 +233,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
   const doImport = () => {
     const b = bridgeOf(game);
     if (!b || !importText.trim()) return;
-    setMsg(b.editorImport(importText) ? 'imported — room reloaded' : 'import failed: bad JSON');
+    setMsg(b.ask({ kind: 'editorImport', json: importText }) ? 'imported — room reloaded' : 'import failed: bad JSON');
     refresh();
   };
 
@@ -275,7 +267,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
     setPropBase(base);
     setPropDir(dir);
     if (tool === 'prop-edit' && selProp && roomId) {
-      bridgeOf(game)?.editorSetPropSprite(roomId, selProp.id, propSpriteId(base, dir));
+      bridgeOf(game)?.send({ kind: 'editorSetPropSprite', roomId, propId: selProp.id, sprite: propSpriteId(base, dir) });
     } else {
       setTool('prop-add');
     }
@@ -297,7 +289,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
           checked={hitboxes}
           onChange={(e) => {
             setHitboxes(e.target.checked);
-            if (enabled) bridgeOf(game)?.editorSetHitboxesVisible(e.target.checked);
+            if (enabled) bridgeOf(game)?.send({ kind: 'editorSetHitboxesVisible', visible: e.target.checked });
           }}
         />
         hitboxes <span className="le-dim">green walk · red blocked · gold doors · blue spawn</span>
@@ -309,7 +301,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
           onChange={(e) => {
             setRoomId(e.target.value);
             setSelectedProp('');
-            bridgeOf(game)?.jumpToRoom(e.target.value);
+            bridgeOf(game)?.send({ kind: 'jumpToRoom', roomId: e.target.value });
           }}
         >
           <option value="" disabled>
@@ -323,9 +315,9 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
         </select>
       </div>
       <div className="le-row">
-        <button title="zoom in" onClick={() => bridgeOf(game)?.editorZoom(1.25)}>＋</button>
-        <button title="zoom out" onClick={() => bridgeOf(game)?.editorZoom(0.8)}>－</button>
-        <button title="frame room" onClick={() => bridgeOf(game)?.editorRecenter()}>⤢ frame</button>
+        <button title="zoom in" onClick={() => bridgeOf(game)?.send({ kind: 'editorZoom', factor: 1.25 })}>＋</button>
+        <button title="zoom out" onClick={() => bridgeOf(game)?.send({ kind: 'editorZoom', factor: 0.8 })}>－</button>
+        <button title="frame room" onClick={() => bridgeOf(game)?.send({ kind: 'editorRecenter' })}>⤢ frame</button>
         <span className="le-dim">right-drag pans · wheel zooms</span>
       </div>
       {enabled && (
@@ -422,7 +414,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
                   </div>
                   <div className="le-row">
                     <span>{walkOverrides} walk override{walkOverrides === 1 ? '' : 's'}</span>
-                    <button onClick={() => roomId && bridgeOf(game)?.editorClearWalk(roomId)}>Clear overrides</button>
+                    <button onClick={() => roomId && bridgeOf(game)?.send({ kind: 'editorClearWalk', roomId })}>Clear overrides</button>
                   </div>
                 </div>
               )}
@@ -440,7 +432,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
                     onClick={() => {
                       if (tool === 'prop-edit' && selProp && selParsed && roomId) {
                         setPropDir(d);
-                        bridgeOf(game)?.editorSetPropSprite(roomId, selProp.id, propSpriteId(selParsed.base, d));
+                        bridgeOf(game)?.send({ kind: 'editorSetPropSprite', roomId, propId: selProp.id, sprite: propSpriteId(selParsed.base, d) });
                       } else {
                         setPropDir(d);
                       }
@@ -498,14 +490,14 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
                     <div><b>{selParsed.base}:{selParsed.dir}</b> @ {selProp.x},{selProp.y}</div>
                     <div className="le-row">
                       <button
-                        onClick={() => roomId && bridgeOf(game)?.editorSetPropWalk(roomId, selProp.id, !selProp.walkable)}
+                        onClick={() => roomId && bridgeOf(game)?.send({ kind: 'editorSetPropWalk', roomId, propId: selProp.id, walkable: !selProp.walkable })}
                       >
                         {selProp.walkable ? 'walkable → block' : 'blocked → walk'}
                       </button>
                       <button title="rotate facing (R)" onClick={rotate}>⟳ rotate</button>
                       <button
                         onClick={() => {
-                          if (roomId) bridgeOf(game)?.editorDeleteProp(roomId, selProp.id);
+                          if (roomId) bridgeOf(game)?.send({ kind: 'editorDeleteProp', roomId, propId: selProp.id });
                           setSelectedProp('');
                         }}
                       >
@@ -542,7 +534,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
           {snap && (
             <section>
               <h4>Doors / portals ({snap.portals.length})</h4>
-              <button onClick={() => roomId && bridgeOf(game)?.editorAddPortal(roomId)}>＋ Add door at spawn</button>
+              <button onClick={() => roomId && bridgeOf(game)?.send({ kind: 'editorAddPortal', roomId })}>＋ Add door at spawn</button>
               {snap.portals.map((p, i) => (
                 <div key={i} className="le-portal">
                   <div className="le-row">
@@ -550,34 +542,34 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
                     <span>({p.from.x},{p.from.y}) →</span>
                     <select
                       value={p.toRoom}
-                      onChange={(e) => bridgeOf(game)?.editorUpdatePortal(roomId, i, { toRoom: e.target.value })}
+                      onChange={(e) => bridgeOf(game)?.send({ kind: 'editorUpdatePortal', roomId, index: i, patch: { toRoom: e.target.value } })}
                     >
                       {rooms.map((r) => (
                         <option key={r} value={r}>{r}</option>
                       ))}
                     </select>
-                    <button onClick={() => bridgeOf(game)?.editorDeletePortal(roomId, i)}>✕</button>
+                    <button onClick={() => bridgeOf(game)?.send({ kind: 'editorDeletePortal', roomId, index: i })}>✕</button>
                   </div>
                   <div className="le-row">
-                    <label>to x <input type="number" value={p.to.x} onChange={(e) => bridgeOf(game)?.editorUpdatePortal(roomId, i, { toX: Number(e.target.value) })} /></label>
-                    <label>to y <input type="number" value={p.to.y} onChange={(e) => bridgeOf(game)?.editorUpdatePortal(roomId, i, { toY: Number(e.target.value) })} /></label>
+                    <label>to x <input type="number" value={p.to.x} onChange={(e) => bridgeOf(game)?.send({ kind: 'editorUpdatePortal', roomId, index: i, patch: { toX: Number(e.target.value) } })} /></label>
+                    <label>to y <input type="number" value={p.to.y} onChange={(e) => bridgeOf(game)?.send({ kind: 'editorUpdatePortal', roomId, index: i, patch: { toY: Number(e.target.value) } })} /></label>
                   </div>
                   <div className="le-row">
                     <input
                       placeholder="label"
                       value={p.label ?? ''}
-                      onChange={(e) => bridgeOf(game)?.editorUpdatePortal(roomId, i, { label: e.target.value })}
+                      onChange={(e) => bridgeOf(game)?.send({ kind: 'editorUpdatePortal', roomId, index: i, patch: { label: e.target.value } })}
                     />
                     <select
                       value={p.lockedBy ?? ''}
-                      onChange={(e) => bridgeOf(game)?.editorUpdatePortal(roomId, i, { lockedBy: e.target.value })}
+                      onChange={(e) => bridgeOf(game)?.send({ kind: 'editorUpdatePortal', roomId, index: i, patch: { lockedBy: e.target.value as LockKey | '' } })}
                     >
                       <option value="">unlocked</option>
                       <option value="servant">servant</option>
                       <option value="master">master</option>
                       <option value="kitchen">kitchen</option>
                     </select>
-                    <button onClick={() => bridgeOf(game)?.jumpToRoom(p.toRoom)}>go →</button>
+                    <button onClick={() => bridgeOf(game)?.send({ kind: 'jumpToRoom', roomId: p.toRoom })}>go →</button>
                   </div>
                 </div>
               ))}
@@ -594,7 +586,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
                 <label>w <input type="number" value={resizeW} onChange={(e) => setResizeW(Number(e.target.value))} /></label>
                 <label>h <input type="number" value={resizeH} onChange={(e) => setResizeH(Number(e.target.value))} /></label>
                 <input value={resizeFill} maxLength={1} onChange={(e) => setResizeFill(e.target.value)} title="fill char" />
-                <button onClick={() => roomId && bridgeOf(game)?.editorResize(roomId, resizeW, resizeH, resizeFill || '.')}>
+                <button onClick={() => roomId && bridgeOf(game)?.send({ kind: 'editorResize', roomId, w: resizeW, h: resizeH, fill: resizeFill || '.' })}>
                   Resize
                 </button>
               </div>
@@ -607,7 +599,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
               <button onClick={doExport}>Export JSON</button>
               <button
                 onClick={() => {
-                  const src = exportText || bridgeOf(game)?.editorExport() || '';
+                  const src = exportText || bridgeOf(game)?.ask({ kind: 'editorExport' }) || '';
                   if (!src) {
                     setMsg('nothing to convert yet');
                     return;

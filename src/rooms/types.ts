@@ -41,12 +41,6 @@ export interface RoomDef {
   props?: RoomProp[];
 }
 
-export interface RoomTransition {
-  roomId: string;
-  spawn: { x: number; y: number };
-  viaPortal?: Portal;
-}
-
 /** Registry of rooms for the current profile (prod or dev). */
 export class RoomRegistry {
   private rooms = new Map<string, RoomDef>();

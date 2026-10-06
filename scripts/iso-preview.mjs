@@ -12,13 +12,22 @@
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ISO = join(ROOT, 'public/prototype_sprites/Isometric');
 
 const TW = 256; // native diamond footprint
 const TH = 128;
+
+/**
+ * Tile -> native-pixel ground-center. Exported for scripts/check-projection.mjs
+ * so the preview's placement math can be asserted against IsoTiles'
+ * makeProjection(256). tileToScreen (same formula, one spelling each side).
+ */
+export function previewTileToScreen(x, y) {
+  return { sx: (x - y) * (TW / 2), sy: (x + y) * (TH / 2) };
+}
 
 function parseSprite(sprite) {
   const i = sprite.indexOf(':');
@@ -217,7 +226,7 @@ function main() {
 
   // placement list in painter's order
   const jobs = [];
-  const pos = (x, y) => ({ sx: (x - y) * (TW / 2), sy: (x + y) * (TH / 2) });
+  const pos = previewTileToScreen;
   for (let s = 0; s <= W + H; s++) {
     for (let y = 0; y < H; y++) {
       for (let x = 0; x < (tiles[y]?.length ?? 0); x++) {
@@ -272,4 +281,10 @@ function main() {
   console.log(`wrote ${outPath} (${CW}x${CH}, ${jobs.length} sprites)`);
 }
 
-main();
+// Importable by scripts/check-projection.mjs (which needs the mirrors above
+// without running the CLI). Direct invocation still renders the preview.
+const invokedAsCli =
+  !!process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (invokedAsCli) {
+  main();
+}

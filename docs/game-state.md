@@ -33,14 +33,16 @@ One step per keypress edge.
 | Dialogue queue | `src/text/TextEngine.ts` | Works (say/advance/listen); LLM-written lines plug in later |
 | Diary (loop memory) | `src/diary/DiaryStore.ts` | Working store; no HUD yet |
 | NPC roster | `src/characters/roster.ts` | 7 static defs from `idea.md`; no NPC actors/wiring yet |
-| Reusable tile actor | `src/movement/IsoTiles.ts` (`TileActor`) | Ready for NPCs; player still uses bespoke scene fields |
+| Reusable tile actor | `src/movement/IsoTiles.ts` (`TileActor`) | Player steps resolve through `src/manor/turns.ts` (`resolveStep`) over a short-lived `TileActor` adapter; scene keeps tile/facing fields + all rendering. Ready for NPCs next |
 | Costs | `src/time/types.ts` (`COST`) | TALK/EAT/PUZZLE = 20 defined; only MOVE is charged |
 | Room flavor/names, portal labels | `RoomDef` | Exported + editor-visible; not shown in-game (hence untranslated) |
 
 ## Dev profile (`npm run dev` only)
 
 11 test rooms replicating `manor-layout.md` (`src/dev/testLevels.ts`), time
-slider + day jumps + room jumper (`DevTools.tsx`), full level editor
+slider + day jumps + room jumper (`DevTools.tsx`, which drives the
+`timeManager` singleton directly rather than the scene's injected clock —
+dev-only exception), full level editor
 (`LevelEditor.tsx`): paint, spawn, hitboxes, props, doors, resize, export to
 `manor.ts`. None of it ships in prod (see `tech-stack.md` guards).
 

@@ -8,6 +8,17 @@ export type TimeEvent =
 export type TimeListener = (e: TimeEvent) => void;
 
 /**
+ * Minimal clock seam used by scenes. Satisfied by {@link TimeManager};
+ * fakes in tests only need these members.
+ */
+export interface Clock {
+  readonly elapsedMinutes: number;
+  readonly loops: number;
+  advance(minutes: number, reason: string): boolean;
+  on(listener: TimeListener): () => void;
+}
+
+/**
  * Framework-agnostic loop clock.
  *
  * - 72h loop (4320 min). Every tile step costs 1 min.
@@ -17,7 +28,7 @@ export type TimeListener = (e: TimeEvent) => void;
  * - `collapseFactor` (0..1) ramps up over the final `collapseHours`
  *   so rooms/scenes can degrade tiles/access late in day 3.
  */
-export class TimeManager {
+export class TimeManager implements Clock {
   private elapsed = 0;
   private loopsCompleted = 0;
   private listeners = new Set<TimeListener>();

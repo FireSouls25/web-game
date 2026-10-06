@@ -25,6 +25,9 @@ not tile moves and `tryStep` rejects them (`isIsoStep`: `|dx|+|dy| === 1`).
 - `screenToTile` = pure ground-plane inverse (pointer/hover). Foot-anchored
   sprite positions convert via `tileFromFoot` (subtracts the anchor first —
   the old code forgot this and shifted every click half a tile).
+- `makeProjection(tileW)` binds all five helpers to one width (game 64,
+  menu 112, preview 256) — the only tile-projection home; the preview
+  placement mirror must equal `makeProjection(256)` (gated).
 - `depthFor(x, y, layer)` = `(x+y)*10 + layer` (painter's order).
 
 ## ASCII legend (`TILE_BRUSHES` in `src/rooms/spriteCatalog.ts`)

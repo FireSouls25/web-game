@@ -10,7 +10,8 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "check:prod-leak": "node scripts/check-prod-leak.mjs"
+    "check:prod-leak": "node scripts/check-prod-leak.mjs",
+    "check:gates": "node scripts/check-turns.mjs && node scripts/check-projection.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0",

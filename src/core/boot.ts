@@ -1,11 +1,17 @@
 import Phaser from 'phaser';
 import { GameScene, GAME_SCENE } from './GameScene';
+import type { Clock } from '../time/TimeManager';
+import type { Dialogue } from '../text/TextEngine';
 
 export interface GameInit {
   /** room to spawn in (Continue reads this from the save file) */
   roomId?: string;
   /** tile to spawn on */
   tile?: { x: number; y: number };
+  /** loop clock (defaults to the shared singleton when omitted) */
+  clock?: Clock;
+  /** dialogue queue (defaults to the shared singleton when omitted) */
+  dialogue?: Dialogue;
 }
 
 export function createGame(canvasParent: HTMLElement, initData?: GameInit): Phaser.Game {
@@ -27,8 +33,4 @@ export function createGame(canvasParent: HTMLElement, initData?: GameInit): Phas
   // Boot straight into the movement scene, optionally from a save file.
   game.scene.start(GAME_SCENE, initData ?? {});
   return game;
-}
-
-export function getGameScene(game: Phaser.Game): GameScene | undefined {
-  return game.scene.getScene(GAME_SCENE) as unknown as GameScene | undefined;
 }

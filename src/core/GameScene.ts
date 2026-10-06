@@ -1,5 +1,17 @@
 import Phaser from 'phaser';
 import { Grid } from '../movement/Grid';
+import {
+  ISO_DIRS,
+  facingForStep as isoFacingForStep,
+  isIsoStep,
+  tileFootScreen,
+  tileFromFoot as tileFromFootPos,
+  tileToScreen as isoTileToScreen,
+  screenToTile as isoScreenToTile,
+  depthFor as isoDepthFor,
+  TILE_W as ISO_TILE_W,
+  TILE_H as ISO_TILE_H,
+} from '../movement/IsoTiles';
 import { COST, LOOP_START_WALL_MINUTES, MINUTES_PER_DAY } from '../time/types';
 import { timeManager } from '../time/TimeManager';
 import { RoomRegistry, type LockKey } from '../rooms/types';
@@ -22,8 +34,8 @@ export const GAME_SCENE = 'game';
  * objects (walls, crates, the player) rise out of their own tile and
  * y-sort against the tiles behind them.
  */
-export const TILE_W = 64;
-export const TILE_H = 32;
+export const TILE_W = ISO_TILE_W;
+export const TILE_H = ISO_TILE_H;
 /** Back-compat alias (square-tile callers). */
 export const TILE = TILE_W;
 const SPRITE_SCALE = TILE_W / 256;
@@ -37,23 +49,14 @@ const LOCK_MESSAGES: Record<LockKey, string> = {
 };
 
 /**
- * Screen compass for iso movement: N = screen up, E = screen right.
- * Grid steps: N(-1,-1) NE(0,-1) E(+1,-1) SE(+1,0) S(+1,+1) SW(0,+1)
- * W(-1,+1) NW(-1,0). So W/Up always walks toward the top of the screen.
- * Human facings (see prototype_sprites/Information.png):
- * 7=N 0=NE 1=E 2=SE 3=S 4=SW 5=W 6=NW.
+ * Iso tile compass (Kenney pack, see Information.png + IsoTiles):
+ * N = screen up-right (0,-1), E = screen down-right (+1,0),
+ * S = screen down-left (0,+1), W = screen up-left (-1,0).
+ * Each step moves to the tile sharing a diamond SIDE — never to a
+ * vertex-touching diagonal. Human facings for tile moves: N=0 E=2 S=4 W=6.
  */
-const ALL_DIRS = [0, 1, 2, 3, 4, 5, 6, 7];
-const FACING_FOR_STEP = (dx: number, dy: number): number => {
-  if (dx === -1 && dy === -1) return 7;
-  if (dx === 0 && dy === -1) return 0;
-  if (dx === 1 && dy === -1) return 1;
-  if (dx === 1 && dy === 0) return 2;
-  if (dx === 1 && dy === 1) return 3;
-  if (dx === 0 && dy === 1) return 4;
-  if (dx === -1 && dy === 1) return 5;
-  return 6;
-};
+const ALL_DIRS = [0, 1, 2, 3, 4, 5, 6, 7]; // texture preload only
+const FACING_FOR_STEP = (dx: number, dy: number): number | null => isoFacingForStep(dx, dy);
 
 /**
  * Wall autotile (mirrored by scripts/iso-preview.mjs wallVariantFor).
@@ -109,20 +112,22 @@ function wallVariantFor(
   return 'wall:S';
 }
 
-/** Grid (x,y) -> world: diamond center. */
+/** Grid (x,y) -> world: diamond CENTER. One ground sprite == one tile. */
 export function tileToScreen(x: number, y: number): { sx: number; sy: number } {
-  return { sx: ((x - y) * TILE_W) / 2, sy: ((x + y) * TILE_H) / 2 };
+  return isoTileToScreen(x, y);
 }
 
-/** World -> grid (inverse of tileToScreen, accounting bottom-vertex anchor). */
+/**
+ * World (ground point) -> tile containing it. Pure inverse of tileToScreen.
+ * (The old version subtracted TILE_H/2 for a bottom-vertex anchor, which
+ * shifted every click/hover by half a tile. Foot-anchored sprite positions
+ * must use tileFromFoot instead.)
+ */
 export function screenToTile(wx: number, wy: number): { x: number; y: number } {
-  const ry = wy - TILE_H / 2;
-  const fx = wx / (TILE_W / 2);
-  const fy = ry / (TILE_H / 2);
-  return { x: Math.floor((fx + fy) / 2), y: Math.floor((fy - fx) / 2) };
+  return isoScreenToTile(wx, wy);
 }
 
-const depthFor = (x: number, y: number, layer = 0): number => (x + y) * 10 + layer;
+const depthFor = (x: number, y: number, layer = 0): number => isoDepthFor(x, y, layer);
 
 /** Per-room dev edits. Applied on top of the base RoomDef. */
 interface RoomOverride {
@@ -180,9 +185,11 @@ export interface ManorBridge {
 /**
  * Movement + rooms scene, rendered with the Kenney prototype pack
  * (Isometric set, true diamond projection).
- * - Orthogonal grid logic (matches the ASCII tilemaps); iso projection
- *   for display, depth-sorted so tall sprites occlude correctly.
- * - WASD/arrows step one tile; each successful step costs 1 min.
+ * - Tile system (see movement/IsoTiles): one ground sprite == one tile.
+ *   Entities always stand ON a tile (feet on the diamond center); steps go
+ *   to the tile sharing a diamond side (N/E/S/W), never to a vertex.
+ * - Arrows/WASD step one tile (Up=N up-right, Right=E down-right,
+ *   Down=S down-left, Left=W up-left); each successful step costs 1 min.
  * - Stepping on a portal tile jumps rooms (impossible geometry supported).
  * - Player UI is minimal: no clock/HUD in canvas (dialogue goes to React).
  * - Autosaves to localStorage after every move / room change.
@@ -194,7 +201,7 @@ export class GameScene extends Phaser.Scene {
   private roomId = 'entrance_hall';
   private grid!: Grid;
   private playerTile = { x: 0, y: 0 };
-  private facing = 5;
+  private facing = 4; // S (down-left), a valid iso tile facing
   private playerSprite?: Phaser.GameObjects.Image;
   private moving = false;
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -365,7 +372,7 @@ export class GameScene extends Phaser.Scene {
         cam.setZoom(Math.max(0.25, Math.min(3, cam.zoom * factor)));
       },
       editorRecenter: () => {
-        this.frameRoomForEditor();
+        this.frameRoomForEditor(true);
       },
     };
 
@@ -483,10 +490,10 @@ export class GameScene extends Phaser.Scene {
     this.renderRoom(room);
     const s = spawn ?? room.spawn;
     this.playerTile = { ...s };
-    this.facing = 3;
-    const { sx, sy } = tileToScreen(s.x, s.y);
+    this.facing = 4;
+    const { tx, ty } = this.playerScreen(s.x, s.y);
     this.playerSprite = this.add
-      .image(sx, sy + 2, 'human_3_idle')
+      .image(tx, ty, `human_${this.facing}_idle`)
       .setScale(SPRITE_SCALE)
       .setOrigin(0.5, 1)
       .setDepth(depthFor(s.x, s.y, 0.2));
@@ -496,10 +503,15 @@ export class GameScene extends Phaser.Scene {
     if (!this.editorMode) this.autosave();
   }
 
-  /** Feet stand on the diamond center so the player reads as centered. */
+  /**
+   * Screen anchor for a tile entity (player / NPC): the image bottom
+   * (origin 0.5, 1) sits on the diamond's front vertex so the feet land on
+   * the diamond CENTER. Spawn and every step use this — one tile, one anchor.
+   * Human sprites carry ~56px of transparent padding below the feet
+   * (feet at y≈456/512 → 14px at scale), hence front-vertex == feet-on-center.
+   */
   private playerScreen(x: number, y: number): { tx: number; ty: number } {
-    const { sx, sy } = tileToScreen(x, y);
-    return { tx: sx, ty: sy + 2 };
+    return tileFootScreen(x, y);
   }
 
   /** Resolve a prop sprite id ("crate" | "wall:N") to a loaded texture key. */
@@ -683,15 +695,25 @@ export class GameScene extends Phaser.Scene {
     if (this.playerSprite) cam.startFollow(this.playerSprite, false, 0.12, 0.12);
   }
 
-  /** Center the whole room (editor entry framing / recenter button). */
-  private frameRoomForEditor(): void {
+  /**
+   * Editor framing. Default (entry / room switch): zoom 1.0 centered on
+   * the player tile — big enough to see and paint. The ⤢ frame button
+   * passes fit=true to see the whole room at once.
+   */
+  private frameRoomForEditor(fit = false): void {
     if (!this.grid) return;
     const cam = this.cameras.main;
     if (cam.width === 0 || cam.height === 0) return;
     cam.stopFollow();
+    if (!fit) {
+      const { sx, sy } = tileToScreen(this.playerTile.x, this.playerTile.y);
+      cam.setZoom(1);
+      cam.centerOn(sx, sy);
+      return;
+    }
     const b = this.roomBounds();
     const z = Math.min(cam.width / Math.max(1, b.w), cam.height / Math.max(1, b.h));
-    cam.setZoom(Math.max(0.25, Math.min(z, 1.25)));
+    cam.setZoom(Math.max(0.3, Math.min(z, 1.25)));
     cam.centerOn(b.cx, b.cy);
   }
 
@@ -716,34 +738,29 @@ export class GameScene extends Phaser.Scene {
   private pollDirection(): { x: number; y: number } | null {
     const c = this.cursors;
     const w = this.wasd;
-    // One step per keypress edge keeps 1 tile = 1 action. Screen compass:
-    // W/Up = N (screen up), S/Down = S, A/Left = W, D/Right = E,
-    // Q/E/Z/C = the four screen diagonals (Q=NW E=NE Z=SW C=SE).
+    // One step per keypress edge keeps 1 tile = 1 action. Iso mapping:
+    // each arrow/WASD key steps to the tile sharing that diamond SIDE:
+    //   Up/W = N (screen up-right), Right/D = E (screen down-right),
+    //   Down/S = S (screen down-left), Left/A = W (screen up-left).
+    // Q/E/Z/C are aliases (Q=W, E=N, Z=S, C=E) so diagonal-screen keys
+    // also walk tiles. Vertex-touching diagonals are not tile moves.
     const just = (...keys: Array<Phaser.Input.Keyboard.Key | undefined>): boolean =>
       keys.some((k) => k && Phaser.Input.Keyboard.JustDown(k));
-    if (just(c?.up, w?.['W'])) return { x: -1, y: -1 }; // N
-    if (just(c?.down, w?.['S'])) return { x: 1, y: 1 }; // S
-    if (just(c?.left, w?.['A'])) return { x: -1, y: 1 }; // W
-    if (just(c?.right, w?.['D'])) return { x: 1, y: -1 }; // E
-    if (just(w?.['Q'])) return { x: -1, y: 0 }; // NW
-    if (just(w?.['E'])) return { x: 0, y: -1 }; // NE
-    if (just(w?.['Z'])) return { x: 0, y: 1 }; // SW
-    if (just(w?.['C'])) return { x: 1, y: 0 }; // SE
+    if (just(c?.up, w?.['W'], w?.['E'])) return { x: ISO_DIRS.N.dx, y: ISO_DIRS.N.dy }; // N (0,-1)
+    if (just(c?.right, w?.['D'], w?.['C'])) return { x: ISO_DIRS.E.dx, y: ISO_DIRS.E.dy }; // E (+1,0)
+    if (just(c?.down, w?.['S'], w?.['Z'])) return { x: ISO_DIRS.S.dx, y: ISO_DIRS.S.dy }; // S (0,+1)
+    if (just(c?.left, w?.['A'], w?.['Q'])) return { x: ISO_DIRS.W.dx, y: ISO_DIRS.W.dy }; // W (-1,0)
     return null;
   }
 
   /** Attempt a single-tile step. Public so click-to-move / tests can reuse it. */
   async tryStep(dx: number, dy: number): Promise<boolean> {
     if (this.moving || !this.playerSprite) return false;
+    // Tile invariant: only edge-to-edge (N/E/S/W) steps are legal.
+    // Vertex-touching diagonals (|dx|+|dy| !== 1) are rejected outright.
+    if (!isIsoStep(dx, dy)) return false;
     const next = { x: this.playerTile.x + dx, y: this.playerTile.y + dy };
     if (!this.grid.isWalkable(next)) return false;
-    // Diagonal steps can't cut across wall corners: at least one of the two
-    // orthogonal pass-through tiles must be walkable too.
-    if (dx !== 0 && dy !== 0) {
-      const sideA = this.grid.isWalkable({ x: this.playerTile.x + dx, y: this.playerTile.y });
-      const sideB = this.grid.isWalkable({ x: this.playerTile.x, y: this.playerTile.y + dy });
-      if (!sideA && !sideB) return false;
-    }
     // Locked doors bump with a message: no move, no time cost.
     const ahead = this.roomRegistry.portalAt(this.roomId, next.x, next.y);
     const effAhead = this.effectiveRoom(this.roomId).portals.find(
@@ -754,7 +771,8 @@ export class GameScene extends Phaser.Scene {
       return false;
     }
     this.moving = true;
-    this.facing = FACING_FOR_STEP(dx, dy);
+    const stepFacing = FACING_FOR_STEP(dx, dy);
+    if (stepFacing !== null) this.facing = stepFacing;
     const { tx, ty } = this.playerScreen(next.x, next.y);
     let frame = 0;
     const runTimer = this.time.addEvent({
@@ -907,7 +925,8 @@ export class GameScene extends Phaser.Scene {
       const ov = this.overrideFor(this.roomId);
       const pr = ov.props.find((p) => p.id === this.dragPropId);
       if (img && pr) {
-        const { x, y } = screenToTile(img.x, img.y);
+        // img.x/img.y is the foot anchor (front vertex), not the ground point.
+        const { x, y } = tileFromFootPos(img.x, img.y);
         pr.x = Math.max(0, Math.min(this.grid.width - 1, x));
         pr.y = Math.max(0, Math.min(this.grid.height - 1, y));
       }
@@ -966,7 +985,9 @@ export class GameScene extends Phaser.Scene {
       .setDepth(depthFor(spot.x, spot.y, 0.2));
     this.drawHitboxes();
     this.drawPlayerRing();
-    this.frameCamera();
+    // NB: no frameCamera() here — refreshAfterEdit runs on every paint
+    // stroke and must not reset the editor's pan/zoom. Reframing happens
+    // on room switch (loadRoom), editor enable, and the ⤢ frame button.
   }
 
   private diamond(g: Phaser.GameObjects.Graphics, cx: number, cy: number, pad = 0): void {

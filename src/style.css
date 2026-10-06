@@ -116,7 +116,7 @@ body {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 300px;
+  width: 404px;
   max-height: calc(100dvh - 20px);
   overflow-y: auto;
   z-index: 20;
@@ -152,16 +152,9 @@ body {
 
 /* ---- level editor dock (dev profile only): engine-style side panel ---- */
 .le-dock {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 400px;
-  height: 100dvh;
-  overflow-y: auto;
-  z-index: 20;
-  background: rgba(13, 10, 20, 0.96);
-  border-left: 2px solid #c9a227;
-  padding: 14px 14px 40px;
+  /* flows inside the .devtools sidebar column (single right panel) */
+  border-top: 2px solid #c9a227;
+  padding: 12px 2px 30px;
   display: flex;
   flex-direction: column;
   gap: 10px;

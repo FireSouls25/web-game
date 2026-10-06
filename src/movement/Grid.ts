@@ -2,7 +2,11 @@ import type { TilePos } from './types';
 
 /**
  * Pure tile-grid logic (no Phaser dependency so it is unit-testable).
- * `walkable[y][x] === true` means the player may stand there.
+ * `walkable[y][x] === true` means an entity may stand ON that tile.
+ *
+ * Movement graph is 4-directional (see IsoTiles): neighbors share a diamond
+ * side (N/E/S/W). Vertex-touching diagonal grid cells are NOT neighbors —
+ * entities can only ever be on a tile, never on a vertex or edge.
  */
 export class Grid {
   readonly width: number;

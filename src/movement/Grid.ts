@@ -17,8 +17,9 @@ export class Grid {
 
   static fromAscii(
     rows: string[],
-    // Full legend (docs/manor-layout.md): '>' stairs are walkable; furniture
-    // T table, B shelf, W water, C clock, D desk, d bed, R railing is blocked.
+    // Full legend (docs/manor-layout.md): '>' stairs are walkable; walls
+    // (#, G window), furniture T table, B shelf, W water, C clock, D desk,
+    // d bed, R railing are blocked (props/walk overrides can change this).
     walkableChars = ['.', 'S', 'E', 'P', '>'],
   ): Grid {
     const set = new Set(walkableChars);

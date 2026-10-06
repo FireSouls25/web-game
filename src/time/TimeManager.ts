@@ -90,6 +90,20 @@ export class TimeManager {
     this.emit({ type: 'collapseChanged', factor: this.collapseFactor() });
   }
 
+  /** Production: start over (main menu "New game"). */
+  resetToNewGame(): void {
+    this.elapsed = 0;
+    this.loopsCompleted = 0;
+    this.emit({ type: 'collapseChanged', factor: 0 });
+  }
+
+  /** Production: restore a save file (main menu "Continue"). */
+  restoreSnapshot(elapsedMinutes: number, loops: number): void {
+    this.elapsed = Math.max(0, Math.min(LOOP_MINUTES - 1, Math.floor(elapsedMinutes)));
+    this.loopsCompleted = Math.max(0, Math.floor(loops));
+    this.emit({ type: 'collapseChanged', factor: this.collapseFactor() });
+  }
+
   private resetLoop(): void {
     this.elapsed = 0;
     this.loopsCompleted += 1;

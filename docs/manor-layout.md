@@ -88,18 +88,24 @@ entrance → gate → hall → stairs spine stays open longest.
 
 ## Camera
 
-Oblique top-down (Stardew/Hades/Zelda/Helltaker): walls/furniture drawn with
-height, y-sorted, north walls fade when the player passes behind. Replica uses
-flat placeholders; art must be drawn for 3/4 view from the start.
+True isometric (Kenney Isometric set): diamond tiles, 1 tile = 1 sprite
+footprint, depth-sorted tall sprites. Dollhouse cutaway convention enforced
+by the wall autotile (`wallVariantFor` in `GameScene.ts`, mirrored by
+`scripts/iso-preview.mjs`): back edges (room interior to the SE) render
+full-height top walls with corners/windows/door arches; front edges render
+as low fence rails so the interior stays visible. Screen compass: N = up
+(W/Up), E = right (D/Right), 8-way movement (Q/E/Z/C diagonals), 1 min
+per step, no corner-cutting through wall corners.
 
 ## Code mapping
 
 Replica room ids: `entrance`, `main_hall`, `library`, `drawing_room`, `baths`,
 `servants_room`, `laundry`, `dining_room`, `kitchen` (locked), `office`
 (locked), `gallery_landing` (stub: stairs arrive, future doors walled).
-Tile legend: `#` wall, `.` floor, `S` spawn, `E`/`P` door floor, `>` stairs,
-`T` table, `B` shelf, `W` water, `C` clock, `D` desk/piano, `d` bed,
-`R` railing. Anything unlisted is blocked.
+Tile legend: `#` wall (autotiled), `.` floor, `S` spawn, `E`/`P` door floor,
+`>` stairs (ascend grid-north), `G` window wall (north runs), `T` table,
+`B` shelf, `W` water, `C` clock, `D` desk/piano, `d` bed, `R` railing
+(renders as a fence rail). Anything unlisted is blocked.
 
 TODO: second-floor rooms, key items/quest flags, front-door loop beat, collapse
-rerouting, wall-fade for the oblique camera.
+rerouting.

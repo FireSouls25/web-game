@@ -1,5 +1,5 @@
 /**
- * DEV-PROFILE ONLY — arbitrary time selector + room jumper.
+ * DEV-PROFILE ONLY — arbitrary time selector + room jumper + level editor.
  *
  * Rendered only when `import.meta.env.DEV` is true (see App.tsx, which
  * dynamic-imports this module). Never import this from prod code.
@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { timeManager } from '../time/TimeManager';
 import { LOOP_MINUTES, LOOP_START_WALL_MINUTES, MINUTES_PER_DAY } from '../time/types';
 import type { LockKey } from '../rooms/types';
+import { LevelEditor } from './LevelEditor';
 
 interface ManorBridge {
   jumpToRoom: (id: string) => void;
@@ -97,6 +98,7 @@ export function DevTools({ game }: { game: Phaser.Game | null }) {
         ))}
         <button onClick={() => { bridge()?.lockAll(); refreshKeys(); }}>relock</button>
       </div>
+      <LevelEditor game={game} />
     </div>
   );
 }

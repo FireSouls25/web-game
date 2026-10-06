@@ -11,6 +11,24 @@ export interface Portal {
   lockedBy?: LockKey;
 }
 
+/**
+ * Free-placed decor/prop sprite (data only — no dev dependency).
+ * Rendered on top of the tilemap at (x, y); `walkable: false` means it
+ * blocks movement (adds a Grid override in GameScene).
+ */
+export interface RoomProp {
+  id: string;
+  /**
+   * Isometric sprite id: a base from the Kenney Isometric set plus an
+   * optional facing — 'crate' (= S), 'wall:N', 'doorway:E', …
+   * Legacy Angle-era ids ('crate', 'block', 'slab', 'fence') still render.
+   */
+  sprite: string;
+  x: number;
+  y: number;
+  walkable: boolean;
+}
+
 export interface RoomDef {
   id: string;
   name: string;
@@ -19,6 +37,8 @@ export interface RoomDef {
   spawn: { x: number; y: number };
   portals: Portal[];
   flavor?: string;
+  /** optional decor sprites placed by the (dev-only) level editor */
+  props?: RoomProp[];
 }
 
 export interface RoomTransition {

@@ -51,14 +51,16 @@ const entrance: RoomDef = {
     { from: { x: 25, y: 8 }, toRoom: 'drawing_room', to: { x: 2, y: 6 }, label: 'east door' },
     { from: { x: 25, y: 9 }, toRoom: 'drawing_room', to: { x: 2, y: 6 }, label: 'east door' },
   ],
-  // gate columns, stair cheeks, floor arrows, sealed south doors
+  // gate columns, stair parapets, floor arrows, sealed south doors
+  // (parapets are straight low walls — wallCurve is a 90° corner piece and
+  // reads as disconnected blobs flanking a straight flight)
   props: [
     { id: 'entrance_col_w', sprite: 'column:S', x: 9, y: 2, walkable: false },
     { id: 'entrance_col_e', sprite: 'column:S', x: 16, y: 2, walkable: false },
-    { id: 'entrance_cheek_lw', sprite: 'wallCurve:E', x: 1, y: 2, walkable: false },
-    { id: 'entrance_cheek_le', sprite: 'wallCurve:W', x: 4, y: 2, walkable: false },
-    { id: 'entrance_cheek_rw', sprite: 'wallCurve:E', x: 21, y: 2, walkable: false },
-    { id: 'entrance_cheek_re', sprite: 'wallCurve:W', x: 24, y: 2, walkable: false },
+    { id: 'entrance_cheek_lw', sprite: 'wallHalf:W', x: 1, y: 2, walkable: false },
+    { id: 'entrance_cheek_le', sprite: 'wallHalf:E', x: 4, y: 2, walkable: false },
+    { id: 'entrance_cheek_rw', sprite: 'wallHalf:W', x: 21, y: 2, walkable: false },
+    { id: 'entrance_cheek_re', sprite: 'wallHalf:E', x: 24, y: 2, walkable: false },
     { id: 'entrance_arrow_w', sprite: 'arrow:S', x: 10, y: 14, walkable: true },
     { id: 'entrance_arrow_e', sprite: 'arrow:S', x: 15, y: 14, walkable: true },
     { id: 'entrance_sealed_w', sprite: 'doorClosed:S', x: 11, y: 17, walkable: false },

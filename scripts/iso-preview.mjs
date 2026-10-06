@@ -81,6 +81,98 @@ export function wallVariantFor(x, y, isWall, isOpen) {
 }
 export const wallVariant = wallVariantFor;
 
+// --- stair autotile (MUST match stairVariantFor in GameScene.ts) ---
+// Wide flights open their interiors (stairsOpen) so they read as one
+// continuous flight; tiles stacked in the ascend direction are
+// continuations (steps), not restarted flights.
+export function stairVariantFor(x, y, isStair) {
+  const e = isStair(x + 1, y);
+  const w = isStair(x - 1, y);
+  const s = isStair(x, y + 1);
+  const wide = e || w;
+  if (wide) {
+    if (s) return 'steps:S';
+    if (e && w) return 'stairsOpen:S';
+    return 'stairs:S';
+  }
+  if (isStair(x, y - 1) || s) {
+    if (s) return 'steps:E';
+    return 'stairs:E';
+  }
+  return 'stairs:S';
+}
+
+// --- grouped doorways (MUST match groupDoorTiles/doorSpriteFor in GameScene.ts) ---
+// Contiguous E/P tiles form one opening: connected frame + single leaf.
+export function groupDoorTiles(room, hasPortal, isShut, doorAxisAt) {
+  const isDoor = (x, y) => {
+    const ch = room.tiles[y]?.[x];
+    return ch === 'E' || ch === 'P';
+  };
+  const seen = new Set();
+  const out = new Map();
+  const H = room.tiles.length;
+  for (let y = 0; y < H; y++) {
+    const row = room.tiles[y] ?? '';
+    for (let x = 0; x < row.length; x++) {
+      if (!isDoor(x, y) || seen.has(`${x},${y}`)) continue;
+      const members = [];
+      const stack = [{ x, y }];
+      seen.add(`${x},${y}`);
+      while (stack.length) {
+        const cur = stack.pop();
+        members.push(cur);
+        for (const [nx, ny] of [[cur.x + 1, cur.y], [cur.x - 1, cur.y], [cur.x, cur.y + 1], [cur.x, cur.y - 1]]) {
+          const k = `${nx},${ny}`;
+          if (!seen.has(k) && isDoor(nx, ny)) {
+            seen.add(k);
+            stack.push({ x: nx, y: ny });
+          }
+        }
+      }
+      members.sort((a, b) => a.y - b.y || a.x - b.x);
+      const axis = doorAxisAt(members[0].x, members[0].y);
+      const linear =
+        axis === 'S'
+          ? members.every((m) => m.y === members[0].y)
+          : members.every((m) => m.x === members[0].x);
+      const ordered = [...members].sort((a, b) =>
+        axis === 'S' ? a.x - b.x || a.y - b.y : a.y - b.y || a.x - b.x,
+      );
+      const count = ordered.length;
+      const leafIdx = count === 1 ? 0 : Math.floor((count - 1) / 2);
+      const hasPortalRun = ordered.some((m) => hasPortal(m.x, m.y));
+      const shutRun = ordered.some((m) => hasPortal(m.x, m.y) && isShut(m.x, m.y));
+      ordered.forEach((m, pos) => {
+        const primary = pos === 0;
+        const block = !linear;
+        out.set(`${m.x},${m.y}`, {
+          axis, pos, count, block,
+          leaf: block ? primary && hasPortalRun : pos === leafIdx && hasPortalRun,
+          hasPortal: hasPortalRun,
+          shut: shutRun,
+          hidden: block && !primary,
+        });
+      });
+    }
+  }
+  return out;
+}
+
+export function doorSpriteFor(slot) {
+  if (slot.hidden) return null;
+  const a = slot.axis;
+  if (slot.block) {
+    if (slot.leaf) return `${slot.shut ? 'doorClosed' : 'doorOpen'}:${a}`;
+    return `doorway:${a}`;
+  }
+  if (slot.leaf) return `${slot.shut ? 'doorClosed' : 'doorOpen'}:${a}`;
+  if (slot.count === 1) return `doorway:${a}`;
+  if (slot.pos === 0) return `doorwayLeft:${a}`;
+  if (slot.pos === slot.count - 1) return `doorwayRight:${a}`;
+  return `doorwayCenter:${a}`;
+}
+
 function main() {
   const [roomPath, outPath] = process.argv.slice(2);
   if (!roomPath || !outPath) {
@@ -103,13 +195,25 @@ function main() {
     const ay = isWall(x, y - 1) || isWall(x, y + 1);
     if (ax && !ay) return 'S';
     if (ay && !ax) return 'E';
-    return ax ? 'S' : 'E';
+    return 'S'; // MUST match doorAxis fallback in GameScene.ts
   };
   const isOpen = (x, y) =>
     y >= 0 && y < H && x >= 0 && x < (tiles[y]?.length ?? 0) && tiles[y][x] !== '#' && tiles[y][x] !== 'G';
   // walls read door tiles as run-continuers so jambs finish cleanly
   const isRunWall = (x, y) => isWall(x, y) || isDoorCh(x, y);
   const wallAt = (x, y) => wallVariantFor(x, y, isRunWall, isOpen);
+  const isStair = (x, y) =>
+    y >= 0 && y < H && x >= 0 && x < (tiles[y]?.length ?? 0) && tiles[y][x] === '>';
+  const portalSet = new Set((room.portals ?? []).map((p) => `${p.from.x},${p.from.y}`));
+  const shutSet = new Set(
+    (room.portals ?? []).filter((p) => p.lockedBy).map((p) => `${p.from.x},${p.from.y}`),
+  );
+  const doorSlots = groupDoorTiles(
+    room,
+    (x, y) => portalSet.has(`${x},${y}`),
+    (x, y) => shutSet.has(`${x},${y}`),
+    (x, y) => doorAxis(x, y),
+  );
 
   // placement list in painter's order
   const jobs = [];
@@ -131,10 +235,15 @@ function main() {
           const { base, dir } = parseSprite(v);
           jobs.push({ img: imgFor(base, dir), sx, sy });
         } else if (ch === 'E' || ch === 'P') {
-          const d = inXRun(x, y) ? 'S' : 'E';
-          jobs.push({ img: imgFor('doorway', d), sx, sy });
+          const slot = doorSlots.get(`${x},${y}`);
+          const v = slot ? doorSpriteFor(slot) : `doorway:${doorAxis(x, y)}`;
+          if (v) {
+            const { base, dir } = parseSprite(v);
+            jobs.push({ img: imgFor(base, dir), sx, sy });
+          }
         } else if (ch === '>') {
-          jobs.push({ img: imgFor('stairs', 'S'), sx, sy });
+          const { base, dir } = parseSprite(stairVariantFor(x, y, isStair));
+          jobs.push({ img: imgFor(base, dir), sx, sy });
         }
       }
     }

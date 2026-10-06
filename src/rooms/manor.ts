@@ -42,8 +42,10 @@ export const entranceHall: RoomDef = {
     { id: 'entrance_col_e', sprite: 'column:S', x: 12, y: 2, walkable: false },
     { id: 'entrance_arrow_w', sprite: 'arrow:S', x: 8, y: 11, walkable: true },
     { id: 'entrance_arrow_e', sprite: 'arrow:S', x: 11, y: 11, walkable: true },
-    { id: 'entrance_sealed_w', sprite: 'doorClosed:S', x: 8, y: 15, walkable: false },
-    { id: 'entrance_sealed_e', sprite: 'doorClosed:S', x: 11, y: 15, walkable: false },
+    // sealed doors stand on the floor in front of the south wall (props on
+    // wall tiles render behind the wall face and vanish)
+    { id: 'entrance_sealed_w', sprite: 'doorClosed:S', x: 8, y: 14, walkable: false },
+    { id: 'entrance_sealed_e', sprite: 'doorClosed:S', x: 11, y: 14, walkable: false },
   ],
   flavor: 'Dusty foyer. The clock ticks louder than it should.',
 };

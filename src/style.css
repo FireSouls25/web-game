@@ -48,24 +48,71 @@ body {
 }
 .dialogue button:hover { border-color: #c9a227; }
 
-/* ---- main menu / credits ---- */
+/* ---- main menu / credits / settings ---- */
 .menu {
   position: fixed;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 18px;
   background:
     radial-gradient(ellipse at 50% 30%, #241c33 0%, #0d0a14 70%);
   padding: 20px;
+  overflow-y: auto;
+  transition: opacity 0.42s ease;
+}
+.menu.exit { opacity: 0; }
+
+/* Living manor vignette: real game sprites, slow drift, melting edges. */
+.menu-scene {
+  position: relative;
+  width: min(720px, 94vw);
+  height: 250px;
+  overflow: hidden;
+  border: 1px solid #4a3b5c;
+  background: #14101c;
+  box-shadow: 0 0 60px rgba(201, 162, 39, 0.1);
+  animation: sceneIn 0.6s ease both;
+}
+.menu-scene-pan {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: 952px;
+  height: 644px;
+  animation: scenePan 26s ease-in-out infinite alternate;
+}
+.menu-scene-pan img { position: absolute; }
+@keyframes scenePan {
+  from { transform: translate(-48%, -59%); }
+  to { transform: translate(-52%, -63%); }
+}
+@keyframes sceneIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.menu-scene-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(13, 10, 20, 0.55), transparent 22%, transparent 62%, rgba(13, 10, 20, 0.9)),
+    radial-gradient(ellipse at center, transparent 45%, rgba(13, 10, 20, 0.75) 100%);
 }
 .menu-card {
   text-align: center;
   border: 1px solid #4a3b5c;
   background: rgba(20, 16, 28, 0.85);
-  padding: 48px 64px;
+  padding: 36px 64px;
   max-width: 560px;
   box-shadow: 0 0 80px rgba(201, 162, 39, 0.08);
+  animation: cardUp 0.5s ease both;
+}
+@keyframes cardUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
 }
 .menu-over {
   font-size: 13px;
@@ -76,8 +123,8 @@ body {
 }
 .menu-title {
   margin: 0;
-  font-size: 56px;
-  letter-spacing: 10px;
+  font-size: 40px;
+  letter-spacing: 6px;
   color: #ffe9a3;
   text-shadow: 0 0 24px rgba(201, 162, 39, 0.35);
 }
@@ -106,7 +153,62 @@ body {
 }
 .menu-buttons button:hover { border-color: #c9a227; background: #332a40; }
 .menu-buttons button.ghost { opacity: 0.65; font-size: 13px; padding: 8px; }
-.menu-foot { margin-top: 28px; font-size: 12px; color: #8a7a5c; }
+.menu-foot { margin-top: 20px; font-size: 12px; color: #8a7a5c; }
+.menu-controls {
+  margin-top: 16px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #b8a888;
+}
+
+/* ---- settings page ---- */
+.settings-body {
+  margin: 24px auto 0;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+.settings-langs { display: flex; gap: 8px; }
+.settings-langs button {
+  background: #2a2233;
+  color: #ffe9a3;
+  border: 1px solid #4a3b5c;
+  padding: 10px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.settings-langs button:hover { border-color: #c9a227; }
+.settings-langs button.on {
+  border-color: #c9a227;
+  background: #3d3247;
+  box-shadow: 0 0 12px rgba(201, 162, 39, 0.35);
+}
+.settings-note { font-size: 12px; font-style: italic; color: #8a7a5c; }
+
+/* ---- game stage entrance ---- */
+.stage-wrap.enter { animation: stageIn 0.5s ease both; }
+@keyframes stageIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-scene-pan,
+  .menu-card,
+  .menu-scene,
+  .stage-wrap.enter { animation: none; }
+  .menu { transition: none; }
+}
 .credits-body { margin-top: 16px; font-size: 15px; line-height: 1.6; }
 .credits-body a { color: #ffe9a3; }
 .credits-body .dim { color: #8a7a5c; font-size: 13px; }

@@ -1,31 +1,47 @@
+import { MenuScene } from './MenuScene';
+import { tr, useLang } from '../text/i18n';
+
 interface Props {
   hasSave: boolean;
+  leaving: boolean;
   onNewGame: () => void;
   onContinue: () => void;
   onCredits: () => void;
+  onSettings: () => void;
   onFullscreen: () => void;
 }
 
-export function MainMenu({ hasSave, onNewGame, onContinue, onCredits, onFullscreen }: Props) {
+export function MainMenu({
+  hasSave,
+  leaving,
+  onNewGame,
+  onContinue,
+  onCredits,
+  onSettings,
+  onFullscreen,
+}: Props) {
+  useLang();
   return (
-    <div className="menu">
+    <div className={`menu${leaving ? ' exit' : ''}`}>
+      <MenuScene />
       <div className="menu-card">
-        <div className="menu-over">Anno 1897 · somewhere in England</div>
-        <h1 className="menu-title">MANOR LOOP</h1>
-        <div className="menu-sub">A Victorian time-loop — prototype</div>
+        <div className="menu-over">{tr('menu.over')}</div>
+        {/* The title is never translated (see settings note). */}
+        <h1 className="menu-title">MANSION MYSTERY</h1>
+        <div className="menu-sub">{tr('menu.sub')}</div>
         <nav className="menu-buttons">
           <button onClick={onNewGame} autoFocus>
-            New game
+            {tr('menu.new')}
           </button>
-          {hasSave && <button onClick={onContinue}>Continue</button>}
-          <button onClick={onCredits}>Credits</button>
+          {hasSave && <button onClick={onContinue}>{tr('menu.continue')}</button>}
+          <button onClick={onSettings}>{tr('menu.settings')}</button>
+          <button onClick={onCredits}>{tr('menu.credits')}</button>
           <button onClick={onFullscreen} className="ghost">
-            Fullscreen
+            {tr('menu.fullscreen')}
           </button>
         </nav>
-        <div className="menu-foot">
-          Move: WASD / arrows · Esc returns here · progress autosaves in this browser
-        </div>
+        <div className="menu-controls">{tr('menu.controls')}</div>
+        <div className="menu-foot">{tr('menu.foot')}</div>
       </div>
     </div>
   );

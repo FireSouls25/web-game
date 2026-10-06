@@ -18,6 +18,7 @@ import { RoomRegistry, type LockKey } from '../rooms/types';
 import type { RoomDef, RoomProp } from '../rooms/types';
 import { createProdRegistry } from '../rooms/manor';
 import { textEngine } from '../text/TextEngine';
+import { tr } from '../text/i18n';
 import { writeSave } from '../save/SaveManager';
 import type { GameInit } from './boot';
 import { SPRITE_BASES, parsePropSprite } from '../rooms/spriteCatalog';
@@ -42,10 +43,10 @@ const SPRITE_SCALE = TILE_W / 256;
 const ISO = 'Isometric';
 const BASE = import.meta.env.BASE_URL;
 
-const LOCK_MESSAGES: Record<LockKey, string> = {
-  servant: "Locked. The servants' room — Clara's key would open it.",
-  master: 'Locked. It needs the master key.',
-  kitchen: "Locked. Thomas keeps the kitchen key.",
+const LOCK_KEYS: Record<LockKey, string> = {
+  servant: 'lock.servant',
+  master: 'lock.master',
+  kitchen: 'lock.kitchen',
 };
 
 /**
@@ -57,6 +58,151 @@ const LOCK_MESSAGES: Record<LockKey, string> = {
  */
 const ALL_DIRS = [0, 1, 2, 3, 4, 5, 6, 7]; // texture preload only
 const FACING_FOR_STEP = (dx: number, dy: number): number | null => isoFacingForStep(dx, dy);
+
+/**
+ * Stair autotile (mirrored by scripts/iso-preview.mjs stairVariantFor).
+ * One '>' tile is a full 4-step flight. Wide flights (stairs side by side
+ * along x) render open interiors so they read as ONE continuous flight
+ * instead of repeated bottoms: ends keep side walls (stairs:S), interiors
+ * drop them (stairsOpen:S). Tiles stacked in the ascend direction are
+ * continuations, not new flights: upper tiles render low treads (steps)
+ * rising into the bottom flight. Single-column runs face E, else S.
+ * Sprite ids use the "base" / "base:DIR" prop convention.
+ */
+function stairVariantFor(
+  x: number,
+  y: number,
+  isStair: (x: number, y: number) => boolean,
+): string {
+  const e = isStair(x + 1, y);
+  const w = isStair(x - 1, y);
+  const s = isStair(x, y + 1);
+  const wide = e || w;
+  if (wide) {
+    if (s) return 'steps:S'; // upper row of a deep flight: treads continue up
+    if (e && w) return 'stairsOpen:S'; // wide interior: no doubled side walls
+    return 'stairs:S'; // flight ends + narrow flights: full cheeks
+  }
+  if (isStair(x, y - 1) || s) {
+    if (s) return 'steps:E'; // upper continuation of a y-column flight
+    return 'stairs:E'; // bottom of a y-column flight
+  }
+  return 'stairs:S'; // isolated stair: unchanged default
+}
+
+/** One tile of a grouped multi-tile doorway opening. */
+interface DoorSlot {
+  /** frame axis for the whole opening ('S' spans x, 'E' spans y) */
+  axis: 'S' | 'E';
+  /** position along the run (0 = one end) */
+  pos: number;
+  /** run length */
+  count: number;
+  /** this tile carries the door leaf (arch); frame piece otherwise */
+  leaf: boolean;
+  /** a portal sits on this run (leaf shows open/closed, not bare frame) */
+  hasPortal: boolean;
+  /** the run is currently shut (leaf shows closed) */
+  shut: boolean;
+  /**
+   * Non-linear groups (2x2 blocks, L-shapes) can't take linear frame
+   * pieces (their lintels overhang into neighbours). Only the primary
+   * tile renders; the rest stay plain pass-through floor.
+   */
+  hidden: boolean;
+  /** true when the group is a 2D block (primary renders solo arch) */
+  block: boolean;
+}
+
+/**
+ * Group contiguous E/P opening tiles (4-connectivity) into single doorways.
+ * A 2x2 'EE' portal block is ONE opening: without grouping every tile
+ * renders a full arch and the doubled legs read as disconnected. Grouped
+ * runs render one connected frame (ends + optional center posts) with a
+ * single leaf arch on the middle tile; single tiles keep the legacy look.
+ * Mirrored by scripts/iso-preview.mjs groupDoorTiles.
+ */
+function groupDoorTiles(
+  room: RoomDef,
+  hasPortal: (x: number, y: number) => boolean,
+  isShut: (x: number, y: number) => boolean,
+  doorAxisAt: (x: number, y: number) => 'S' | 'E',
+): Map<string, DoorSlot> {
+  const isDoor = (x: number, y: number): boolean => {
+    const ch = room.tiles[y]?.[x];
+    return ch === 'E' || ch === 'P';
+  };
+  const seen = new Set<string>();
+  const out = new Map<string, DoorSlot>();
+  const H = room.tiles.length;
+  for (let y = 0; y < H; y++) {
+    const row = room.tiles[y] ?? '';
+    for (let x = 0; x < row.length; x++) {
+      if (!isDoor(x, y) || seen.has(`${x},${y}`)) continue;
+      // flood-fill one 4-connected opening
+      const members: Array<{ x: number; y: number }> = [];
+      const stack = [{ x, y }];
+      seen.add(`${x},${y}`);
+      while (stack.length) {
+        const cur = stack.pop()!;
+        members.push(cur);
+        for (const [nx, ny] of [[cur.x + 1, cur.y], [cur.x - 1, cur.y], [cur.x, cur.y + 1], [cur.x, cur.y - 1]]) {
+          const k = `${nx},${ny}`;
+          if (!seen.has(k) && isDoor(nx, ny)) {
+            seen.add(k);
+            stack.push({ x: nx, y: ny });
+          }
+        }
+      }
+      // primary = topmost, then leftmost; its axis frames the whole run
+      members.sort((a, b) => a.y - b.y || a.x - b.x);
+      const axis = doorAxisAt(members[0].x, members[0].y);
+      // Linear runs frame end-to-end; 2D blocks (2x2, L) render one arch.
+      const linear =
+        axis === 'S'
+          ? members.every((m) => m.y === members[0].y)
+          : members.every((m) => m.x === members[0].x);
+      const ordered = [...members].sort((a, b) =>
+        axis === 'S' ? a.x - b.x || a.y - b.y : a.y - b.y || a.x - b.x,
+      );
+      const count = ordered.length;
+      const leafIdx = count === 1 ? 0 : Math.floor((count - 1) / 2);
+      const hasPortalRun = ordered.some((m) => hasPortal(m.x, m.y));
+      const shutRun = ordered.some((m) => hasPortal(m.x, m.y) && isShut(m.x, m.y));
+      ordered.forEach((m, pos) => {
+        const primary = pos === 0;
+        const block = !linear;
+        out.set(`${m.x},${m.y}`, {
+          axis,
+          pos,
+          count,
+          leaf: block ? primary && hasPortalRun : pos === leafIdx && hasPortalRun,
+          hasPortal: hasPortalRun,
+          shut: shutRun,
+          hidden: block && !primary,
+          block,
+        });
+      });
+    }
+  }
+  return out;
+}
+
+/** Sprite id for one tile of a grouped doorway (leaf arch or frame piece). */
+function doorSpriteFor(slot: DoorSlot): string | null {
+  if (slot.hidden) return null; // plain floor: the arch marks the opening
+  const a = slot.axis;
+  if (slot.block) {
+    // 2D block: primary renders a solo arch, never frame pieces.
+    if (slot.leaf) return `${slot.shut ? 'doorClosed' : 'doorOpen'}:${a}`;
+    return `doorway:${a}`;
+  }
+  if (slot.leaf) return `${slot.shut ? 'doorClosed' : 'doorOpen'}:${a}`;
+  if (slot.count === 1) return `doorway:${a}`;
+  if (slot.pos === 0) return `doorwayLeft:${a}`;
+  if (slot.pos === slot.count - 1) return `doorwayRight:${a}`;
+  return `doorwayCenter:${a}`;
+}
 
 /**
  * Wall autotile (mirrored by scripts/iso-preview.mjs wallVariantFor).
@@ -403,7 +549,7 @@ export class GameScene extends Phaser.Scene {
       const noonElapsed = 12 * 60 - LOOP_START_WALL_MINUTES + (day - 1) * MINUTES_PER_DAY;
       if (!this.chimedNoons.has(day) && from < noonElapsed && to >= noonElapsed) {
         this.chimedNoons.add(day);
-        textEngine.say('Great clock', `It chimes twelve — day ${day}. The sound comes from everywhere at once.`);
+        textEngine.say(tr('chime.speaker'), tr('chime.text', { day }));
       }
     }
   }
@@ -500,6 +646,8 @@ export class GameScene extends Phaser.Scene {
     this.drawHitboxes();
     this.drawPlayerRing();
     this.frameCamera();
+    // Every room entry fades in from darkness (menu -> game, portals).
+    this.cameras.main.fadeIn(280, 13, 10, 20);
     if (!this.editorMode) this.autosave();
   }
 
@@ -577,6 +725,17 @@ export class GameScene extends Phaser.Scene {
   private renderRoom(room: RoomDef): void {
     const portalAt = new Map<string, (typeof room.portals)[number]>();
     for (const pt of room.portals) portalAt.set(`${pt.from.x},${pt.from.y}`, pt);
+    // Connected multi-tile openings: one frame + one leaf per doorway group.
+    const doorSlots = groupDoorTiles(
+      room,
+      (x, y) => portalAt.has(`${x},${y}`),
+      (x, y) => {
+        const p = portalAt.get(`${x},${y}`);
+        return !!p?.lockedBy && !this.unlockedKeys.has(p.lockedBy);
+      },
+      (x, y) => this.doorAxis(room, x, y),
+    );
+    const isStair = (x: number, y: number): boolean => room.tiles[y]?.[x] === '>';
     const isWall = (x: number, y: number) =>
       this.isWallCh(room, x, y) || this.isDoorCh(room, x, y);
     const isOpen = (x: number, y: number) => this.isOpenCh(room, x, y);
@@ -608,8 +767,9 @@ export class GameScene extends Phaser.Scene {
             }
             break;
           case '>':
-            // stairs ascend grid-north (screen up-right); rotate via props if needed
-            this.put(x, y, this.propTexture('stairs:S'));
+            // stair runs share treads: wide interiors open up, upper rows
+            // continue the flight instead of restarting it (stairVariantFor)
+            this.put(x, y, this.propTexture(stairVariantFor(x, y, isStair)));
             break;
           case 'T':
             this.put(x, y, 'spr_crate');
@@ -631,13 +791,10 @@ export class GameScene extends Phaser.Scene {
             break;
           case 'E':
           case 'P': {
-            const axis = this.doorAxis(room, x, y);
-            if (portal) {
-              const shut = portal.lockedBy && !this.unlockedKeys.has(portal.lockedBy);
-              this.put(x, y, this.propTexture(`${shut ? 'doorClosed' : 'doorOpen'}:${axis}`));
-            } else {
-              this.put(x, y, this.propTexture(`doorway:${axis}`));
-            }
+            // grouped openings render one connected frame + a single leaf
+            const slot = doorSlots.get(`${x},${y}`);
+            const sprite = slot ? doorSpriteFor(slot) : `doorway:${this.doorAxis(room, x, y)}`;
+            if (sprite) this.put(x, y, this.propTexture(sprite));
             break;
           }
           default:
@@ -767,41 +924,43 @@ export class GameScene extends Phaser.Scene {
       (pt) => pt.from.x === next.x && pt.from.y === next.y,
     );
     if ((effAhead ?? ahead)?.lockedBy && !this.unlockedKeys.has((effAhead ?? ahead)!.lockedBy!)) {
-      textEngine.say('', LOCK_MESSAGES[(effAhead ?? ahead)!.lockedBy!]);
+      textEngine.say('', tr(LOCK_KEYS[(effAhead ?? ahead)!.lockedBy!]));
       return false;
     }
     this.moving = true;
     const stepFacing = FACING_FOR_STEP(dx, dy);
     if (stepFacing !== null) this.facing = stepFacing;
     const { tx, ty } = this.playerScreen(next.x, next.y);
-    let frame = 0;
-    const runTimer = this.time.addEvent({
-      delay: 40,
-      repeat: 3,
-      callback: () => {
-        frame = (frame + 1) % 10;
-        this.playerSprite?.setTexture(`human_${this.facing}_run${frame}`);
-      },
+    // One calm footfall per tile step: opposite run phases mid-glide.
+    // (Rapid run-frame cycling at this step rate reads as jitter.)
+    const spr = this.playerSprite;
+    spr.setTexture(`human_${this.facing}_run0`);
+    this.tweens.add({ targets: spr, x: tx, y: ty, duration: 150, ease: 'Linear' });
+    spr.setDepth(depthFor(next.x, next.y, 0.2));
+    this.time.delayedCall(75, () => {
+      if (this.playerSprite === spr) spr.setTexture(`human_${this.facing}_run5`);
     });
-    this.tweens.add({ targets: this.playerSprite, x: tx, y: ty, duration: 130, ease: 'Linear' });
-    this.playerSprite.setDepth(depthFor(next.x, next.y, 0.2));
-    await new Promise((res) => this.time.delayedCall(135, res));
-    runTimer.remove();
-    this.playerSprite.setTexture(`human_${this.facing}_idle`);
-    this.moving = false;
+    await new Promise((res) => this.time.delayedCall(155, res));
+    if (this.playerSprite === spr) spr.setTexture(`human_${this.facing}_idle`);
     this.playerTile = next;
     this.drawPlayerRing();
 
     timeManager.advance(COST.MOVE, 'move');
 
     // Portal check AFTER paying the move cost (uses edited portals).
+    // Room changes fade through darkness (fadeOut -> load -> fadeIn).
     const portal = this.effectiveRoom(this.roomId).portals.find(
       (pt) => pt.from.x === next.x && pt.from.y === next.y,
     );
     if (portal) {
-      this.loadRoom(portal.toRoom, portal.to);
-    } else if (!this.editorMode) {
-      this.autosave();
+      this.cameras.main.fadeOut(160, 13, 10, 20);
+      this.time.delayedCall(170, () => {
+        this.loadRoom(portal.toRoom, portal.to);
+        this.moving = false;
+      });
+    } else {
+      this.moving = false;
+      if (!this.editorMode) this.autosave();
     }
     // notify React HUD / dev tools
     this.game.events.emit('manor:tick');

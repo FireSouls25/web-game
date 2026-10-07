@@ -1,0 +1,4184 @@
+{
+  "package.json": {
+    "mtime": 1791333966.78822,
+    "seen": 1791334007.1690958,
+    "ast_hash": "2f262df5af5078cb185b5100942671dc",
+    "semantic_hash": ""
+  },
+  "scripts/check-prod-leak.mjs": {
+    "mtime": 1790795933.2719305,
+    "seen": 1791334007.1691031,
+    "ast_hash": "bd1b3862278447b18d8453a57febee3d",
+    "semantic_hash": ""
+  },
+  "scripts/check-projection.mjs": {
+    "mtime": 1791321368.6100585,
+    "seen": 1791334007.1691067,
+    "ast_hash": "5b081caef6de7c6c77b8c1e7395692fb",
+    "semantic_hash": ""
+  },
+  "scripts/check-turns.mjs": {
+    "mtime": 1791322132.628811,
+    "seen": 1791334007.1691086,
+    "ast_hash": "9276f69d6141957b09bb341f8581da7a",
+    "semantic_hash": ""
+  },
+  "scripts/iso-preview.mjs": {
+    "mtime": 1791321344.7390869,
+    "seen": 1791334007.1691103,
+    "ast_hash": "f48e7e1290431f0bcaed0a0f085a5e5d",
+    "semantic_hash": ""
+  },
+  "scripts/subdivide.mjs": {
+    "mtime": 1791306121.3023663,
+    "seen": 1791334007.1691117,
+    "ast_hash": "8f54814cf86849dc7d21494febeb3cc3",
+    "semantic_hash": ""
+  },
+  "src/characters/roster.ts": {
+    "mtime": 1790795894.389598,
+    "seen": 1791334007.1691136,
+    "ast_hash": "f15b93e70478d6d11dab1a88580a3418",
+    "semantic_hash": ""
+  },
+  "src/core/GameScene.ts": {
+    "mtime": 1791322148.6112876,
+    "seen": 1791334007.169115,
+    "ast_hash": "99272c4be8e13a1edb91f5642028d5e1",
+    "semantic_hash": ""
+  },
+  "src/core/boot.ts": {
+    "mtime": 1791321432.3919847,
+    "seen": 1791334007.1691172,
+    "ast_hash": "2f678224c8b49013eb93b32b461f4e01",
+    "semantic_hash": ""
+  },
+  "src/core/bridge.ts": {
+    "mtime": 1791322164.0397947,
+    "seen": 1791334007.1691184,
+    "ast_hash": "e9328950dd74a3ba53d18143289e601d",
+    "semantic_hash": ""
+  },
+  "src/dev/DevTools.tsx": {
+    "mtime": 1791321731.518665,
+    "seen": 1791334007.16912,
+    "ast_hash": "d7ea8c9c87edcaae2e0d5456c4be68c7",
+    "semantic_hash": ""
+  },
+  "src/dev/LevelEditor.tsx": {
+    "mtime": 1791322164.0397947,
+    "seen": 1791334007.1691217,
+    "ast_hash": "67d87f2072c9aeb911780d152f844bcb",
+    "semantic_hash": ""
+  },
+  "src/dev/testLevels.ts": {
+    "mtime": 1791317557.2997773,
+    "seen": 1791334007.1691232,
+    "ast_hash": "89ddee1d6f22603f81f25e9a26e71144",
+    "semantic_hash": ""
+  },
+  "src/diary/DiaryStore.ts": {
+    "mtime": 1790795897.8390036,
+    "seen": 1791334007.1691246,
+    "ast_hash": "fbf7361d4797d9e4c4a1aa2512f08688",
+    "semantic_hash": ""
+  },
+  "src/main.tsx": {
+    "mtime": 1790795922.3237617,
+    "seen": 1791334007.1691258,
+    "ast_hash": "3c37312ca56f11f0a7b1210d7d7268f9",
+    "semantic_hash": ""
+  },
+  "src/manor/turns.ts": {
+    "mtime": 1791322113.0734687,
+    "seen": 1791334007.1691272,
+    "ast_hash": "f7e35d0cedbc8ade7e1fb8c7d242de09",
+    "semantic_hash": ""
+  },
+  "src/movement/Grid.ts": {
+    "mtime": 1791316470.779193,
+    "seen": 1791334007.1691287,
+    "ast_hash": "7e6c94c1e68f314ba1a32ea2f55d47a0",
+    "semantic_hash": ""
+  },
+  "src/movement/IsoTiles.ts": {
+    "mtime": 1791321336.5560966,
+    "seen": 1791334007.1691303,
+    "ast_hash": "566d2bebd77e0dd7c390d0e1e70b4745",
+    "semantic_hash": ""
+  },
+  "src/movement/types.ts": {
+    "mtime": 1790795838.4483743,
+    "seen": 1791334007.1691318,
+    "ast_hash": "1ec1960448bd0b4063db71dd896b6eb5",
+    "semantic_hash": ""
+  },
+  "src/rooms/manor.ts": {
+    "mtime": 1791317568.3967671,
+    "seen": 1791334007.1691334,
+    "ast_hash": "6874a120c69b095d9a50af89d4ffeadd",
+    "semantic_hash": ""
+  },
+  "src/rooms/spriteCatalog.ts": {
+    "mtime": 1791309440.8567994,
+    "seen": 1791334007.1691349,
+    "ast_hash": "2352bc125e7be38d1f42bcc968c7ef7d",
+    "semantic_hash": ""
+  },
+  "src/rooms/types.ts": {
+    "mtime": 1791321232.8362248,
+    "seen": 1791334007.1691363,
+    "ast_hash": "05c008dcaa09bebe3b921202d2c331b2",
+    "semantic_hash": ""
+  },
+  "src/save/SaveManager.ts": {
+    "mtime": 1791301443.276027,
+    "seen": 1791334007.1691382,
+    "ast_hash": "b76da7b21d30e2c5706661ddcff1cbd8",
+    "semantic_hash": ""
+  },
+  "src/text/TextEngine.ts": {
+    "mtime": 1791321430.2449872,
+    "seen": 1791334007.1691394,
+    "ast_hash": "865afa320119fd8a17bfca306ccaf59b",
+    "semantic_hash": ""
+  },
+  "src/text/i18n.ts": {
+    "mtime": 1791320009.9484105,
+    "seen": 1791334007.169141,
+    "ast_hash": "a2da4d16670c939bad2ea88fa9238650",
+    "semantic_hash": ""
+  },
+  "src/time/TimeManager.ts": {
+    "mtime": 1791322254.8221133,
+    "seen": 1791334007.1691425,
+    "ast_hash": "9d21928f2dbdff61b51ad8b326d534cf",
+    "semantic_hash": ""
+  },
+  "src/time/types.ts": {
+    "mtime": 1790795828.5049503,
+    "seen": 1791334007.169144,
+    "ast_hash": "1c2a4fe90c44f73aeafaadd6501e3c7b",
+    "semantic_hash": ""
+  },
+  "src/ui/App.tsx": {
+    "mtime": 1791317690.0796638,
+    "seen": 1791334007.1691453,
+    "ast_hash": "140ebf6af388b79ea88366e40b43b870",
+    "semantic_hash": ""
+  },
+  "src/ui/Credits.tsx": {
+    "mtime": 1791317676.8176744,
+    "seen": 1791334007.1691468,
+    "ast_hash": "85c8e400876b03c63ad5a9c3dfc269f6",
+    "semantic_hash": ""
+  },
+  "src/ui/Hud.tsx": {
+    "mtime": 1791301569.9432125,
+    "seen": 1791334007.1691482,
+    "ast_hash": "dfef13876ea430820048db08f45f8ed1",
+    "semantic_hash": ""
+  },
+  "src/ui/MainMenu.tsx": {
+    "mtime": 1791320073.414081,
+    "seen": 1791334007.16915,
+    "ast_hash": "92eb5933bc3f38c37995912c74ddd583",
+    "semantic_hash": ""
+  },
+  "src/ui/MenuScene.tsx": {
+    "mtime": 1791321341.6020906,
+    "seen": 1791334007.1691518,
+    "ast_hash": "a607d5245019ede5e571b10a85c0396a",
+    "semantic_hash": ""
+  },
+  "src/ui/Settings.tsx": {
+    "mtime": 1791317666.9146824,
+    "seen": 1791334007.1691532,
+    "ast_hash": "6448041f04db7c24fd58f51060975b49",
+    "semantic_hash": ""
+  },
+  "src/vite-env.d.ts": {
+    "mtime": 1790795823.2781832,
+    "seen": 1791334007.169155,
+    "ast_hash": "2f7cf9646ac74f8f73bda0d88fdcbf9d",
+    "semantic_hash": ""
+  },
+  "tsconfig.json": {
+    "mtime": 1790795808.3279154,
+    "seen": 1791334007.169156,
+    "ast_hash": "2b36fb46c41fafa6cab7dbc50cfabe71",
+    "semantic_hash": ""
+  },
+  "vercel.json": {
+    "mtime": 1791333977.1201458,
+    "seen": 1791334007.169158,
+    "ast_hash": "3d4b40f6c6cd31d8d49304d02bc262aa",
+    "semantic_hash": ""
+  },
+  "vite.config.ts": {
+    "mtime": 1791333921.9365413,
+    "seen": 1791334007.1691592,
+    "ast_hash": "cdaf45d9cb50779e2d2d2fb04dcc7ec9",
+    "semantic_hash": ""
+  },
+  "docs/README.md": {
+    "mtime": 1791319529.7481756,
+    "seen": 1791334007.1691604,
+    "ast_hash": "6e4fcbf2273c231d2c9604ef8183ca8a",
+    "semantic_hash": ""
+  },
+  "docs/game-state.md": {
+    "mtime": 1791322218.981129,
+    "seen": 1791334007.1691618,
+    "ast_hash": "4b7a1c83e24b808814fa7dc4d13f6f08",
+    "semantic_hash": ""
+  },
+  "docs/manor-layout.md": {
+    "mtime": 1791312811.833736,
+    "seen": 1791334007.1691632,
+    "ast_hash": "4572a675a071c05b4392104ad9425106",
+    "semantic_hash": ""
+  },
+  "docs/tech-stack.md": {
+    "mtime": 1791322218.981129,
+    "seen": 1791334007.1691647,
+    "ast_hash": "486861f870451a5a4d2fc839744f19e0",
+    "semantic_hash": ""
+  },
+  "docs/tiles-and-sprites.md": {
+    "mtime": 1791322218.981129,
+    "seen": 1791334007.169166,
+    "ast_hash": "258449d981d015c4cbd66c6442a86e6c",
+    "semantic_hash": ""
+  },
+  "docs/ui.md": {
+    "mtime": 1791320025.7483253,
+    "seen": 1791334007.1691673,
+    "ast_hash": "b8d4b90ea939114a7cede135036f6714",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1791317714.5246959,
+    "seen": 1791334007.16917,
+    "ast_hash": "6704a4958f78de8c150432ca65d84607",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/License.txt": {
+    "mtime": 1550188900.0,
+    "seen": 1791334007.169171,
+    "ast_hash": "d08640ebba486d65fa21ca9df59fbf4d",
+    "semantic_hash": ""
+  },
+  "src/README.md": {
+    "mtime": 1791322203.4765854,
+    "seen": 1791334007.1691725,
+    "ast_hash": "64441c11d8a9a46c2f3e4e5ab92948a3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/arrowWall_E.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.169174,
+    "ast_hash": "c11de1358085c14520cd548ae04e05ad",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/arrowWall_N.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.1691754,
+    "ast_hash": "2751a626c9b53d4a0fe2b553fa1505b9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/arrowWall_S.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.1691766,
+    "ast_hash": "caf6da3fedb95fa17daf6e7cfc8b816f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/arrowWall_W.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.169178,
+    "ast_hash": "ed615fde83c46a61b2fe7315f829dc61",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/arrow_E.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.1691794,
+    "ast_hash": "0b3cc1b453c79fd0b59bee09f526d262",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/arrow_N.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.1691809,
+    "ast_hash": "bc24785950558f1631bc68b7102ee9be",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/arrow_S.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.1691825,
+    "ast_hash": "ef7858f2173d7ef49a91bcda5860fefc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/arrow_W.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.1691837,
+    "ast_hash": "b22d0f4a47dd9a983fa6c298fff4375c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockAngle_E.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.169185,
+    "ast_hash": "85e210279f853ea556e3ae8601e19cf5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockAngle_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1691866,
+    "ast_hash": "e0f2f00b6af979493d42f0474f7db944",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockAngle_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1691878,
+    "ast_hash": "dd3b14931cc404f462fa88ccbc537556",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockAngle_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1691897,
+    "ast_hash": "d7ef38ff9dd3376814e08f8ff0d5efd4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockHalf_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169191,
+    "ast_hash": "36992695d7b6693d289a67b3ff672ab3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockHalf_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169192,
+    "ast_hash": "b16d26f9cf25ca61e478d8998cd8dc6d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockHalf_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1691935,
+    "ast_hash": "fa7d77a403a666eb8ffc4c1a06ac002d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockHalf_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169195,
+    "ast_hash": "fe7d6894002ccdf188de5e7f135fba5e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockQuarter_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1691966,
+    "ast_hash": "0dbb0aa4d07781d5fa1fcd1e9e31c805",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockQuarter_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1691978,
+    "ast_hash": "49b4fd8d560f0fddb76270e7b5f42cb5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockQuarter_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1691995,
+    "ast_hash": "6ffdf23b9d2b9416b13ad72e469413a0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/blockQuarter_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169201,
+    "ast_hash": "343d9268bfda6c306b26c7a4f2a80b25",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/block_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169202,
+    "ast_hash": "acdf370203efade2130ec5e2408a5059",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/block_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692035,
+    "ast_hash": "20fb5cb7c9d2558b115d68d90ac4e1ed",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/block_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692047,
+    "ast_hash": "a8211f23d2754c6878754fa88ff1064a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/block_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692066,
+    "ast_hash": "94c4f44a2fb9467299f90104cd529664",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/columnBlocks_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692078,
+    "ast_hash": "d8fda9126145dcae017731f222de1791",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/columnBlocks_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169209,
+    "ast_hash": "53cbbccf25ad27b47be6229310278c15",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/columnBlocks_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692107,
+    "ast_hash": "71e0735fa4dd73f2a7e8e912a8658985",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/columnBlocks_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169212,
+    "ast_hash": "e9871d4263639911a69d4b8f892074a6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/columnCorner_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692138,
+    "ast_hash": "d0c3fd3f8dd2c9e2978f2573bdce1047",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/columnCorner_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692152,
+    "ast_hash": "b68a594f460cfa27c795a5256824e056",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/columnCorner_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692164,
+    "ast_hash": "1377fe056d40d3fb483405f09de06c9d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/columnCorner_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692178,
+    "ast_hash": "4493683489d6e424e17a0dbdcaafb6a4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/column_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692195,
+    "ast_hash": "4c709f7bc187f96a2775bd6069cf86de",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/column_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692212,
+    "ast_hash": "63e2d29466a6dfc571efc6377080596f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/column_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692224,
+    "ast_hash": "de087bb99560f928ded561d06aac2d06",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/column_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692243,
+    "ast_hash": "228febf91ff961cc8498737e12f87799",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/crate_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692314,
+    "ast_hash": "5d7b05bdf6d8aa147d7dfeaec1504170",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/crate_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692328,
+    "ast_hash": "a9910b862c6f5ddec1c67475ff933c2a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/crate_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692379,
+    "ast_hash": "3e88a7f75c59c230d1dc6dda36d9635b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/crate_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692393,
+    "ast_hash": "7adc67da89a3c5353ec2da8565424602",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorClosed_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169242,
+    "ast_hash": "40952425b31e31d3b33fee113824225f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorClosed_N.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692433,
+    "ast_hash": "a838de4149fc0f63e4302a6ec28a6f99",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorClosed_S.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.169245,
+    "ast_hash": "bfeb703f20bd8e14f18adaa7f15a115d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorClosed_W.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692462,
+    "ast_hash": "3ab8aaa6708d5045088a894ccd64a5ca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorOpen_E.png": {
+    "mtime": 1550189007.0,
+    "seen": 1791334007.1692476,
+    "ast_hash": "e2643f0d70ec607166f645b4b421f08d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorOpen_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692493,
+    "ast_hash": "a334855132409aab8c75cd586acde0bb",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorOpen_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692505,
+    "ast_hash": "c43d7ee45cb01d51796220ae9292f791",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorOpen_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692522,
+    "ast_hash": "745f4cc7e93c0ce923cc393792673aa4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayBottom_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692533,
+    "ast_hash": "1a53049b6c1abaf0fa3608bfe8ddd3de",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayBottom_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692545,
+    "ast_hash": "13c16146c135035ca4c6e5eafd72a84b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayBottom_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.169256,
+    "ast_hash": "283d2b4d620773f5b28fd5a61e3bf1fb",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayBottom_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692572,
+    "ast_hash": "ad7b7f17f68093d8923580b66ce15271",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayCenter_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692586,
+    "ast_hash": "1a53049b6c1abaf0fa3608bfe8ddd3de",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayCenter_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.16926,
+    "ast_hash": "6919e60eef3e130709576c27ed8368ef",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayCenter_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.169261,
+    "ast_hash": "3a83186844263d4889ecaa94e8fe5218",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayCenter_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692626,
+    "ast_hash": "ad7b7f17f68093d8923580b66ce15271",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayLeftBottom_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692638,
+    "ast_hash": "d0c3fd3f8dd2c9e2978f2573bdce1047",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayLeftBottom_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692657,
+    "ast_hash": "2f9d7afea09d95290ec0a2e1ee51cabb",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayLeftBottom_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692674,
+    "ast_hash": "e2858b49405b2bf0548bd3eae3589353",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayLeftBottom_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692688,
+    "ast_hash": "3182d213d7cb60ad0be7d04ef359f885",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayLeft_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692703,
+    "ast_hash": "40952425b31e31d3b33fee113824225f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayLeft_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692717,
+    "ast_hash": "b23fafb372fbd25d56683d95af6bd5e3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayLeft_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692731,
+    "ast_hash": "97129c7c5799e6a627b0f30559928f8a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayLeft_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692743,
+    "ast_hash": "f18d5f0b03429d6a8d4f9a6366743215",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayMiddleBottom_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.169276,
+    "ast_hash": "23ae949f53a2b180461f1292e66ce9d8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayMiddleBottom_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692772,
+    "ast_hash": "cced49a76e1b56eb2b3b08802ab48255",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayMiddleBottom_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692784,
+    "ast_hash": "46b59478f11868d8f62aa7ebc745f5b2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayMiddleBottom_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.16928,
+    "ast_hash": "59c4ad7c040178461c9209f922a4ab82",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayMiddle_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692812,
+    "ast_hash": "9c891d18c229e5107fd14928c603972b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayMiddle_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692827,
+    "ast_hash": "e0df6e72746af8033f36af81d097d754",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayMiddle_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.169284,
+    "ast_hash": "9e98fdd2d7078fb06cd5339783e64085",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayMiddle_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692853,
+    "ast_hash": "f18d5f0b03429d6a8d4f9a6366743215",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayRightBottom_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692867,
+    "ast_hash": "3116cd95fd6e59f95288398c709b831d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayRightBottom_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692882,
+    "ast_hash": "a5fa7eae17b7f92227bd98979c81d84e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayRightBottom_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692898,
+    "ast_hash": "8837c4802c1b718f4c5501c2ea7b2b2f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayRightBottom_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.169291,
+    "ast_hash": "00810d917bcf9d90b39a3d4cedc5a20b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayRight_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692924,
+    "ast_hash": "9c891d18c229e5107fd14928c603972b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayRight_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692939,
+    "ast_hash": "5ca5f4584e6adba783d2270119e10f57",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayRight_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.169295,
+    "ast_hash": "cb4d76446e89e05de8ff940df5f9fcd7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorwayRight_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1692967,
+    "ast_hash": "3ab8aaa6708d5045088a894ccd64a5ca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorway_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.169302,
+    "ast_hash": "40952425b31e31d3b33fee113824225f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorway_N.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1693032,
+    "ast_hash": "f0814fa5cd2cec7301ac4a93b1fc3c66",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorway_S.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1693048,
+    "ast_hash": "99d2ba11cfb9b12a4ff2ee252cc26610",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/doorway_W.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.169306,
+    "ast_hash": "3ab8aaa6708d5045088a894ccd64a5ca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/fence_E.png": {
+    "mtime": 1550189008.0,
+    "seen": 1791334007.1693075,
+    "ast_hash": "97f9f4d31fe0bce49fe20d775e8f4d10",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/fence_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693087,
+    "ast_hash": "24c779b766ecea8d55a58cfabde29380",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/fence_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693099,
+    "ast_hash": "9afab074da7fbeaddf0ba67b6f0f3980",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/fence_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693113,
+    "ast_hash": "e58c133f7f10feb4723b44b755ff1b4e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floorHalf_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693125,
+    "ast_hash": "cb13d753d96667063c037cad592d166d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floorHalf_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693141,
+    "ast_hash": "c8245571a274b786494f54be25f20753",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floorHalf_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693153,
+    "ast_hash": "37a6385f9a152475abc5d38c208f612b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floorHalf_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693199,
+    "ast_hash": "8b143502ef5af6d2710c7a5bb021136b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floorQuarter_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693213,
+    "ast_hash": "ab094edc3d428ae968dd49d96426fabd",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floorQuarter_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693258,
+    "ast_hash": "ce0ac1c980cc7c258548677211cb1216",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floorQuarter_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.169327,
+    "ast_hash": "945df94d9ac73a64d20f02355f9705d5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floorQuarter_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693285,
+    "ast_hash": "b966989f80523df97e0f028e462fb5f2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floor_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693296,
+    "ast_hash": "95f9fbd766f12510639b46a6493c3461",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floor_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693308,
+    "ast_hash": "23d249ff0b65f3a75cc9cf1f4ab3c69b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floor_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693323,
+    "ast_hash": "89102856475a04ff6f8466a965badfdc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/floor_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693335,
+    "ast_hash": "313a61099bb34ec28c2b8f5f9200a5ea",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/ladder_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693351,
+    "ast_hash": "fd4a74521b7c540c992f6bf8598770eb",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/ladder_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693363,
+    "ast_hash": "e43ce5e9526b8022a772943292ea697c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/ladder_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693375,
+    "ast_hash": "dce28d175048133a6c68c50913603137",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/ladder_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693397,
+    "ast_hash": "70b51d8e507c427f3d29e7a982bc4235",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/poleGroup_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.169341,
+    "ast_hash": "473dec4b8770b14fe777916726808d46",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/poleGroup_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693425,
+    "ast_hash": "d6a6c0b7ce83584e5237ad2fd0a328bc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/poleGroup_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.169344,
+    "ast_hash": "f1208b888bda0d6f8723035bc9977a47",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/poleGroup_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693454,
+    "ast_hash": "c47538bc8c29e563f3768fb1b91ec930",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/pole_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693466,
+    "ast_hash": "06c9001fe64136306aed499fef4d33d8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/pole_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693478,
+    "ast_hash": "3cc532fe527d0e97c1f3870a689cf9fc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/pole_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693494,
+    "ast_hash": "c439d8055f08c39081437b11c29b3e63",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/pole_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693506,
+    "ast_hash": "943d097e0229d2fbf9ad281d1d287544",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabAngle_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693523,
+    "ast_hash": "ff88575ab2e437921f09b3b9b402fd1a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabAngle_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693535,
+    "ast_hash": "59169e3dfba3d81da68c62246f8bc8c9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabAngle_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.169355,
+    "ast_hash": "bbf7f86a5de05317278f86fd1af1d13f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabAngle_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693563,
+    "ast_hash": "f4dc22469ad544def5f509b6e52badb6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabHalf_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693578,
+    "ast_hash": "60fc5f5096360794c3d63bc73a711e84",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabHalf_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693592,
+    "ast_hash": "914283d41d5734f4810d864bd174df23",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabHalf_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693604,
+    "ast_hash": "e461c9c16ee4cabe495b6b55491372ab",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabHalf_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693616,
+    "ast_hash": "15188d90e0a6b75b910ba0aa3be5ff75",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabQuarter_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.169363,
+    "ast_hash": "27e751ea3dad92c79b6010946062c0f4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabQuarter_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693645,
+    "ast_hash": "efb754bc24c12c125597e58b1080852a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabQuarter_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693656,
+    "ast_hash": "df6a5f9292e25cef6b17ef57e8ebba31",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slabQuarter_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.169367,
+    "ast_hash": "154a38f55ac144ea499c35690f3eac0c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slab_E.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693683,
+    "ast_hash": "46aaa798c7c164d40cb2eae2a12b51ef",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slab_N.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693714,
+    "ast_hash": "8eb1688bb61d223a9dba894d21ee5765",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slab_S.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.169373,
+    "ast_hash": "10c71479c17deb0709142fd874eeec62",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slab_W.png": {
+    "mtime": 1550189009.0,
+    "seen": 1791334007.1693742,
+    "ast_hash": "606b9f0f98f3f7b884fb579633201060",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeHalf_E.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693754,
+    "ast_hash": "2399f91fdffb573703aad9153c3cc627",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeHalf_N.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693773,
+    "ast_hash": "ab30db21f1f5dce9e3fc33f0e3c87097",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeHalf_S.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693788,
+    "ast_hash": "40181c9bb057a75be92c502741c0231d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeHalf_W.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693802,
+    "ast_hash": "0f180f44b4c61399bfd7892c560e9553",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeQuarter_E.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693811,
+    "ast_hash": "ac3bb5d1f08c1017d553eea16b5f372d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeQuarter_N.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693828,
+    "ast_hash": "40d82d4eed414c5a68cdde624e6c5400",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeQuarter_S.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693847,
+    "ast_hash": "409438dc60c2b0ca6fbcc78a984adeda",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeQuarter_W.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.169386,
+    "ast_hash": "94cf7df559b4dc2484186d15943a9037",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeSmall_E.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693876,
+    "ast_hash": "cd14b36c5528ce6a85d368e9e96d6aa5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeSmall_N.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693888,
+    "ast_hash": "ac155af8bc6e98cb73c9723956e642a3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeSmall_S.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.16939,
+    "ast_hash": "d3976e13da46d3a8dd8ccdaa0038fd3b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slopeSmall_W.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693914,
+    "ast_hash": "a8614a8c1dcd1d6639581a568a6a7640",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slope_E.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.169393,
+    "ast_hash": "cf69bfc7d6515480b8a7678708e398c1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slope_N.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693945,
+    "ast_hash": "9cadaaaa71470596fc779ad554c3a59d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slope_S.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693957,
+    "ast_hash": "1314067cc356d981f2f74bf0da27b100",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/slope_W.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693974,
+    "ast_hash": "74853db2a23e5fc6deaddf1de4390399",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/sloperCornerInner_E.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693985,
+    "ast_hash": "bea82742c1b321deb154e5e2537d758c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/sloperCornerInner_N.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1693997,
+    "ast_hash": "6861c637b37bcb5930567410fa011ea3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/sloperCornerInner_S.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694012,
+    "ast_hash": "09a696a93c76efd5764260907766d179",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/sloperCornerInner_W.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694024,
+    "ast_hash": "464e4aa6bd2fef9a32bd1ef318d90cf1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/sloperCornerOuter_E.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694036,
+    "ast_hash": "039e459e5e48d82b4f9ca09a23914b91",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/sloperCornerOuter_N.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694052,
+    "ast_hash": "1c5773a4cdcfa7f0bb758a00ff401855",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/sloperCornerOuter_S.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694064,
+    "ast_hash": "8fb1ed13b2525e7206e228ed9f6665ef",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/sloperCornerOuter_W.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.169408,
+    "ast_hash": "992c3c3de2c4ee1680484f7248982235",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsCornerInner_E.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694093,
+    "ast_hash": "cfb0def1f0500d275a04c80930ca86ca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsCornerInner_N.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694105,
+    "ast_hash": "a2c2d38ac2e8e7d13f4f710faf948987",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsCornerInner_S.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694121,
+    "ast_hash": "37e4019c146afc3e4342dc564c01425a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsCornerInner_W.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694133,
+    "ast_hash": "45d0d023c5ccf0fe4a9ba34a912678b6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsCornerOuter_E.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694148,
+    "ast_hash": "cf49e82236e018446ac27c7ff0220f40",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsCornerOuter_N.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.169416,
+    "ast_hash": "0dd4891da8e748ab9f245ebd0e7fb24f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsCornerOuter_S.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694171,
+    "ast_hash": "49e8d3ba9d0273519545b5c8bfb41710",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsCornerOuter_W.png": {
+    "mtime": 1550189010.0,
+    "seen": 1791334007.1694188,
+    "ast_hash": "92c53b54e338fa52b1ec4a3955e5c3f0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpenCornerInner_E.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.16942,
+    "ast_hash": "a83648645ac65427b5d284ce050fd578",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpenCornerInner_N.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694212,
+    "ast_hash": "e47ef9404525b029b8ab3745f0ae6dc6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpenCornerInner_S.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694312,
+    "ast_hash": "f319737341b3fa60dc2d15a54d111a69",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpenCornerInner_W.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694338,
+    "ast_hash": "c23169925446d2406974d61f33627312",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpenCornerOuter_E.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694355,
+    "ast_hash": "0f1517c8dbb2a53b9741c6145baab593",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpenCornerOuter_N.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694367,
+    "ast_hash": "5d7adbbf919e7f8bbcd86baa2fc9cadf",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpenCornerOuter_S.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694381,
+    "ast_hash": "1439b5e0ed2029414e180aa2a3e9aec1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpenCornerOuter_W.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694396,
+    "ast_hash": "a603c47e4827abc9797dd00f4d46ae15",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpen_E.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.169441,
+    "ast_hash": "70353a63f6e3c832af043089ead20fe4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpen_N.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694424,
+    "ast_hash": "fe5d9b9a72986c83ee4a47727d255814",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpen_S.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694436,
+    "ast_hash": "ff398fc2a0a04e4a9807c9b5d137cc94",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairsOpen_W.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.169445,
+    "ast_hash": "4cb4fee0b421a980b3154c04bd6b0dbd",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairs_E.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694465,
+    "ast_hash": "ed762ad7262995fc1295c9e99716bf00",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairs_N.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694481,
+    "ast_hash": "5307c63fa018e114c7adb8252cdf8b70",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairs_S.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694496,
+    "ast_hash": "ff398fc2a0a04e4a9807c9b5d137cc94",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/stairs_W.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.169451,
+    "ast_hash": "a0f3a5fe113acde62b96826adbab3f74",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/steps_E.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694522,
+    "ast_hash": "76450e8a25a8943e65a88c9db1797b80",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/steps_N.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694536,
+    "ast_hash": "d73b3d004b7a46dec3d675e03976c0e3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/steps_S.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694548,
+    "ast_hash": "de77b6ed33d7240b98a44d64ceca64c2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/steps_W.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694562,
+    "ast_hash": "f5bc9e235bcc3901c318a4975ee3fa9b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchFloorOff_E.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694574,
+    "ast_hash": "a560af08ee73e8f7ff3cadc75434d857",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchFloorOff_N.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694586,
+    "ast_hash": "ccc47597f8429af3805d03b12511db62",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchFloorOff_S.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694603,
+    "ast_hash": "738146e9445b90a5326232dfd836d19d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchFloorOff_W.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694615,
+    "ast_hash": "62c4dee178a767711de99d0903761626",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchFloorOn_E.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694627,
+    "ast_hash": "ed2c0582033c08f489a37792258f55e2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchFloorOn_N.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694674,
+    "ast_hash": "1e581d62ea49992ebe74f37acb702cf1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchFloorOn_S.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694684,
+    "ast_hash": "fcdfdf8035e489815daa29768ba8e92f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchFloorOn_W.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694696,
+    "ast_hash": "ed2ea37cc9050e21909a6a8236ed041b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchWallOff_E.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694713,
+    "ast_hash": "a2aeef83b252c9871cf2adfc8c853ced",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchWallOff_N.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.1694725,
+    "ast_hash": "852897d5564a5fb10cf966cda2e4316d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchWallOff_S.png": {
+    "mtime": 1550189011.0,
+    "seen": 1791334007.169474,
+    "ast_hash": "9cd4e6500077de488de116bea69b7dbe",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchWallOff_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694753,
+    "ast_hash": "1ad5d372a2df6632ca8fe2044e7c5a2e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchWallOn_E.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694765,
+    "ast_hash": "0646bdd1804a6eec05e5ec97af78dbba",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchWallOn_N.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169478,
+    "ast_hash": "5f02ab17ec6c4eedc8b1cdf46775c844",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchWallOn_S.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694791,
+    "ast_hash": "d33eaa37256a57d24a1683347053dd96",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/switchWallOn_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694806,
+    "ast_hash": "4a8e8a3e84eef07ede2a20bf2ea95ef1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallBattlement_E.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694818,
+    "ast_hash": "c58144791a9e85e08025416efe9a6f69",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallBattlement_N.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169483,
+    "ast_hash": "f809fd85b777e90bb8e271ee609d0da3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallBattlement_S.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694844,
+    "ast_hash": "61f42b5c3db8254d8e30450daccaf6b7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallBattlement_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694856,
+    "ast_hash": "67c4b9794d1375a69f5641a6c76a2bd6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCornerHalf_E.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694868,
+    "ast_hash": "4ac9aca0391e02b2a661754294f1a0ee",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCornerHalf_N.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694882,
+    "ast_hash": "5680b47cae277e8b9e98b9fdb25ad77f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCornerHalf_S.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694899,
+    "ast_hash": "a971b061d8f7ad60f2b0f85674f30751",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCornerHalf_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694915,
+    "ast_hash": "ab7bc2d464a97e94005f9424477031ce",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCorner_E.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169493,
+    "ast_hash": "7c9c29a7c87a04414a1516116d668ba2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCorner_N.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694944,
+    "ast_hash": "0fc536095295ddd1f31c1496555c4882",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCorner_S.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1694992,
+    "ast_hash": "a4276ec93d357774c7c71db3e70229de",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCorner_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695018,
+    "ast_hash": "2c3b666683783229240ca16c2ac7a4ea",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCurveHalf_E.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169503,
+    "ast_hash": "55e4a879cfd9ad6d324d7b7776dee358",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCurveHalf_N.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169504,
+    "ast_hash": "d08f061ef522c4400250c5122363625b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCurveHalf_S.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695054,
+    "ast_hash": "c0ad1828920a1ead58c1078e74dafca1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCurveHalf_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695063,
+    "ast_hash": "42118f5792974f08c5dd09ca65599350",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCurve_E.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695075,
+    "ast_hash": "1d29de3305438bb31c88422a6dec4261",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCurve_N.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169509,
+    "ast_hash": "acbb0b54f243bf4008597ebd50454467",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCurve_S.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695101,
+    "ast_hash": "30324b95febc075dcca85a906148dac2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallCurve_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169511,
+    "ast_hash": "fb7e343554520bc55bf0b670848d478f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallHalf_E.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695125,
+    "ast_hash": "489495da5ef8f26959d58231f0eee4cd",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallHalf_N.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695137,
+    "ast_hash": "d73b3d004b7a46dec3d675e03976c0e3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallHalf_S.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169515,
+    "ast_hash": "7dc6a385e8cdc5e3b1cafbbfee7cc9c8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wallHalf_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695163,
+    "ast_hash": "1b30a1e1669d720339e76a79f84685b0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wall_E.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.169518,
+    "ast_hash": "40952425b31e31d3b33fee113824225f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wall_N.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695192,
+    "ast_hash": "99d3ad43142e912004816d527efd3a64",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wall_S.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695204,
+    "ast_hash": "d987bf6011e059d68fff39bcd1415557",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/wall_W.png": {
+    "mtime": 1550189012.0,
+    "seen": 1791334007.1695216,
+    "ast_hash": "3ab8aaa6708d5045088a894ccd64a5ca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowLeft_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169523,
+    "ast_hash": "40952425b31e31d3b33fee113824225f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowLeft_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169524,
+    "ast_hash": "31e11b41856ba4e733379566dde276ab",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowLeft_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695251,
+    "ast_hash": "7956ff0bf0ba3d8d54a6b94b8ca9455a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowLeft_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695263,
+    "ast_hash": "4f2a26f9db55c182683c8ea8f5ae9e12",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowMiddle_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695275,
+    "ast_hash": "efafdf7a5183511405dd4d3b58b4c189",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowMiddle_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695285,
+    "ast_hash": "8667c27e645ea65313a9a2234c6ec6a6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowMiddle_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695302,
+    "ast_hash": "ef8a4fcd0d052c189e5adb163b2d48e6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowMiddle_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169531,
+    "ast_hash": "018c30289eba00ace4f92b997644624d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowRight_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695323,
+    "ast_hash": "e94383fdb32fc0dbc016645abaa1fc02",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowRight_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695335,
+    "ast_hash": "1fd8a307931f2203a44a09e11f07d63c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowRight_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695347,
+    "ast_hash": "eb454a53114b839423201abb2b833156",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/windowRight_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695356,
+    "ast_hash": "3ab8aaa6708d5045088a894ccd64a5ca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/window_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169537,
+    "ast_hash": "40952425b31e31d3b33fee113824225f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/window_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169538,
+    "ast_hash": "aa0f7aaaff29fc5f68306f3728993c06",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/window_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695392,
+    "ast_hash": "b1a1be334eeaaf351af3ad39134b5a8e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Angle/window_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1695406,
+    "ast_hash": "3ab8aaa6708d5045088a894ccd64a5ca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Idle0.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695418,
+    "ast_hash": "657762e85f52766c21b34d8d25874cf0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup0.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.169543,
+    "ast_hash": "55883beea4222d05d1f108fa3825a69c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup1.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695442,
+    "ast_hash": "98d4fa0f24761c83431e84211e728522",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup2.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695452,
+    "ast_hash": "f8dc27b4cdf7c9525b14beb79112d07e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup3.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695461,
+    "ast_hash": "795c29c74141251fc988a13db48993fe",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup4.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695476,
+    "ast_hash": "e433534299629700bf115c38487b34a7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup5.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695485,
+    "ast_hash": "400b4f38a02345d11e3f431ee8bb498f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup6.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.16955,
+    "ast_hash": "abed88d7b8b791087b1cf3e72005a619",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup7.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695511,
+    "ast_hash": "0045d7d6b2bd1395bd3f82d6cc06120a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup8.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695523,
+    "ast_hash": "7b6f8622d6adff51e64c7acaaf3b335e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Pickup9.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695538,
+    "ast_hash": "c560af64270fb159c933338dd182a438",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run0.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695547,
+    "ast_hash": "6623f9491f7df9a1e29de160894b1fb5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run1.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.169556,
+    "ast_hash": "b4cd91e3e18da7d25e189b3df88bce9d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run2.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.169557,
+    "ast_hash": "fc50f9566cc4fd833d767826c0308004",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run3.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695583,
+    "ast_hash": "bae45825456ca9fef2b3e54103fe9c49",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run4.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695592,
+    "ast_hash": "1930a0934fe0b46cf45390230e388e79",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run5.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695607,
+    "ast_hash": "01a0001a20583806492a2c17d407fffb",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run6.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695616,
+    "ast_hash": "a1f49aba4d7780eb2d80992ef4a7b633",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run7.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1695628,
+    "ast_hash": "13c8c69f9b0bfb83bbece379f1032b10",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run8.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.169564,
+    "ast_hash": "1aa90b6a7dfd63bf5028a18c15dfb251",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_0_Run9.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695652,
+    "ast_hash": "978a87aea1c09af8f7452b7a2305432c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Idle0.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695664,
+    "ast_hash": "b6e2faac1a0e6fc1ab3209b52a8b4758",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup0.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695676,
+    "ast_hash": "da0d17dbc053ab819314863494416130",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup1.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695688,
+    "ast_hash": "9f16cd9affc6313900be7e7d2386dec4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup2.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695697,
+    "ast_hash": "e8fd06714eae22d1992d7da4544ce7d0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup3.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695712,
+    "ast_hash": "ccd7bfd42071593c19cb5a51339f4b31",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup4.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695724,
+    "ast_hash": "9400999650f5b54c2c10dd6a9a408210",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup5.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695733,
+    "ast_hash": "bfaa84e21adddc01f85ef5e647a5c5ac",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup6.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695747,
+    "ast_hash": "0903fc9598514c206c05126d2d6aae9c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup7.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.169576,
+    "ast_hash": "6dc276d16c214abcf687fc42aeb3c39f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup8.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695771,
+    "ast_hash": "c402b2872b0964bda71831f33321c73a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Pickup9.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695786,
+    "ast_hash": "00efb6b2f206162ee52fab168b5c2216",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run0.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695797,
+    "ast_hash": "e81e59d86f598f2c49bdb29e924e971d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run1.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695812,
+    "ast_hash": "bc58030507bf97db14fe90af37d9275b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run2.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695824,
+    "ast_hash": "8dc02c7741bb25410119e12791637970",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run3.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695833,
+    "ast_hash": "f0aa4c184e2cd2d0a11635cc21221c1b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run4.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695848,
+    "ast_hash": "dff26f86c1720ab6b7a00cdfd78035e7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run5.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695857,
+    "ast_hash": "0b08264c05641f71e9ad72eb06bbf164",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run6.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.169587,
+    "ast_hash": "cf946b2b3da51d83acfa078baab8d947",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run7.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695886,
+    "ast_hash": "1cfa4795aff5044de8d13b41973cfb33",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run8.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695898,
+    "ast_hash": "c21c1f1afcd84dc99c19b0a879fb760f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_1_Run9.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695907,
+    "ast_hash": "e4ccf46fa10038c116b9a2f7034086f9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Idle0.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695921,
+    "ast_hash": "fdd993a25039f445e8b527798d2e6f67",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup0.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.169593,
+    "ast_hash": "decf1c7d15a1b064d5906629a81eb29e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup1.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695943,
+    "ast_hash": "b9de36537b93a421a44a681a6d53c75b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup2.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695955,
+    "ast_hash": "8177a3051dc296a215b2dddf7f4d98ff",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup3.png": {
+    "mtime": 1550189021.0,
+    "seen": 1791334007.1695967,
+    "ast_hash": "ae18c34fe3715bca76f04ab8a7f48014",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup4.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1695979,
+    "ast_hash": "33b19beefeab71fa6c015f68185b4009",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup5.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.169599,
+    "ast_hash": "6917cd2957f945cf8b6b35d7b6d1d1de",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup6.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696002,
+    "ast_hash": "57ad19f4824182897aa67a688dc22c7a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup7.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696014,
+    "ast_hash": "2349bb7238978e60fff0d5f49f1800c3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup8.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.169603,
+    "ast_hash": "c99877a6f799ef50ee71741200edd7cf",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Pickup9.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.169604,
+    "ast_hash": "bb46ce38d9d9a79feaaf76f5c2c4cbe9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run0.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696055,
+    "ast_hash": "13ffd21711ed375155c3d9a76059b165",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run1.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696067,
+    "ast_hash": "4f78d30d7f4fb4195107ad230f926144",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run2.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.169608,
+    "ast_hash": "654497cef40fedbbac89ce46204980dd",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run3.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696112,
+    "ast_hash": "cb1d7b48c8c0448f3f8a1e2c15e3a351",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run4.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696126,
+    "ast_hash": "609396080291859d99b071f6189b37eb",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run5.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696136,
+    "ast_hash": "48e49ac9c4d6d332e5a8efac3402456e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run6.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696148,
+    "ast_hash": "73b783b87edce30c394f9873ac2265ed",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run7.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696162,
+    "ast_hash": "a02169048937b54c25562ff096607b26",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run8.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696172,
+    "ast_hash": "36026bb1b94f8bc8300c7c447d7724b2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_2_Run9.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696186,
+    "ast_hash": "f202bcd98fd1f35538d7613157f605e5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Idle0.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.16962,
+    "ast_hash": "aa7e1e64f7ba29da59c4a4523b0eabaf",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup0.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.169621,
+    "ast_hash": "417933a4eb5ec5e49f87a5e69a0ade77",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup1.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696224,
+    "ast_hash": "73ba54c55f5112dc263be2ddd5f7f644",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup2.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696239,
+    "ast_hash": "172c8147d1d005614d2ea86d5a8f7fab",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup3.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696248,
+    "ast_hash": "219e119b7158cf39aa9e2b8d91674320",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup4.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.169626,
+    "ast_hash": "c6f10c12dff9e9ddb94ac7a1a9be52ff",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup5.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696274,
+    "ast_hash": "c842035f2b443807824895cee3ec796b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup6.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696286,
+    "ast_hash": "629cdbbbc2a54ac2e53b969bcac9e818",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup7.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696298,
+    "ast_hash": "55b84a69e32bf3c39036c397be1438a2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup8.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.169631,
+    "ast_hash": "b0df0bd4a7541351e33d5788d7163a98",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Pickup9.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696322,
+    "ast_hash": "32088b3a3010e898383704416736ee10",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run0.png": {
+    "mtime": 1550189022.0,
+    "seen": 1791334007.1696334,
+    "ast_hash": "edbc41e7ad57e6e8c254119a766d53d6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run1.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696346,
+    "ast_hash": "0a5578125a517a9b11ac120f3a52d0dc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run2.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696358,
+    "ast_hash": "b4299283f22af3b2d17c6f4c14d6f8e9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run3.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.169637,
+    "ast_hash": "f087f773c9752a92ddd03cb53ca9ea4a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run4.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696382,
+    "ast_hash": "8959909ffe1b972754042799ce27d4e5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run5.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.169639,
+    "ast_hash": "15570182633594c6543f5c23fd218a84",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run6.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696405,
+    "ast_hash": "3d91b5afe27c4153aedbcd021aac7e95",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run7.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696417,
+    "ast_hash": "b84a4d2f4e6e669f0892f3b4f7bb4b9e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run8.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696427,
+    "ast_hash": "b10fc8e6caeec0f38504cf175ceb5e1f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_3_Run9.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.169644,
+    "ast_hash": "5e1ec684ed9b9639786aa1a91f05a7c6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Idle0.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.169645,
+    "ast_hash": "2c7c682eee2a5f016732c1cae56f5950",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup0.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696463,
+    "ast_hash": "4491d038afa18a15d0e1cfcd01029d1e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup1.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696475,
+    "ast_hash": "98299c9388f1a7223bc9f7f3f84455e4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup2.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696486,
+    "ast_hash": "01296986d579d8ef879db066ab443281",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup3.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696498,
+    "ast_hash": "309fac5147e39d47575c6f14b47cb2c5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup4.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696513,
+    "ast_hash": "422891ca3dabe1658432e284350dab31",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup5.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696525,
+    "ast_hash": "6fdf4f004c47a8be82e866f874e8c460",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup6.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696534,
+    "ast_hash": "827a94c7dc7e20e7da69b797e2e27921",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup7.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696548,
+    "ast_hash": "40787637b99350caa5701c42af9e57db",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup8.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696558,
+    "ast_hash": "ce91be14ce9b3251a266405b275594e8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Pickup9.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.169657,
+    "ast_hash": "54ed54926ffa9024dcb4ece43302991c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run0.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696587,
+    "ast_hash": "fc73ca2a5b7d7f48902b1c640329e541",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run1.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696596,
+    "ast_hash": "ed513ea0b3187c2b6972586f6e8e6784",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run2.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696613,
+    "ast_hash": "cef2e4ed64d286df0e5e68db230b4c48",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run3.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696622,
+    "ast_hash": "c9145e8c5fabcf6348955485c79446fb",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run4.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696634,
+    "ast_hash": "f35766b1cf73d6f91f2bcfb31921c41f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run5.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696646,
+    "ast_hash": "e04bcd2b392e66b674554f94e02d070c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run6.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696658,
+    "ast_hash": "b79892f99d09eebf3836a23a895f0a29",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run7.png": {
+    "mtime": 1550189023.0,
+    "seen": 1791334007.1696668,
+    "ast_hash": "58eb9f0b4c2a6c513b7686c0e8800ade",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run8.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696682,
+    "ast_hash": "7acc7660479a4060521e478e3e791950",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_4_Run9.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696694,
+    "ast_hash": "d42c0deb3cf28ef810d9e13d25775ef8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Idle0.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696706,
+    "ast_hash": "c2496e2b5237eee104b5cd266a91f25c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup0.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696718,
+    "ast_hash": "363325b511ec0010763a76ffaa09d73f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup1.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.169673,
+    "ast_hash": "fa7b410ef40b0171da6e7f33e8dab47d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup2.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696742,
+    "ast_hash": "9f00b5cd642dd4f724c07553e395cba7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup3.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696754,
+    "ast_hash": "dbc135bfb7ee1c5c0a3a747a3753d47f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup4.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696765,
+    "ast_hash": "8f8bfce6638bc12cc6ec61bbae6f449e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup5.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696777,
+    "ast_hash": "61fb5a83ce6494b0c1442825d01713fe",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup6.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.169679,
+    "ast_hash": "dd5edb2f4226b6bd532f70a10d5ba53c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup7.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.16968,
+    "ast_hash": "844385a3f6c730715d7370e89f879401",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup8.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.169681,
+    "ast_hash": "b99427a82f15bf55769082cc400acb0d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Pickup9.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696825,
+    "ast_hash": "a84354eb48e95c60e228d031f3edcabf",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run0.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.169684,
+    "ast_hash": "878279299aae71ea528f247ab4cfd960",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run1.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696854,
+    "ast_hash": "92582a347870c3a2fcfbe8b990123076",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run2.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696866,
+    "ast_hash": "3912ddeb2fbe3bb7c73b3fae4481abc7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run3.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696875,
+    "ast_hash": "378b6f6d19251aa46413aa1c47b3dc1c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run4.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.169689,
+    "ast_hash": "95e78b2aad7283ffc8e6853feb6bd8c2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run5.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696901,
+    "ast_hash": "590e3a28bfd13163ed6b3eb71cb5e028",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run6.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.169691,
+    "ast_hash": "0a6b83156db16cdc79a391464feede5f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run7.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696925,
+    "ast_hash": "deb1301ae549f59aec2bb9f01b953a0e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run8.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696935,
+    "ast_hash": "e455517b504630a881e444ca6c34c402",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_5_Run9.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696947,
+    "ast_hash": "03dacaa3b510ddcfcc7d29e27c1d8ed2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Idle0.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.169697,
+    "ast_hash": "186f9737c96d43b4ff047fbffa20d544",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup0.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.169698,
+    "ast_hash": "f97dd51d6ca5b110117810dae9b9b0fa",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup1.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1696994,
+    "ast_hash": "2619765e36f86d4a2576f6172a77b641",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup2.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1697004,
+    "ast_hash": "bdc549c22ab2f7944dc199fcf7be03a7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup3.png": {
+    "mtime": 1550189024.0,
+    "seen": 1791334007.1697013,
+    "ast_hash": "46d57aeea18a360b0db4da933e953a93",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup4.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697028,
+    "ast_hash": "e64222203602f9db33568c638313e66d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup5.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697037,
+    "ast_hash": "2d57600941c3e54d1967be625d8819c6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup6.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697047,
+    "ast_hash": "727c17a412b6fe1b4ecdf58ff7b2b636",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup7.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697056,
+    "ast_hash": "145201613722497aec77754a28794939",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup8.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.169707,
+    "ast_hash": "a871f0cb4d71e06f150c54a70e070687",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Pickup9.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.169708,
+    "ast_hash": "8a6c1a69ec9bc8060ed0f045b74f5cf0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run0.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697092,
+    "ast_hash": "1e668290d06cd630ee9a90fd0407f57e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run1.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697104,
+    "ast_hash": "1085a69eb671d2aecd360b501b578bda",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run2.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697114,
+    "ast_hash": "8f5b387270c6d402d4ebda6f6de6c8b5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run3.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697125,
+    "ast_hash": "5ade919715e49cd320d3405e2d03da70",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run4.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697137,
+    "ast_hash": "665a526197b0f30417a70af7c7727104",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run5.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697147,
+    "ast_hash": "49a3cfb0502611c1cb69d36532d18437",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run6.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.169716,
+    "ast_hash": "d6a8f957a806448e992ad1f5cbe76e4e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run7.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697173,
+    "ast_hash": "0eb1328bfd920c47401cabe633326f5d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run8.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697183,
+    "ast_hash": "922d4359b19a28edb52635d733069ea3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_6_Run9.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697195,
+    "ast_hash": "89a8fa5f2d1c10fee9a76f27270500e9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Idle0.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.169721,
+    "ast_hash": "623cfc7a640c8eec8b0072ffce00b73e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup0.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697218,
+    "ast_hash": "f6173ce13e63c9115c70459d558fc5e9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup1.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.169723,
+    "ast_hash": "8d0f3dd26c4f547a82b1329982a9b18f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup2.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697242,
+    "ast_hash": "44ad01fcf59386ad30d004359a26eb9e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup3.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697254,
+    "ast_hash": "4e586c8add539686f66198409b2cc322",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup4.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697264,
+    "ast_hash": "87c25af951819d482f019b2756193239",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup5.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697276,
+    "ast_hash": "7e6e7d2009b748ba3025f6268612c49b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup6.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697285,
+    "ast_hash": "d602a51c896fa1571ee1cf170bd1bced",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup7.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697297,
+    "ast_hash": "66080b2fc2209a9f6fe1282816195467",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup8.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.169731,
+    "ast_hash": "375867b1a4ce0b84c2e1e80fd70c935f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Pickup9.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.1697319,
+    "ast_hash": "e15e3a989bdf2852ae821df91e5afbef",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run0.png": {
+    "mtime": 1550189025.0,
+    "seen": 1791334007.169733,
+    "ast_hash": "acc982afa3dbde0a206b147e95163a10",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run1.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.1697342,
+    "ast_hash": "36807276265193458f565e2579db992c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run2.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.1697354,
+    "ast_hash": "e957284791ea7b1d9fcc78307368dac7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run3.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.1697366,
+    "ast_hash": "99389c0be1d0e5835127b879d1847869",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run4.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.1697378,
+    "ast_hash": "4f696c6a86ec5dc9e68a12e7634174d2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run5.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.169739,
+    "ast_hash": "0dbe9aa3222edb0714373bde577ae14e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run6.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.16974,
+    "ast_hash": "db2ef54b26a9c7e74a2f6cea5778f0d5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run7.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.1697414,
+    "ast_hash": "2c9f5ec1ee7898822f260a3cb4812dc1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run8.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.1697426,
+    "ast_hash": "7b9bf138709152acde0b5283f903d09e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Characters/Human/Human_7_Run9.png": {
+    "mtime": 1550189026.0,
+    "seen": 1791334007.1697435,
+    "ast_hash": "dd3fa9a70a456be32c216ae75365a995",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Information.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.169745,
+    "ast_hash": "a840f51d3a048dec0e71338c895ae334",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/arrowWall_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169746,
+    "ast_hash": "f5ebfde771970531555ca47aa146be61",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/arrowWall_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169747,
+    "ast_hash": "fa5d32aaac666bc8453c48724bd2b449",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/arrowWall_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697483,
+    "ast_hash": "24162b18537ea02fc58a662cf0942661",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/arrowWall_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697495,
+    "ast_hash": "c97980a157ddc7263a19f4e378d1f657",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/arrow_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697505,
+    "ast_hash": "a8b41bc1e361ff664451521814432630",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/arrow_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697524,
+    "ast_hash": "9a79b66b376816514b0db580618449b7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/arrow_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697538,
+    "ast_hash": "c9dced1326163231e7f92c02fab62578",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/arrow_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169755,
+    "ast_hash": "b2c80bd7835b57f1a75f3cbfb38ac44a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockAngle_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697562,
+    "ast_hash": "61e6e9d533ec2e493da62a21ece04147",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockAngle_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697571,
+    "ast_hash": "49d6e64120fff94bc268af248bdccb96",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockAngle_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697583,
+    "ast_hash": "981d75907b0eb86ef15d21ee89a9110b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockAngle_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697595,
+    "ast_hash": "6ab38a4f2ff359921e0562e32281643b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockHalf_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697605,
+    "ast_hash": "4a6708b3e2a9084e0ee887b55a305961",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockHalf_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.169762,
+    "ast_hash": "560daefc85dcc6217421d2600c3a47e6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockHalf_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697628,
+    "ast_hash": "65773d807878f176911c06cbe114c3e8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockHalf_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697638,
+    "ast_hash": "a962044c4c92a0e90786d436ce2c8807",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockQuarter_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697652,
+    "ast_hash": "71eeeeb53e91b2350e77630e468dfaf8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockQuarter_N.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697662,
+    "ast_hash": "606bfa5bc634eef43a3988615653aed9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockQuarter_S.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697674,
+    "ast_hash": "d884b81f4eb180cd67b6950bcefebaad",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/blockQuarter_W.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697683,
+    "ast_hash": "ea2dff884f17e09aaccc44a62d6a66d7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/block_E.png": {
+    "mtime": 1550189013.0,
+    "seen": 1791334007.1697695,
+    "ast_hash": "74761f880ca573e1eea391bc5e7ee1a9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/block_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697705,
+    "ast_hash": "5336c55873aa6eeee887969734306c56",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/block_S.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697717,
+    "ast_hash": "f656d4db5cff940897e27628a998865a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/block_W.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697729,
+    "ast_hash": "421d7560a89cbe37ded57a935f607fa7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/columnBlocks_E.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697738,
+    "ast_hash": "983f19f8e884ac1d4912dfdaec16d168",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/columnBlocks_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.169775,
+    "ast_hash": "1237a59bc7199acb5e0b13f8e33f1be3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/columnBlocks_S.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697762,
+    "ast_hash": "d38c5a4196e246f20db87c3c1e7da38e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/columnBlocks_W.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697772,
+    "ast_hash": "f430531b69bf8916c1e25a07c852b42c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/columnCorner_E.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697783,
+    "ast_hash": "beca04bc6d65f8fbdce64f80352f4bd8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/columnCorner_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697795,
+    "ast_hash": "245acf582115fae78823b8006510cea1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/columnCorner_S.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697805,
+    "ast_hash": "eef1ba1b4eab009bc6f0d4d28248b3b4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/columnCorner_W.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697817,
+    "ast_hash": "885af33a6c873c27cb09661cea7f7af4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/column_E.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.169783,
+    "ast_hash": "640bfaa836eccd771d529699503978d5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/column_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697843,
+    "ast_hash": "12e30e85b638586a4cbfd9b6892b1409",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/column_S.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697853,
+    "ast_hash": "aea7bd3decc2da7e4f0b1500bb4df184",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/column_W.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697865,
+    "ast_hash": "f231eb9a71bad5f352dee5c3aa94ea51",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/crate_E.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697874,
+    "ast_hash": "4999e1ec0924ce296cd3f566271411bc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/crate_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697886,
+    "ast_hash": "0447b9b1b555c5b91001888e3828651c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/crate_S.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697898,
+    "ast_hash": "33caec7ae1c2845e76617947581e066f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/crate_W.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.169791,
+    "ast_hash": "e2f2a8c87109a673b3224ac52bbb72e6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorClosed_E.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.169792,
+    "ast_hash": "1e5082d483586bf0287831520676de4f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorClosed_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697931,
+    "ast_hash": "2134c842a9720f5d88089dfe454dbfbc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorClosed_S.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697943,
+    "ast_hash": "49a49f02c57aa96c05c33ef14609765d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorClosed_W.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1697958,
+    "ast_hash": "51722676a7962935c59b5f367753c7d5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorOpen_E.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.169797,
+    "ast_hash": "3714b13eec9e3ab3974b6ce4c68bfbb9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorOpen_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.169798,
+    "ast_hash": "235404d50f61579affb6cfc634eae474",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorOpen_S.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.169799,
+    "ast_hash": "00285a6098c90e867ddcaa43d6b0c4ef",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorOpen_W.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1698003,
+    "ast_hash": "b15df2c5450678656fe535afcef38853",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayBottom_E.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1698015,
+    "ast_hash": "6459a69954eea39d6819f7f471906965",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayBottom_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1698024,
+    "ast_hash": "1fedfb9012af25278a693a114b1ae621",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayBottom_S.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1698036,
+    "ast_hash": "bb641b413352d44086981d42051ef5cc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayBottom_W.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1698048,
+    "ast_hash": "3b72dd1001b4e8502c1ed92e83d51d70",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayCenter_E.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.1698058,
+    "ast_hash": "1a58483cff1232a863529f1b95c30319",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayCenter_N.png": {
+    "mtime": 1550189014.0,
+    "seen": 1791334007.169807,
+    "ast_hash": "5e8a43ff89f2b30b2b9bdbf7a2c4173b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayCenter_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698081,
+    "ast_hash": "39154fd258545134af6b663b3e7dc1a2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayCenter_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169809,
+    "ast_hash": "4f09bdea02522715fde4c24efb40aa1c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayLeftBottom_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698103,
+    "ast_hash": "32a1b1c66ffee154465035399e8ae1d9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayLeftBottom_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698115,
+    "ast_hash": "3eb09b2c02d6afd0d60666b12f1cbd38",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayLeftBottom_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698124,
+    "ast_hash": "019f0e51431185f9f34ceb2c542e0de0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayLeftBottom_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698134,
+    "ast_hash": "245c23e19632173155b47fd32ce58be9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayLeft_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698148,
+    "ast_hash": "10d0e9fbbb5f5cf43fed7ca85ab70413",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayLeft_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698158,
+    "ast_hash": "6f42374540ac8bcd041badf80a241ad5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayLeft_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698167,
+    "ast_hash": "8740f0789d02903cdd131d746a7daa49",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayLeft_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698184,
+    "ast_hash": "b9bd45dd392306a5c8d86a65aeea0881",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayMiddleBottom_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698194,
+    "ast_hash": "c436df00326d67eb5d133ef4a92b2f03",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayMiddleBottom_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698203,
+    "ast_hash": "2b626165c1a4f57b8a6d089fd35b9fb7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayMiddleBottom_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698217,
+    "ast_hash": "fc9976b973ef5549405364a0c558a312",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayMiddleBottom_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698227,
+    "ast_hash": "8e4ae29b00e788ad313e0e8110b393b8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayMiddle_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169824,
+    "ast_hash": "50404002845c2ef595806fef6757838f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayMiddle_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169825,
+    "ast_hash": "1d731536a26b09fa5e8a2198bdbf56aa",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayMiddle_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169826,
+    "ast_hash": "9904846834a7d6d8fef3bc318b68f64f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayMiddle_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698272,
+    "ast_hash": "6f7f0ff51d0e01a014c7d74080ef7584",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayRightBottom_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698284,
+    "ast_hash": "11902b1cba9db61384f9d84f72a7b351",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayRightBottom_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698296,
+    "ast_hash": "466d4865c3b2d66d67710adeccd4185e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayRightBottom_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698306,
+    "ast_hash": "bee1582489b7f01cb689030eef26fc5a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayRightBottom_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169832,
+    "ast_hash": "a2186e7a7a456bd161864908018d00e2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayRight_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169833,
+    "ast_hash": "15a47c38025e124293a1c7f55d5cba04",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayRight_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169834,
+    "ast_hash": "c5b8a7ce8688eea97e2a7120f2272683",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayRight_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169835,
+    "ast_hash": "fcaa013e023cbd6654bb4a9ace458fe2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorwayRight_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169836,
+    "ast_hash": "88b3a722d56dddf856a741879a299b0f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorway_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698372,
+    "ast_hash": "333d70964e47064706b0c01ba25100a2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorway_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698384,
+    "ast_hash": "bb68ef1471d812592a02c0be2d73f340",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorway_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698396,
+    "ast_hash": "aa8fd8cda5d548afbf2160a88523a8ce",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/doorway_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698406,
+    "ast_hash": "73509c71becde1ce2ec781f967ee0331",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/fence_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.169842,
+    "ast_hash": "eeed6d0c8e5e413631681dcbdc7a86ad",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/fence_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698432,
+    "ast_hash": "ee79c6d7cac8e71f80bdd54817178284",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/fence_S.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698442,
+    "ast_hash": "878d6ff23adb4ffd5d6fca2a1e6855cf",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/fence_W.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698456,
+    "ast_hash": "069ab9b11163bffc762a8fdf119af449",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floorHalf_E.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698468,
+    "ast_hash": "a867a8a760a2af6a71ff5d06206971a6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floorHalf_N.png": {
+    "mtime": 1550189015.0,
+    "seen": 1791334007.1698477,
+    "ast_hash": "a516363ad9618ef16b763865d5c3c542",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floorHalf_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698492,
+    "ast_hash": "f54812f71528c5116e3891ca5f3167a6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floorHalf_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.16985,
+    "ast_hash": "c92f370d54e9d19d9b400f870905cf3f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floorQuarter_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698513,
+    "ast_hash": "3899ea8c5e8bf051fad77eae1b9f6523",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floorQuarter_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698525,
+    "ast_hash": "fb4b2d11647b66b5d8cc48e285a94a31",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floorQuarter_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698537,
+    "ast_hash": "b3fb02f6a04e6be61268cf2851a18448",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floorQuarter_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698546,
+    "ast_hash": "42f178730f881854ef93f78515f1ee82",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floor_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169856,
+    "ast_hash": "2ae87893b05670bb8ab5b51a03183bf1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floor_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169857,
+    "ast_hash": "fb32eb592946618cd1221ddce0de1a03",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floor_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698582,
+    "ast_hash": "562fb85ac7141c3d412b615a36b92f77",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/floor_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698596,
+    "ast_hash": "09958e65c1009195ae787bdaf68c1f96",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/ladder_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698606,
+    "ast_hash": "1d63a9dac9b9a28ec023960a6813df1d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/ladder_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698616,
+    "ast_hash": "6a680d2a898f6babc72f10ed841816d7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/ladder_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169863,
+    "ast_hash": "e99e01f2206e932cf4a1271f575798cc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/ladder_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169864,
+    "ast_hash": "a8134375bbc2e3b7fa4a327fe02b1207",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/poleGroup_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698651,
+    "ast_hash": "fb099216cc03880fe777b811a43fc2f4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/poleGroup_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698666,
+    "ast_hash": "0370bb197fcc636806957e2cf65f45e6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/poleGroup_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698678,
+    "ast_hash": "018e22c29792e8c06a666ca887e1bd4e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/poleGroup_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698687,
+    "ast_hash": "14dce21f94d2ac27ab255d689a771527",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/pole_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698701,
+    "ast_hash": "00b2a6ac7b8178c53ec868cc6368eb51",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/pole_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169871,
+    "ast_hash": "d09c45e8e4a2658a846e414eb18bcbb9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/pole_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698723,
+    "ast_hash": "319ee96771f4de34ed9ced7bcdbb950b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/pole_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698735,
+    "ast_hash": "9933f0b28b5c1c682c88b0de517418c4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabAngle_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698744,
+    "ast_hash": "adede71b40f4984bd374d9f24040f276",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabAngle_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698756,
+    "ast_hash": "d3c18c96ef324117248ad92ebebe8d12",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabAngle_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169877,
+    "ast_hash": "f1c18323cf14665aef258dc6c4a26501",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabAngle_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169878,
+    "ast_hash": "da5e822edbfc5e479a134556e192c9dc",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabHalf_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698792,
+    "ast_hash": "6782e290fffe26813b77aec947041c14",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabHalf_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698804,
+    "ast_hash": "83f2eb44773c8f3db5b7e6877aeb2c94",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabHalf_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698816,
+    "ast_hash": "b7c84552dab0a14d718bc372c53fe6e7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabHalf_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698825,
+    "ast_hash": "a96b46757c0de9db10963c0e8a011aa2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabQuarter_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169884,
+    "ast_hash": "fbe914462ca7590bc23ef00d4d7a365f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabQuarter_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169885,
+    "ast_hash": "1852da68692ce4e16aa8df68023ae25d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabQuarter_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.169886,
+    "ast_hash": "22cae763ea9e34d2acdd51c7f19a330b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slabQuarter_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698873,
+    "ast_hash": "a639042808488b4ad621aef96a8e09db",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slab_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698885,
+    "ast_hash": "8e98bd09c1c67bc0145d6f543578fe64",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slab_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698895,
+    "ast_hash": "566bfe99b1bf38ea3e98b194e4479621",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slab_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698906,
+    "ast_hash": "51755ca36d89833c7188e2d850f244c9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slab_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698918,
+    "ast_hash": "10a018eb7e934d9a1413e11232eed901",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeHalf_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698928,
+    "ast_hash": "977b8463a174867cc10ac3960510fba6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeHalf_N.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698942,
+    "ast_hash": "b0d1f50e79a45d7690049f29522917b0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeHalf_S.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698952,
+    "ast_hash": "fd32ee4de0bfe6d97b08e7cc752e6fca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeHalf_W.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698964,
+    "ast_hash": "e8f2d27b0c84de60e10916aa61b8cc32",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeQuarter_E.png": {
+    "mtime": 1550189016.0,
+    "seen": 1791334007.1698976,
+    "ast_hash": "cc42a7d640e291a53ae6ea505b8de7ac",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeQuarter_N.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1698987,
+    "ast_hash": "37b29b215fd23e68112f990bceac6796",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeQuarter_S.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1698997,
+    "ast_hash": "ccc5f1263b0037c39a38d5608db42738",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeQuarter_W.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699011,
+    "ast_hash": "70ee56fcd60198d9bdb3d139ce5157bd",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeSmall_E.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169902,
+    "ast_hash": "e560a67f6abc03afcc450932b301726b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeSmall_N.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169903,
+    "ast_hash": "55b8adcff2a1f41b8d4fc95d503e03b0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeSmall_S.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699045,
+    "ast_hash": "f8a457dd8a58dff19a3940bb561cf04c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slopeSmall_W.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699054,
+    "ast_hash": "0ab2470a91ebc11c63aff7c5a1ee8364",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slope_E.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699066,
+    "ast_hash": "b32428990437e4542d3e2e9606c1f230",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slope_N.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699078,
+    "ast_hash": "0787eef27cb7b4ff084f766c4349bb21",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slope_S.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169909,
+    "ast_hash": "c8ae3ad86d97380fa86a5b3598033139",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/slope_W.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699102,
+    "ast_hash": "25fc09251c16343d35b675aef2ee17af",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/sloperCornerInner_E.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699114,
+    "ast_hash": "7dcc129b9788e2d04238f12a24970516",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/sloperCornerInner_N.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699126,
+    "ast_hash": "388bc8a4da71139ee2960278c0eb55ad",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/sloperCornerInner_S.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699135,
+    "ast_hash": "6b63dfaa984dd608a60e4ae9b018b0a1",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/sloperCornerInner_W.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169915,
+    "ast_hash": "972c71d81bf8f02eb3db05c4985d5419",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/sloperCornerOuter_E.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169916,
+    "ast_hash": "2385995dcca7c8057e7b5f0934904a9e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/sloperCornerOuter_N.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169917,
+    "ast_hash": "e3136b7da796b30aa0274c76b20bede7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/sloperCornerOuter_S.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699183,
+    "ast_hash": "c1443a6638ef5027fa74b4f87e5ea84a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/sloperCornerOuter_W.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699193,
+    "ast_hash": "8719eeab6ddc62ac5e198529cc7b322c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsCornerInner_E.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699204,
+    "ast_hash": "fc915b9f9a94acb463ae1cbaa1f29c6e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsCornerInner_N.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699216,
+    "ast_hash": "98c33038dbfe5bdadf85b1ac1c42f93d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsCornerInner_S.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699226,
+    "ast_hash": "7a00deb5d63e04281aa5ea020e495ca6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsCornerInner_W.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699238,
+    "ast_hash": "6d1fe72d46e1f0da4abf2a047f84b234",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsCornerOuter_E.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169925,
+    "ast_hash": "3ba4f21416133129d58dc88701fb028e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsCornerOuter_N.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699262,
+    "ast_hash": "c3257d96e643cb5d54dc3f69bb191f2b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsCornerOuter_S.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699271,
+    "ast_hash": "0541032410081d3ef2ca95dde051884b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsCornerOuter_W.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699286,
+    "ast_hash": "13906d3ebb8c72e88099182b284faa07",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpenCornerInner_E.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699295,
+    "ast_hash": "b2c37c44078bd889bcfeadf763822b2c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpenCornerInner_N.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.1699307,
+    "ast_hash": "fb2c726b9c7331daa6a768e3bc9dd01f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpenCornerInner_S.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169932,
+    "ast_hash": "050aa93b6d2b76861c10ac51a154573c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpenCornerInner_W.png": {
+    "mtime": 1550189017.0,
+    "seen": 1791334007.169933,
+    "ast_hash": "a62be15a826266877b3f060e9ef7e478",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpenCornerOuter_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699343,
+    "ast_hash": "2b71e858b617e1c17cae0a15288bdca0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpenCornerOuter_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699355,
+    "ast_hash": "9c6cc305441e529567c1d97f39051668",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpenCornerOuter_S.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699367,
+    "ast_hash": "ba5da44529e0e6ed9c8c04c5e400c738",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpenCornerOuter_W.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699376,
+    "ast_hash": "cf78f33a389d7fbb5ab2d3c0b1339a68",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpen_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.169939,
+    "ast_hash": "45c42cd13043bbf8299fc5491b8cf5ed",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpen_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.16994,
+    "ast_hash": "703e5e1dd8c5ba5c8ff53e7eb96652f2",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpen_S.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.169941,
+    "ast_hash": "bfc60c32725da4711e7403129a494145",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairsOpen_W.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.169942,
+    "ast_hash": "3a4b71b7e1ebcd955ab108ebbb0dd441",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairs_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699433,
+    "ast_hash": "d39a3b74b4146a5153a6f41bb394de6d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairs_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699474,
+    "ast_hash": "2fdc5eacae6694a8db10c095a63f3ca5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairs_S.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699483,
+    "ast_hash": "33241f5b68b28010c7de99cee5f90c55",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/stairs_W.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699498,
+    "ast_hash": "06da4d559a7134ca7940759637b14854",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/steps_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699512,
+    "ast_hash": "684d5a86a807aaefa1ba664c0c8dd7ad",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/steps_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699526,
+    "ast_hash": "ad46507d4c732a30fe98ad9cd1175dca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/steps_S.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699536,
+    "ast_hash": "e8ffeefc02ca5f49e4094dfe3b05da06",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/steps_W.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699548,
+    "ast_hash": "17da24d508805918bf2737c1182215f7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchFloorOff_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699557,
+    "ast_hash": "17569fb3707480699c40361848dd445b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchFloorOff_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.169957,
+    "ast_hash": "0d1c778c7d4af133e0b28764bf880ade",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchFloorOff_S.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.169958,
+    "ast_hash": "8f07e5aedfc73766fbf9028b90576597",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchFloorOff_W.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.169959,
+    "ast_hash": "76e97a5f2f9a5557d22a867b6ee57df4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchFloorOn_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699603,
+    "ast_hash": "9a1cc9cac74878c180b2b808c2ab9c6b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchFloorOn_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699615,
+    "ast_hash": "192e95513e2a7878cabe326e91174f9a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchFloorOn_S.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699624,
+    "ast_hash": "c6b51f754af039db72404332d3379269",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchFloorOn_W.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699636,
+    "ast_hash": "5986b8e005f044a5df33ac3cdca4b4cf",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchWallOff_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699653,
+    "ast_hash": "ddf7321d2db6550f8be84d7ada6d53e7",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchWallOff_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699667,
+    "ast_hash": "ea37e60dbfbbcf67b5e68f2502527c57",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchWallOff_S.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699677,
+    "ast_hash": "6ad42c143c03895940920ea7c5ab7885",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchWallOff_W.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699688,
+    "ast_hash": "f0dd5e5c4c8953cf0a4e319360fa00f5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchWallOn_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.16997,
+    "ast_hash": "67529915d8f9c2ad084c2cbc234b5748",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchWallOn_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699743,
+    "ast_hash": "7625da0c65aa3ab863713160ebf684a0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchWallOn_S.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699753,
+    "ast_hash": "64c2253be0515beea372c40a59cc374b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/switchWallOn_W.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699765,
+    "ast_hash": "0892639080e29a5ef944870f4489c658",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallBattlement_E.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699777,
+    "ast_hash": "9597a505d0f666d39efe8d667b10ffcf",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallBattlement_N.png": {
+    "mtime": 1550189018.0,
+    "seen": 1791334007.1699789,
+    "ast_hash": "04d5f5a7f3ed594a68a6ffb69bf2355a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallBattlement_S.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699798,
+    "ast_hash": "0381c65f562ef37f42c27cfcf4c1df65",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallBattlement_W.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699812,
+    "ast_hash": "cb1a37adb1bf7c6d4774822e31e841ad",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCornerHalf_E.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699822,
+    "ast_hash": "8edc28da8820f15feb7fb456f40e6095",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCornerHalf_N.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699834,
+    "ast_hash": "c251cf81f5ac17ae46ccb90ef5ca8d47",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCornerHalf_S.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699846,
+    "ast_hash": "41446f2880ec7325258f64b3f4909b85",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCornerHalf_W.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699858,
+    "ast_hash": "4e24ef7d2b771765314c59d0f26699fa",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCorner_E.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.169987,
+    "ast_hash": "c5b322e653b2dfde0fa1070250bf4aca",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCorner_N.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699884,
+    "ast_hash": "d8bb8047ba9ce6244066d0fb35963f42",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCorner_S.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699893,
+    "ast_hash": "45c170019ec6b364bd14ec214113db25",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCorner_W.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699905,
+    "ast_hash": "9acec8358ec75f811dd0b172a682f8a8",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCurveHalf_E.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699917,
+    "ast_hash": "aa454c8489458293e82924110baa7096",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCurveHalf_N.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.169993,
+    "ast_hash": "e308457d31e52958c359953f4ea1400a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCurveHalf_S.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699939,
+    "ast_hash": "e00e548e9ba94f759dd2d4290ae84ac9",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCurveHalf_W.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699953,
+    "ast_hash": "c0301ce7d965c648baecb774ac8a8c72",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCurve_E.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699963,
+    "ast_hash": "722dd37cb6312fa026894f799d674f49",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCurve_N.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699975,
+    "ast_hash": "c0bfd5973e3e9dd5dcb4e2b37051eb46",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCurve_S.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699986,
+    "ast_hash": "fd6e448524d439a2a6637838e7ada120",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallCurve_W.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1699998,
+    "ast_hash": "1692aa1bfacaa310a12ea4810128d161",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallHalf_E.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700008,
+    "ast_hash": "d7d214f880774bb2ef6c908e07550bf4",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallHalf_N.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700022,
+    "ast_hash": "88b61fbfef67dbc5f7fc871c6ec61259",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallHalf_S.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700034,
+    "ast_hash": "b80ccbca1cf16bc418135d44f8cafe08",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wallHalf_W.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700044,
+    "ast_hash": "9bc660406444f9f3c3b249a895207fa5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wall_E.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700056,
+    "ast_hash": "8d9b5bb605d48e1360aa4c22ef66e3e5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wall_N.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700068,
+    "ast_hash": "1a298512b6ac2ccb4c88ed37a0e5fb46",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wall_S.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700082,
+    "ast_hash": "a022b24c8d4afb1d0a608c9f89116aa3",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/wall_W.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700091,
+    "ast_hash": "1b9bb25e8d6088cc2e999e00222b590d",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowLeft_E.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700103,
+    "ast_hash": "11f9e8f652deee668bbdc33f191d22d5",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowLeft_N.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700118,
+    "ast_hash": "f0beab85684ebbfcc7111e29ca3ecaec",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowLeft_S.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.170013,
+    "ast_hash": "a4bf3226b15f8cfd15c5e8a7de60ed2b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowLeft_W.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.170014,
+    "ast_hash": "6a6ec632efbf6a9cc2c2b5ba6c57a063",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowMiddle_E.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700194,
+    "ast_hash": "6d32676ffdfd5fb986282bd27a28ce76",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowMiddle_N.png": {
+    "mtime": 1550189019.0,
+    "seen": 1791334007.1700203,
+    "ast_hash": "021d95b2064f467d2cdc425ed64a74d6",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowMiddle_S.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1700215,
+    "ast_hash": "c1887115b89dbfb1d94295a95c5f0e1a",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowMiddle_W.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1700227,
+    "ast_hash": "9e61f4db4c545a5234353119b32af93f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowRight_E.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.170024,
+    "ast_hash": "67b958d7b689d220cb190d6167cce31e",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowRight_N.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1700249,
+    "ast_hash": "fb1ec77c728f87b099d5894cd1c1bfda",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowRight_S.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.170026,
+    "ast_hash": "736707c686533e751a6d173e675b617b",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/windowRight_W.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1700273,
+    "ast_hash": "616213283c9b17705a780fe3be9a14c0",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/window_E.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1700282,
+    "ast_hash": "54218075f9eb91976be8cd7c6aef3c28",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/window_N.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1700294,
+    "ast_hash": "967ec142b1cee9544135a5c4d44c0b56",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/window_S.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1700306,
+    "ast_hash": "05bf8921c0913cfa54e5c0af204e192c",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Isometric/window_W.png": {
+    "mtime": 1550189020.0,
+    "seen": 1791334007.1700315,
+    "ast_hash": "88dfa280a0e8a59b6819025a68c5c76f",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Preview.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.170033,
+    "ast_hash": "776f711b6cf9f3323365cb62ca7ede51",
+    "semantic_hash": ""
+  },
+  "public/prototype_sprites/Sample.png": {
+    "mtime": 1550189006.0,
+    "seen": 1791334007.170034,
+    "ast_hash": "081fd530a08addab7b6211d06f89136d",
+    "semantic_hash": ""
+  }
+}

@@ -55,6 +55,34 @@ grid-north) · `G` window wall · `T` table · `B` shelf · `D` desk · `d` bed 
 ⚠️ `scripts/iso-preview.mjs` re-implements all three variant functions —
 keep both copies in sync (both files say `MUST match`).
 
+## Level wall rules (`src/level/themeRender.ts`, real theme packs)
+
+Level rooms (`#` border + exit `E` in the south wall) render one theme pack
+per room. Grounds are cross-pack where a pack ships no floor (library uses
+dungeon `planks`; base uses `square_*` platforms — round `base_*` gap).
+
+- **Runs**: x-runs face S, y-runs face the theme `WALL_YDIR` (W everywhere
+except library E, whose shelves exist only on S/E). Library fronts facing
+away from the interior render low half-shelves so you see over them.
+- **Convex L-turns** are lean-matched, not arm-matched: `(e,s)→S`,
+`(w,n)→S` (centered tower), `(s,w)→W`, `(n,e)→W` (east-leaning block:
+mass sits over the thin x-run ends and gives a clean outer silhouette).
+The west-leaning E chips the skyline and the short N dents below run
+tops, so neither is used for L-turns.
+Farm has no L-block (its corner sprites are floating joint posts,
+excluded from the vocabulary), so farm L-turns butt-joint: the y-run runs
+straight through, the x-run ends into its side.
+- **T-junctions/crossings** run straight through the majority axis.
+- **Isolated `#`** (rejected by the validator except in hand-made maps)
+becomes a pillar (`stoneColumn`, `woodWallSupport`, …), never a lone block.
+- **Ground is rendered under every tile, walls included** (like GameScene):
+tall wall feet sit above their tile's front vertex, so without it a void
+band shows between wall bases and the floor.
+- **Baselines differ per facing** (S walls sit ~12px above W walls at
+native scale); wide corner blocks and panel overlaps hide the step, so no
+per-sprite offset table is needed. Pinned by `level-lab` §13 and verified
+with real-pack renders (see `docs/idea.md` sprite truth table).
+
 ## Using the art assets
 
 - Pack layout: `public/prototype_sprites/Isometric/<base>_<N|E|S|W>.png`

@@ -41,10 +41,13 @@ export function difficultyFor(depthRaw: number, themeOverride?: LevelTheme): Dif
   const width = Math.min(20, 12 + depth);
   const height = Math.min(16, 10 + depth);
   const pickups = Math.min(5, 2 + Math.floor(depth / 3));
-  const chasers = Math.min(3, 1 + Math.floor((depth - 1) / 2));
-  const patrols = depth >= 4 ? 1 : 0;
+  // At most 2 perfect pursuers: the certifier proved 3 tempo-1 chasers in
+  // an open room unbeatable (no escape path exists). Late pressure comes
+  // from patrols instead — fixed loops the player can read and dodge.
+  const chasers = depth <= 2 ? 1 : 2;
+  const patrols = depth < 4 ? 0 : Math.min(2, 1 + Math.floor((depth - 4) / 3));
   const chaserTempo = depth <= 2 ? 2 : 1;
   const archetype = ARCHETYPE_ROTATION[(depth - 1) % ARCHETYPE_ROTATION.length];
-  const par = Math.floor((width + height) / 2) + pickups * 6 + chasers * 3;
+  const par = Math.floor((width + height) / 2) + pickups * 6 + chasers * 3 + patrols * 2;
   return { depth, theme, width, height, pickups, chasers, patrols, chaserTempo, archetype, par };
 }

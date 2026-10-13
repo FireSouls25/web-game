@@ -118,7 +118,7 @@ check('depth1-budgets', L.difficultyFor(1).pickups === 2 && L.difficultyFor(1).c
 // 2. fallback validity ----------------------------------------------------------
 console.log('2. fallback validity (themes x depths)');
 for (const th of ['dungeon', 'library', 'farm', 'base']) {
-  for (const dp of [1, 2, 4, 7]) {
+  for (const dp of [1, 2, 4, 7, 8]) {
     const lv = L.fallbackLevel({ seed: seedArg, theme: th, depth: dp });
     const v = L.validateLevel(lv, dp);
     check(`${th}/d${dp}`, v.ok, v.errors.slice(0, 2).join('; '));
@@ -163,7 +163,7 @@ check('patrol-without-path-flagged', n3.issues.some((i) => i.includes('path')));
 // 5. design loop with stub fetch (no network) ---------------------------------------
 console.log('5. design loop (stubbed provider)');
 const stubProvider = { baseUrl: 'http://stub', apiKey: 'x', model: 'stub' };
-const validPayload = { ...mockGood, tiles: ['#######', '#S....#', '#.###.#', '#.....#', '#.###.#', '#....E#', '#######'], spawn: { x: 1, y: 1 }, exit: { x: 5, y: 5 }, pickups: [{ id: 'k1', x: 5, y: 1, sprite: 'dungeon:chestClosed:S' }, { id: 'k2', x: 1, y: 5, sprite: 'dungeon:barrel:S' }], enemies: [{ id: 'c1', kind: 'chaser', x: 5, y: 3, tempo: 1 }] };
+const validPayload = { ...mockGood, tiles: ['#######', '#S....#', '#.###.#', '#.....#', '#.###.#', '#.....#', '####E##'], spawn: { x: 1, y: 1 }, exit: { x: 4, y: 6 }, pickups: [{ id: 'k1', x: 5, y: 1, sprite: 'dungeon:chestClosed:S' }, { id: 'k2', x: 1, y: 5, sprite: 'dungeon:barrel:S' }], enemies: [{ id: 'c1', kind: 'chaser', x: 5, y: 3, tempo: 1 }] };
 const openPayload = { ...validPayload, tiles: validPayload.tiles.map((r) => `.${r.slice(1, -1)}.`) };
 const stubRepair = async (url, init) => {
   const body = JSON.parse(init.body);
@@ -258,7 +258,7 @@ check(
 
 // 10. avoidability certificate --------------------------------------------------------
 console.log('10. avoidability certificate');
-for (const dp of [1, 2, 4, 7]) {
+for (const dp of [1, 2, 4, 7, 8]) {
   const lv = L.fallbackLevel({ seed: seedArg, theme: 'dungeon', depth: dp });
   const c = L.certifyAvoidable(lv);
   console.log(`  dungeon d${dp}: ok=${c.ok} len=${c.solutionLength} visited=${c.visited} ms=${c.ms}`);
@@ -275,11 +275,11 @@ const trap = {
     '#...###...#',
     '#.........#',
     '#...###...#',
-    '#...###..E#',
-    '###########',
+    '#...###...#',
+    '########E##',
   ],
   spawn: { x: 1, y: 1 },
-  exit: { x: 9, y: 5 },
+  exit: { x: 8, y: 6 },
   pickups: [
     { id: 'k1', x: 1, y: 5, sprite: 'dungeon:barrel:S' },
     { id: 'k2', x: 9, y: 1, sprite: 'dungeon:chestClosed:S' },
@@ -365,8 +365,13 @@ console.log(`  compared ${diffSteps} transitions`);
 
 // 12. theme render map: every key the scene requests must preload + exist -----
 console.log('12. theme render map (scene keys resolve to real files)');
+// The scene preloads ALL themes, so cross-pack ground/corners resolve too.
+const preAll = new Map();
 for (const th of ['dungeon', 'library', 'farm', 'base']) {
-  const pre = new Map(L.preloadSpritesForTheme(th, `lvl_${th}`).map((p) => [p.key, p.file]));
+  for (const p of L.preloadSpritesForTheme(th, `lvl_${th}`)) preAll.set(p.key, p.file);
+}
+for (const th of ['dungeon', 'library', 'farm', 'base']) {
+  const pre = preAll;
   const need = [];
   need.push(L.themeGround(th));
   // wall orientations on a plus-shaped fixture
@@ -410,6 +415,80 @@ for (const d of L.CHARACTER_SET.facings) {
   }
 }
 check('render-male-files', true);
+
+// 13. wall connection rules -----------------------------------------------------------
+console.log('13. wall connection rules');
+const run = (fn) => (x, y) => fn(x, y);
+check('wall-straight-x', L.themeWallFor('dungeon', 1, 1, run((x, y) => y === 1 && x >= 0 && x <= 2)) === 'dungeon:stoneWall:S');
+check('wall-straight-y', L.themeWallFor('dungeon', 1, 1, run((x, y) => x === 1 && y >= 0 && y <= 2)) === 'dungeon:stoneWall:W');
+// Lean-matched corners: (es/wn->S tower, sw/ne->W block); E chips the
+// skyline and N dents below run tops, so neither is used on L-turns.
+check('wall-corner-es', L.themeWallFor('dungeon', 1, 1, run((x, y) => (x === 2 && y === 1) || (x === 1 && y === 2) || (x === 1 && y === 1))) === 'dungeon:stoneWallCorner:S');
+check('wall-corner-sw', L.themeWallFor('dungeon', 1, 1, run((x, y) => (x === 1 && y === 2) || (x === 0 && y === 1) || (x === 1 && y === 1))) === 'dungeon:stoneWallCorner:W');
+check('wall-corner-wn', L.themeWallFor('dungeon', 1, 1, run((x, y) => (x === 0 && y === 1) || (x === 1 && y === 0) || (x === 1 && y === 1))) === 'dungeon:stoneWallCorner:S');
+check('wall-corner-ne', L.themeWallFor('dungeon', 1, 1, run((x, y) => (x === 1 && y === 0) || (x === 2 && y === 1) || (x === 1 && y === 1))) === 'dungeon:stoneWallCorner:W');
+// 180-degree pairs share convex art: E/W corner sprites are concave
+// (reflex) pieces and never render on convex corners (verified in renders).
+check('wall-corner-farm-es', L.themeWallFor('farm', 1, 1, run((x, y) => (x === 2 && y === 1) || (x === 1 && y === 2) || (x === 1 && y === 1))) === 'farm:woodWall:W');
+check('wall-corner-farm-sw', L.themeWallFor('farm', 1, 1, run((x, y) => (x === 1 && y === 2) || (x === 0 && y === 1) || (x === 1 && y === 1))) === 'farm:woodWall:W');
+check('wall-corner-farm-wn', L.themeWallFor('farm', 1, 1, run((x, y) => (x === 0 && y === 1) || (x === 1 && y === 0) || (x === 1 && y === 1))) === 'farm:woodWall:W');
+check('wall-corner-farm-ne', L.themeWallFor('farm', 1, 1, run((x, y) => (x === 1 && y === 0) || (x === 2 && y === 1) || (x === 1 && y === 1))) === 'farm:woodWall:W');
+check('wall-corner-library-sw', L.themeWallFor('library', 1, 1, run((x, y) => (x === 1 && y === 2) || (x === 0 && y === 1) || (x === 1 && y === 1))) === 'dungeon:stoneWallCorner:W');
+check('wall-corner-library-wn', L.themeWallFor('library', 1, 1, run((x, y) => (x === 0 && y === 1) || (x === 1 && y === 0) || (x === 1 && y === 1))) === 'dungeon:stoneWallCorner:S');
+check('wall-corner-library-ne', L.themeWallFor('library', 1, 1, run((x, y) => (x === 1 && y === 0) || (x === 2 && y === 1) || (x === 1 && y === 1))) === 'dungeon:stoneWallCorner:W');
+check('wall-tee-runs-through', L.themeWallFor('dungeon', 1, 1, run((x, y) => (y === 1 && x >= 0 && x <= 2) || (x === 1 && y === 2))) === 'dungeon:stoneWall:S');
+check('wall-isolated-dungeon', L.themeWallFor('dungeon', 3, 3, () => false) === 'dungeon:stoneColumn:S');
+check('wall-isolated-farm', L.themeWallFor('farm', 3, 3, () => false) === 'farm:woodWallSupport:S');
+check('wall-isolated-library', L.themeWallFor('library', 3, 3, () => false) === 'library:wallBooks:S');
+check('wall-isolated-base', L.themeWallFor('base', 3, 3, () => false) === 'base:square_stone_high:S');
+check('wall-straight-y-library', L.themeWallFor('library', 1, 1, run((x, y) => x === 1 && y >= 0 && y <= 2)) === 'library:wallBooks:E');
+check('wall-library-bottom-low', L.themeWallFor('library', 2, 4, run((x, y) => y === 4 && x >= 1 && x <= 3), 'N') === 'library:bookcaseHalfBooks:S');
+check('wall-library-right-low', L.themeWallFor('library', 4, 2, run((x, y) => x === 4 && y >= 1 && y <= 3), 'W') === 'library:bookcaseHalfBooks:E');
+check('wall-library-top-tall', L.themeWallFor('library', 2, 0, run((x, y) => y === 0 && x >= 1 && x <= 3), 'S') === 'library:wallBooks:S');
+check('wall-library-left-tall', L.themeWallFor('library', 0, 2, run((x, y) => x === 0 && y >= 1 && y <= 3), 'E') === 'library:wallBooks:E');
+check('wall-dungeon-bottom-tall', L.themeWallFor('dungeon', 2, 4, run((x, y) => y === 4 && x >= 1 && x <= 3), 'N') === 'dungeon:stoneWall:S');
+check('wall-corner-library-stone', L.themeWallFor('library', 1, 1, run((x, y) => (x === 2 && y === 1) || (x === 1 && y === 2) || (x === 1 && y === 1))) === 'dungeon:stoneWallCorner:S');
+check('library-ground-crosspack', L.themeGround('library') === 'dungeon:planks:S');
+check('base-ground-square', L.themeGround('base') === 'base:square_grass_flat:S');
+// validator: lone pillar + 2-stub rejected, border buttress accepted
+function withWalls(base, walls) {
+  const rows = base.tiles.map((r) => r.split(''));
+  for (const [x, y] of walls) rows[y][x] = '#';
+  return { ...base, tiles: rows.map((r) => r.join('')) };
+}
+function freeTiles(lv, n, isolated = false) {
+  const taken = new Set([`${lv.spawn.x},${lv.spawn.y}`, `${lv.exit.x},${lv.exit.y}`, ...lv.pickups.map((p) => `${p.x},${p.y}`), ...lv.enemies.map((e) => `${e.x},${e.y}`), ...lv.props.flatMap((p) => p.footprint.map((t) => `${t.x},${t.y}`))]);
+  const out = [];
+  lv.tiles.forEach((row, y) => [...row].forEach((ch, x) => {
+    if (ch !== '.' || taken.has(`${x},${y}`) || x <= 0 || y <= 0 || x >= row.length - 1 || y >= lv.tiles.length - 1) return;
+    if (isolated) {
+      const wallN = [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => lv.tiles[y + dy]?.[x + dx] === '#');
+      if (wallN) return;
+    }
+    out.push([x, y]);
+  }));
+  return out.slice(0, n);
+}
+const pillarLvl = withWalls(good, [freeTiles(good, 1, true)[0]]);
+check(
+  'lone-pillar-rejected',
+  L.validateLevel({ ...pillarLvl, id: 'bad-pillar' }, 1).errors.some((e) => e.includes('free-floating')),
+);
+const stubTiles = freeTiles(good, 8, true);
+const stubA = stubTiles.find(([x, y]) => stubTiles.some(([a, b]) => Math.abs(a - x) + Math.abs(b - y) === 1));
+const stubB = stubTiles.find(([a, b]) => Math.abs(a - stubA[0]) + Math.abs(b - stubA[1]) === 1);
+const stubLvl = withWalls(good, [stubA, stubB]);
+check(
+  'two-stub-rejected',
+  L.validateLevel({ ...stubLvl, id: 'bad-stub' }, 1).errors.some((e) => e.includes('free-floating')),
+);
+// buttress: interior tile adjacent to the border ring
+const edge = freeTiles(good, 40).find(([x, y]) => x === 1 || y === 1 || x === good.tiles[0].length - 2 || y === good.tiles.length - 2);
+if (edge) {
+  const buttress = withWalls(good, [edge]);
+  const v = L.validateLevel({ ...buttress, id: 'ok-buttress' }, 1);
+  check('border-buttress-accepted', v.ok, v.errors.slice(0, 2).join('; '));
+} else check('border-buttress-accepted', false, 'no edge tile found');
 
 // 7 + 8. mock file + prompt ------------------------------------------------------------
 if (args['mock-file']) {

@@ -28,10 +28,13 @@ export function createGame(canvasParent: HTMLElement, initData?: GameInit): Phas
       width: window.innerWidth,
       height: window.innerHeight,
     },
-    scene: [GameScene, LevelScene],
+    // Only the needed scene is registered: config entries auto-start, and
+    // stopping an unstarted scene is a no-op, so sharing one array left
+    // GameScene rendering behind LevelScene in dev. Prod keeps GameScene.
+    scene: import.meta.env.DEV ? [LevelScene] : [GameScene],
     input: { keyboard: true },
   });
-  // DEV boots generated real-pack levels; prod boots the demo manor rooms.
+  // Boot straight into the movement scene, optionally from a save file.
   game.scene.start(import.meta.env.DEV ? LEVEL_SCENE : GAME_SCENE, initData ?? {});
   return game;
 }

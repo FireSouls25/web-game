@@ -64,7 +64,7 @@ export interface SolverState {
 }
 
 export function prepareSolver(level: LevelDef): SolverLevel {
-  const grid = Grid.fromAscii(level.tiles);
+  const grid = Grid.fromAscii(level.tiles, ['.', 'S', 'E']);
   for (const p of level.props) {
     if (!p.blocksMovement) continue;
     for (const t of p.footprint) grid.setWalkable(t, false);

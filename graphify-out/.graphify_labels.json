@@ -4,7 +4,7 @@
   "2": "App.tsx",
   "3": "package.json",
   "4": "Manor Layout (design doc)",
-  "5": "timeManager",
+  "5": "DevTools.tsx",
   "6": "LevelEditor.tsx",
   "7": "check-projection.mjs",
   "8": "compilerOptions",
@@ -13,9 +13,16 @@
   "11": "iso-preview.mjs",
   "12": "RoomRegistry",
   "13": "diaryStore",
-  "14": "subdivide.mjs",
+  "14": "ref_node_fs",
   "15": "vercel.json",
-  "16": "ref_node_fs",
+  "16": "LevelScene.ts",
   "17": "roster.ts",
-  "18": "vite-env.d.ts"
+  "18": "vite-env.d.ts",
+  "19": "TilePos",
+  "20": "level-lab.mjs",
+  "21": "LevelScene",
+  "22": "IsoTiles.ts",
+  "23": "timeManager",
+  "24": "RoomDef",
+  "25": "turns.ts"
 }

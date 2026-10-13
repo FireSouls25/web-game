@@ -27,11 +27,14 @@ const THEME_ISO = {
   farm: join(ROOT, 'public/farm_sprites/Isometric'),
   base: join(ROOT, 'public/base_sprites/Isometric'),
 };
+// Must match themeGround() in src/level/themeRender.ts: library has no usable
+// floor of its own (floorCarpet* are floating rugs), so it uses dungeon
+// dark planks; base uses square platforms (round tiles leave corner gaps).
 const THEME_GROUND = {
-  dungeon: 'stone',
-  library: 'floorCarpet',
-  farm: 'dirt',
-  base: 'base_grass_flat',
+  dungeon: ['dungeon', 'stone'],
+  library: ['dungeon', 'planks'],
+  farm: ['farm', 'dirt'],
+  base: ['base', 'square_grass_flat'],
 };
 
 const TW = 256; // native diamond footprint
@@ -212,7 +215,7 @@ function main() {
     process.exit(1);
   }
   const theme = THEME_ISO[themeArg] ? themeArg : null;
-  const groundBase = theme ? THEME_GROUND[theme] : 'floor';
+  const groundBase = theme ? THEME_GROUND[theme] : [null, 'floor'];
   const room = JSON.parse(readFileSync(roomPath, 'utf8'));
   const tiles = room.tiles;
   const H = tiles.length;
@@ -258,7 +261,7 @@ function main() {
         if (x + y !== s) continue;
         const ch = tiles[y][x];
         const { sx, sy } = pos(x, y);
-        jobs.push({ img: imgFor(groundBase, 'S', theme), sx, sy });
+        jobs.push({ img: imgFor(groundBase[1], 'S', groundBase[0] ?? theme), sx, sy });
         if (ch === '#') {
           const v = process.env.WALLTEST ?? wallVariantFor(x, y, isRunWall, isOpen);
           const { base, dir } = parseSprite(v);

@@ -23,7 +23,7 @@ export function levelWalkability(level: LevelDef): {
   width: number;
   height: number;
 } {
-  const grid = Grid.fromAscii(level.tiles);
+  const grid = Grid.fromAscii(level.tiles, LEVEL_WALK);
   for (const p of level.props) {
     if (!p.blocksMovement) continue;
     for (const t of p.footprint) grid.setWalkable(t, false);
@@ -33,7 +33,11 @@ export function levelWalkability(level: LevelDef): {
   return { grid, isWalkable: (t) => grid.isWalkable(t), width, height };
 }
 
-const WALK_CHARS = new Set(['.', 'S', 'E', 'P', '>']);
+/** Level tiles use exactly four chars: legacy v1 chars (P, >, G, …) have no
+ * art in the level renderer and would silently flatten to floor. */
+const LEVEL_CHARS = new Set(['.', 'S', 'E']);
+/** Walkability mirror of LEVEL_CHARS for Grid.fromAscii. */
+const LEVEL_WALK = ['.', 'S', 'E'];
 
 export function validateLevel(level: LevelDef, depth = 1): ValidationResult {
   const errors: string[] = [];
@@ -46,20 +50,84 @@ export function validateLevel(level: LevelDef, depth = 1): ValidationResult {
   rows.forEach((r, y) => {
     if (r.length !== w) errors.push(`tiles: row ${y} length ${r.length} != ${w}`);
     [...r].forEach((ch, x) => {
-      if (ch !== '#' && !WALK_CHARS.has(ch)) errors.push(`tiles: bad char '${ch}' at ${x},${y}`);
+      if (ch !== '#' && !LEVEL_CHARS.has(ch)) errors.push(`tiles: bad char '${ch}' at ${x},${y}`);
     });
   });
   if (errors.length > 0) return { ok: false, errors };
 
-  // border must be fully walled
+  // border must be fully walled, except the exit door tile
+  const borderOk = (ch: string): boolean => ch === '#' || ch === 'E';
   for (let x = 0; x < w; x++) {
-    if (rows[0][x] !== '#') errors.push(`tiles: open border at ${x},0`);
-    if (rows[rows.length - 1][x] !== '#') errors.push(`tiles: open border at ${x},${rows.length - 1}`);
+    if (!borderOk(rows[0][x])) errors.push(`tiles: open border at ${x},0`);
+    if (!borderOk(rows[rows.length - 1][x])) errors.push(`tiles: open border at ${x},${rows.length - 1}`);
   }
   rows.forEach((r, y) => {
-    if (r[0] !== '#') errors.push(`tiles: open border at 0,${y}`);
-    if (r[w - 1] !== '#') errors.push(`tiles: open border at ${w - 1},${y}`);
+    if (!borderOk(r[0])) errors.push(`tiles: open border at 0,${y}`);
+    if (!borderOk(r[w - 1])) errors.push(`tiles: open border at ${w - 1},${y}`);
   });
+
+  // S/E census: exactly one S at the spawn, exactly one E at the exit.
+  // The exit sits IN the south border wall (a connected door, never a
+  // floating gate); the spawn stays interior.
+  {
+    const at = (x: number, y: number): string | undefined => rows[y]?.[x];
+    let sCount = 0;
+    let eCount = 0;
+    for (const r of rows) {
+      for (const ch of r) {
+        if (ch === 'S') sCount += 1;
+        if (ch === 'E') eCount += 1;
+      }
+    }
+    if (sCount !== 1 || at(level.spawn.x, level.spawn.y) !== 'S') {
+      errors.push('spawn: tiles must contain exactly one S, at the spawn tile');
+    }
+    if (eCount !== 1 || at(level.exit.x, level.exit.y) !== 'E') {
+      errors.push('exit: tiles must contain exactly one E, at the exit tile');
+    }
+    if (!(level.exit.y === rows.length - 1 && level.exit.x >= 1 && level.exit.x <= w - 2)) {
+      errors.push('exit: must sit in the south border wall (the door), not floating interior');
+    }
+    if (!(level.spawn.x > 0 && level.spawn.y > 0 && level.spawn.x < w - 1 && level.spawn.y < rows.length - 1)) {
+      errors.push('spawn: must be interior, not on the border');
+    }
+  }
+
+  // Wall connection rule: every '#' belongs to the shell (touches the
+  // border) or to an interior ruin run of 3+ connected tiles. Lone
+  // pillars and 2-stubs never render cleanly — interior obstacles must
+  // be furniture props with footprints instead.
+  {
+    const seen = new Set<string>();
+    for (let y = 0; y < rows.length; y++) {
+      for (let x = 0; x < w; x++) {
+        if (rows[y][x] !== '#' || seen.has(`${x},${y}`)) continue;
+        const group: Array<{ x: number; y: number }> = [];
+        const stack = [{ x, y }];
+        seen.add(`${x},${y}`);
+        let touchesBorder = false;
+        while (stack.length > 0) {
+          const cur = stack.pop()!;
+          group.push(cur);
+          if (cur.x === 0 || cur.y === 0 || cur.x === w - 1 || cur.y === rows.length - 1) {
+            touchesBorder = true;
+          }
+          for (const [nx, ny] of [[cur.x + 1, cur.y], [cur.x - 1, cur.y], [cur.x, cur.y + 1], [cur.x, cur.y - 1]]) {
+            const k = `${nx},${ny}`;
+            if (!seen.has(k) && rows[ny]?.[nx] === '#') {
+              seen.add(k);
+              stack.push({ x: nx, y: ny });
+            }
+          }
+        }
+        if (!touchesBorder && group.length < 3) {
+          errors.push(
+            `walls: free-floating ${group.length}-tile stub at ${group[0].x},${group[0].y} (interior runs need 3+ tiles — use a furniture prop instead)`,
+          );
+        }
+      }
+    }
+  }
 
   const inB = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < w && y < rows.length;
   const occ = new Map<string, string>(); // tile -> what occupies it

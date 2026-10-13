@@ -16,9 +16,8 @@ import { validateLevel } from '../level/validate';
 import { resolveTurn, waitTurn, type PuzzleEnemyState } from '../level/turn';
 import {
   CHARACTER_SET,
-  levelTextureKey,
-  parseEntitySprite,
   preloadSpritesForTheme,
+  textureKeyFor,
 } from '../level/catalog';
 import { themeExitSprites, themeGround, themeWallFor } from '../level/themeRender';
 import type { LevelDef, LevelTheme } from '../level/types';
@@ -176,8 +175,7 @@ export class LevelScene extends Phaser.Scene {
   }
 
   private textureFor(sprite: string): string {
-    const p = parseEntitySprite(sprite);
-    return levelTextureKey(p.pack as LevelTheme, p.base, p.dir);
+    return textureKeyFor(sprite);
   }
 
   private put(x: number, y: number, key: string, layer = 0.1): Phaser.GameObjects.Image {
@@ -204,20 +202,32 @@ export class LevelScene extends Phaser.Scene {
       for (const t of pr.footprint) grid.setWalkable(t, false);
     }
     this.grid = grid;
-    const isWall = (x: number, y: number): boolean => level.tiles[y]?.[x] === '#';
-    const groundKey = levelTextureKey(
-      level.theme,
-      parseEntitySprite(themeGround(level.theme)).base,
-      'S',
-    );
+    // Doors read as run-continuers so jambs meet the exit flush.
+    const isWall = (x: number, y: number): boolean => {
+      const ch = level.tiles[y]?.[x];
+      return ch === '#' || ch === 'E';
+    };
+    const W = level.tiles[0].length;
+    const H = level.tiles.length;
+    // Border walls face the interior (which side the room is on); interior
+    // ruin runs use the fixed compass rule.
+    const interiorOf = (x: number, y: number): 'N' | 'S' | 'E' | 'W' | undefined => {
+      if (x === 0) return 'E';
+      if (x === W - 1) return 'W';
+      if (y === 0) return 'S';
+      if (y === H - 1) return 'N';
+      return undefined;
+    };
+    const groundKey = textureKeyFor(themeGround(level.theme));
     level.tiles.forEach((row, y) => {
       [...row].forEach((ch, x) => {
+        // Ground under everything, walls included (like GameScene): tall
+        // wall feet sit above their tile's front vertex, so without this a
+        // void band shows between wall bases and the floor.
+        this.put(x, y, groundKey, -2);
         if (ch === '#') {
-          const wid = themeWallFor(level.theme, x, y, isWall);
-          const wp = parseEntitySprite(wid);
-          this.put(x, y, levelTextureKey(level.theme, wp.base, wp.dir), 0.15);
-        } else {
-          this.put(x, y, groundKey, -2);
+          const wid = themeWallFor(level.theme, x, y, isWall, interiorOf(x, y));
+          this.put(x, y, textureKeyFor(wid), 0.15);
         }
       });
     });
@@ -288,7 +298,7 @@ export class LevelScene extends Phaser.Scene {
     if (!this.grid) return;
     const cam = this.cameras.main;
     if (cam.width === 0 || cam.height === 0) return;
-    cam.setZoom(Math.max(0.55, Math.min(cam.width / 880, cam.height / 620, 1.35)));
+    cam.setZoom(Math.max(0.8, Math.min(cam.width / 720, cam.height / 520, 2.0)));
     if (this.playerSprite) cam.startFollow(this.playerSprite, false, 0.12, 0.12);
   }
 

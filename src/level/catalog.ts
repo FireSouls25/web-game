@@ -36,6 +36,8 @@ export interface ThemeCatalog {
   walls: string[];
   furniture: string[];
   pickups: string[];
+  /** compact 1-tile blockers (no wide overhang) for interior obstacles. */
+  blockers: string[];
   defaultChaser: string;
 }
 
@@ -63,12 +65,17 @@ export const THEME_CATALOGS: Record<LevelTheme, ThemeCatalog> = {
       'stoneColumnWood',
       'bridge',
     ],
+    blockers: ['woodenCrate', 'barrel', 'stoneColumn'],
     pickups: ['chestClosed', 'chestOpen', 'barrel', 'woodenCrate'],
     defaultChaser: 'dungeon:barrel:S',
   },
   library: {
     theme: 'library',
-    grounds: ['floorCarpet', 'floorCarpetSmall', 'floorCarpetEnd'],
+    // No usable floor of its own: floorCarpet* are floating rugs (art sits
+    // mid-image, not on the diamond) and are EXCLUDED from the vocabulary.
+    // themeRender.ts floors library rooms with dungeon planks instead.
+    // bookcaseFallen excluded too (lies flat -> renders floating).
+    grounds: [],
     walls: ['wallBooks', 'wallDoorway'],
     furniture: [
       'bookcaseBooks',
@@ -80,15 +87,19 @@ export const THEME_CATALOGS: Record<LevelTheme, ThemeCatalog> = {
       'displayCase',
       'bookStand',
     ],
+    blockers: ['bookStand', 'libraryChair', 'displayCase', 'bookcaseHalfBooks'],
     pickups: ['bookStand', 'candleStand', 'displayCaseBooks', 'displayCaseSword'],
-    defaultChaser: 'library:bookcaseFallen:S',
+    defaultChaser: 'library:bookcaseBooks:S',
   },
   farm: {
     theme: 'farm',
     grounds: ['dirt', 'dirtFarmland', 'planks'],
+    // woodWallCorner excluded: the corner sprites are narrow joint posts
+    // that float above the runs and leave gaps, so L-turns butt-joint
+    // through woodWall:W instead (see themeRender.ts).
     walls: [
       'woodWall',
-      'woodWallCorner',
+      'woodWallSupport',
       'woodWallDoorClosed',
       'woodWallDoorOpen',
       'woodWallDoorway',
@@ -97,16 +108,20 @@ export const THEME_CATALOGS: Record<LevelTheme, ThemeCatalog> = {
       'fenceHigh',
     ],
     furniture: ['hayBales', 'sack', 'sacksCrate', 'cornDouble', 'ladderStand', 'planksHigh'],
+    blockers: ['hayBales', 'sack', 'sacksCrate', 'ladderStand'],
     pickups: ['corn', 'cornDouble', 'sack', 'hay'],
     defaultChaser: 'farm:hayBales:S',
   },
   base: {
     theme: 'base',
-    grounds: ['base_grass_flat', 'base_grass_detail', 'square_grass_flat', 'base_stone_flat'],
+    // Square platforms only: base_* round tiles leave transparent corners
+    // (gaps) and floating stances, so they are EXCLUDED from the vocabulary.
+    grounds: ['square_grass_flat', 'square_stone_flat', 'square_wood_flat'],
     walls: [],
-    furniture: ['base_grass_high', 'square_stone_high', 'base_stone_high', 'base_wood_high'],
-    pickups: ['base_grass_high_detail', 'square_stone_high_detail'],
-    defaultChaser: 'base_grass_high:S',
+    furniture: ['square_stone_high', 'square_wood_high', 'square_grass_high'],
+    blockers: ['square_wood_high', 'square_stone_high', 'square_grass_high'],
+    pickups: ['square_stone_high_detail', 'square_grass_high_detail'],
+    defaultChaser: 'base:square_stone_high:S',
   },
 };
 
@@ -172,7 +187,7 @@ export const QUICK_PACK_PROPS: string[] = [
   'farm:hayBales',
   'farm:sack',
   'farm:cornDouble',
-  'base:base_grass_high',
+  'base:square_wood_high',
   'base:square_stone_high',
 ];
 
@@ -205,6 +220,17 @@ export function entityThumb(sprite: string): string {
 /** Phaser texture key for a real-pack sprite (matches preloadSpritesForTheme). */
 export function levelTextureKey(theme: LevelTheme, base: string, dir: string): string {
   return `lvl_${theme}_${base}_${dir}`;
+}
+
+/**
+ * Texture key for a pack-qualified sprite id ("dungeon:planks:S").
+ * ALWAYS use this instead of hand-building keys from the room theme:
+ * cross-pack sprites (library floor/doors) carry their own pack.
+ */
+export function textureKeyFor(sprite: string): string {
+  const { pack, base, dir } = parseEntitySprite(sprite);
+  if (pack === 'prototype') return `spr_prop_${base}_${dir}`;
+  return levelTextureKey(pack, base, dir);
 }
 
 export interface PreloadSprite {

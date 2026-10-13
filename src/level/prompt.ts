@@ -15,14 +15,21 @@ export interface LevelPrompt {
   user: string;
 }
 
-const LEGEND = `legend: '#' wall (blocked), '.' floor (walk), 'S' spawn floor (walk, exactly the spawn tile), 'E' exit floor (walk, exactly the exit tile)`;
+const LEGEND = `tiles use EXACTLY four chars: '#' wall (blocked), '.' floor (walk), 'S' spawn floor (exactly once, at spawn, interior), 'E' exit door (exactly once, at exit). No other chars exist — no P, >, G, furniture letters.`;
+
+const THEME_FLOOR_NOTE: Record<Difficulty['theme'], string> = {
+  dungeon: 'stone flags',
+  library: 'dark wood planks (dungeon set — the library ships no floor of its own; floorCarpet rugs are NOT floor tiles)',
+  farm: 'dirt',
+  base: 'square grass platforms (square_* only — round base_* tiles leave gaps)',
+};
 
 function vocabBlock(d: Difficulty): string {
   const cat = THEME_CATALOGS[d.theme];
   return [
     'sprite vocabulary for THIS room (use ONLY these bases, prefixed with the theme — anything else is rejected):',
-    `grounds (pick ONE for the whole room): ${cat.grounds.join(', ')}`,
-    `walls (use for '#'-adjacent decor only): ${cat.walls.join(', ') || '(none — open-air theme, no wall decor)'}`,
+    `floor (fixed by the renderer, do NOT emit floor tiles): ${THEME_FLOOR_NOTE[d.theme]}`,
+    `walls: ${cat.walls.join(', ') || '(none — open-air theme)'}`,
     `furniture (props): ${cat.furniture.join(', ')}`,
     `pickup sprites: ${cat.pickups.join(', ')}`,
     'example id: "dungeon:chestClosed:S" (= S facing) or "dungeon:chestClosed:E".',
@@ -72,7 +79,9 @@ export function buildLevelPrompt(d: Difficulty, seed: number): LevelPrompt {
     '- rectangle, border fully walled with #;',
     '- one connected walkable region: flood fill from spawn reaches exit + all pickups;',
     `- spawn↔exit manhattan >= ${Math.floor((d.width + d.height) / 2)};`,
-    '- S appears once (the spawn tile), E appears once (the exit tile);',
+    '- S appears once (the spawn tile, interior), E appears once (the exit tile);',
+    `- exit: the 'E' tile sits IN the south border wall (row ${d.height - 1}, not a corner): a connected door facing S, never floating interior; spawn stays off the border;`,
+    `- '#': the sealed border, plus optional interior ruin runs of 3+ connected tiles (no lone pillars or 2-stubs — obstacles are furniture props with footprints);`,
     '- never mix packs: every sprite starts with the room theme and uses ONLY the vocabulary above;',
     '- escapability: a solver plays your level with the exact game rules and it is REJECTED unless a full collect-and-exit path exists that never touches an enemy — never force a 1-wide dead-end around a pickup or the exit;',
     '- controls: the player steps N/E/S/W one tile per turn or WAITS in place; enemies still move on their tempo beats — leave breathing room;',

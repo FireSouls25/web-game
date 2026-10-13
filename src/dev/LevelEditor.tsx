@@ -11,14 +11,16 @@ import type { EditorBrush, EditorTool, ManorBridge, RoomSnapshot } from '../core
 import type { LockKey, RoomProp } from '../rooms/types';
 import {
   DIRS_4,
-  QUICK_PROPS,
-  SPRITE_BASES,
   TILE_BRUSHES,
-  parsePropSprite,
   propSpriteId,
-  thumbUrl,
   type IsoDir,
 } from '../rooms/spriteCatalog';
+import {
+  CATALOG_BASES,
+  QUICK_PACK_PROPS,
+  editorBaseDir,
+  entityThumb,
+} from '../level/catalog';
 
 const EDITOR_STORE_KEY = 'manor-loop-editor-v1';
 
@@ -112,7 +114,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
   const [roomId, setRoomId] = useState('');
   const [tool, setTool] = useState<Tool>('paint');
   const [brush, setBrush] = useState('#');
-  const [propBase, setPropBase] = useState('crate');
+  const [propBase, setPropBase] = useState('dungeon:woodenCrate');
   const [propDir, setPropDir] = useState<IsoDir>('S');
   const [propFilter, setPropFilter] = useState('');
   const [customChar, setCustomChar] = useState('');
@@ -195,7 +197,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
     const b = bridgeOf(game);
     if (b && roomId && selectedProp && tool === 'prop-edit') {
       const sel = snap?.props.find((p) => p.id === selectedProp);
-      if (sel) b.send({ kind: 'editorSetPropSprite', roomId, propId: selectedProp, sprite: propSpriteId(parsePropSprite(sel.sprite).base, next) });
+      if (sel) b.send({ kind: 'editorSetPropSprite', roomId, propId: selectedProp, sprite: propSpriteId(editorBaseDir(sel.sprite).base, next) });
     }
   }, [game, roomId, selectedProp, tool, snap, propDir]);
 
@@ -248,7 +250,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
 
   const filteredSprites = useMemo(() => {
     const q = propFilter.trim().toLowerCase();
-    return q ? SPRITE_BASES.filter((s) => s.toLowerCase().includes(q)) : [...SPRITE_BASES];
+    return q ? CATALOG_BASES.filter((s) => s.toLowerCase().includes(q)) : [...CATALOG_BASES];
   }, [propFilter]);
 
   const tileUsage = useMemo(() => {
@@ -258,7 +260,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
   }, [snap]);
 
   const selProp = snap?.props.find((p) => p.id === selectedProp) ?? null;
-  const selParsed = selProp ? parsePropSprite(selProp.sprite) : null;
+  const selParsed = selProp ? editorBaseDir(selProp.sprite) : null;
 
   const activeHint = TOOLS.find((t) => t.id === tool)?.hint ?? '';
   const walkOverrides = snap ? Object.keys(snap.walk).length : 0;
@@ -344,7 +346,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
               </span>
             ) : tool === 'prop-add' ? (
               <span className="le-sel">
-                <img src={thumbUrl(propBase, propDir)} alt="" width={44} height={44} />
+                <img src={entityThumb(propSpriteId(propBase, propDir))} alt="" width={44} height={44} />
                 <span>
                   placing <b>{propBase}:{propDir}</b>
                 </span>
@@ -352,7 +354,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
               </span>
             ) : tool === 'prop-edit' && selProp && selParsed ? (
               <span className="le-sel">
-                <img src={thumbUrl(selParsed.base, selParsed.dir)} alt="" width={44} height={44} />
+                <img src={entityThumb(selProp.sprite)} alt="" width={44} height={44} />
                 <span>
                   selected <b>{selParsed.base}:{selParsed.dir}</b> @ {selProp.x},{selProp.y}
                 </span>
@@ -451,14 +453,14 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
               </div>
               <div className="le-dim">quick picks</div>
               <div className="le-grid">
-                {QUICK_PROPS.map((s) => (
+                {QUICK_PACK_PROPS.map((s) => (
                   <button
                     key={s}
                     className={propBase === s ? 'on' : ''}
                     onClick={() => applyPropSprite(s, propDir)}
                     title={s}
                   >
-                    <img src={thumbUrl(s, propDir)} alt={s} width={48} height={48} />
+                    <img src={entityThumb(propSpriteId(s, propDir))} alt={s} width={48} height={48} />
                     <span>{s}</span>
                   </button>
                 ))}
@@ -472,7 +474,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
                     onClick={() => applyPropSprite(s, propDir)}
                     title={`${s}:${propDir}`}
                   >
-                    <img src={thumbUrl(s, propDir)} alt={s} width={48} height={48} />
+                    <img src={entityThumb(propSpriteId(s, propDir))} alt={s} width={48} height={48} />
                     <span>{s}</span>
                   </button>
                 ))}
@@ -485,7 +487,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
               <h4>Placed props ({snap.props.length})</h4>
               {selProp && selParsed && (
                 <div className="le-card">
-                  <img src={thumbUrl(selParsed.base, selParsed.dir)} alt="" width={72} height={72} />
+                  <img src={entityThumb(selProp.sprite)} alt="" width={72} height={72} />
                   <div>
                     <div><b>{selParsed.base}:{selParsed.dir}</b> @ {selProp.x},{selProp.y}</div>
                     <div className="le-row">
@@ -509,7 +511,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
               )}
               <div className="le-list">
                 {snap.props.map((pr) => {
-                  const parsed = parsePropSprite(pr.sprite);
+                  const parsed = editorBaseDir(pr.sprite);
                   return (
                     <button
                       key={pr.id}
@@ -522,7 +524,7 @@ export function LevelEditor({ game }: { game: Phaser.Game | null }) {
                       }}
                       title="select for editing"
                     >
-                      <img src={thumbUrl(parsed.base, parsed.dir)} alt="" width={28} height={28} />
+                      <img src={entityThumb(pr.sprite)} alt="" width={28} height={28} />
                       <span>{parsed.base}:{parsed.dir} @ {pr.x},{pr.y} {pr.walkable ? '✓' : '✕'}</span>
                     </button>
                   );

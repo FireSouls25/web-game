@@ -31,7 +31,19 @@ import type {
   RoomSnapshot,
 } from './bridge';
 import { SPRITE_BASES, parsePropSprite } from '../rooms/spriteCatalog';
+import {
+  CHARACTER_SET,
+  parseEntitySprite,
+  preloadSpritesForTheme,
+} from '../level/catalog';
+import type { LevelTheme } from '../level/types';
 import { noonsCrossed, resolveStep } from '../manor/turns';
+
+const LEVEL_THEMES: LevelTheme[] = ['dungeon', 'library', 'farm', 'base'];
+/** Phaser texture key for a real-pack sprite (mirrors catalog preload list). */
+export function levelTextureKey(theme: LevelTheme, base: string, dir: string): string {
+  return `lvl_${theme}_${base}_${dir}`;
+}
 
 export const GAME_SCENE = 'game';
 
@@ -323,6 +335,20 @@ export class GameScene extends Phaser.Scene {
 
   preload(): void {
     const iso = (base: string, dir: string) => `${BASE}prototype_sprites/${ISO}/${base}_${dir}.png`;
+    // Real theme packs (the level pipeline's only art): curated catalog
+    // sprites for all four themes, keys lvl_<theme>_<base>_<dir>.
+    for (const theme of LEVEL_THEMES) {
+      for (const s of preloadSpritesForTheme(theme, `lvl_${theme}`)) {
+        this.load.image(s.key, `${BASE}${s.file}`);
+      }
+    }
+    // Real character actors: the dungeon pack's Male set is the only
+    // character art across the four packs, so every theme uses it.
+    for (const d of CHARACTER_SET.facings) {
+      const c = (n: string) => `${BASE}${CHARACTER_SET.folder}/${CHARACTER_SET.prefix}_${d}_${n}.png`;
+      this.load.image(`male_${d}_idle`, c('Idle0'));
+      for (let i = 0; i < CHARACTER_SET.runFrames; i++) this.load.image(`male_${d}_run${i}`, c(`Run${i}`));
+    }
     // core tile actors (S facing; portal doors need both states)
     this.load.image('spr_floor', iso('floor', 'S'));
     this.load.image('spr_wall', iso('wall', 'S'));
@@ -503,8 +529,14 @@ export class GameScene extends Phaser.Scene {
     return tileFootScreen(x, y);
   }
 
-  /** Resolve a prop sprite id ("crate" | "wall:N") to a loaded texture key. */
+  /** Resolve a prop sprite id ("crate" | "wall:N" | "dungeon:chestClosed:S") to a loaded texture key. */
   private propTexture(sprite: string): string {
+    // Real-pack ids first (the level pipeline's only art).
+    const parsed = parseEntitySprite(sprite);
+    if (parsed.pack !== 'prototype') {
+      const key = levelTextureKey(parsed.pack, parsed.base, parsed.dir);
+      if (this.textures.exists(key)) return key;
+    }
     const { base, dir } = parsePropSprite(sprite);
     const key = `spr_prop_${base}_${dir}`;
     if (this.textures.exists(key)) return key;

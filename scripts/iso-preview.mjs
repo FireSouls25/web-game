@@ -4,10 +4,15 @@
  * checked without booting the game.
  *
  * Usage:
- *   node scripts/iso-preview.mjs <room.json> <out.png>
+ *   node scripts/iso-preview.mjs <room.json> <out.png> [theme]
  *
  * room.json: { "tiles": [...ascii...], "props": [{sprite:"wall:N",x,y}] }
  * Sprite ids use the same "base" / "base:DIR" convention as RoomProp.
+ * With a theme (dungeon|library|farm|base), pack-qualified prop sprites
+ * ("dungeon:chestClosed:S") resolve into that pack and floor tiles use
+ * the theme ground; wall/door/stair autotile still renders prototype art
+ * in both modes (layout checker, not a beauty render — in-game themes
+ * render through GameScene's real-pack preload).
  */
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -16,6 +21,18 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ISO = join(ROOT, 'public/prototype_sprites/Isometric');
+const THEME_ISO = {
+  dungeon: join(ROOT, 'public/dungeon_sprites/Isometric'),
+  library: join(ROOT, 'public/library_sprites/Isometric'),
+  farm: join(ROOT, 'public/farm_sprites/Isometric'),
+  base: join(ROOT, 'public/base_sprites/Isometric'),
+};
+const THEME_GROUND = {
+  dungeon: 'stone',
+  library: 'floorCarpet',
+  farm: 'dirt',
+  base: 'base_grass_flat',
+};
 
 const TW = 256; // native diamond footprint
 const TH = 128;
@@ -30,13 +47,19 @@ export function previewTileToScreen(x, y) {
 }
 
 function parseSprite(sprite) {
-  const i = sprite.indexOf(':');
-  if (i < 0) return { base: sprite, dir: 'S' };
-  return { base: sprite.slice(0, i), dir: sprite.slice(i + 1).toUpperCase() };
+  const parts = sprite.split(':');
+  if (parts.length === 1) return { pack: null, base: sprite, dir: 'S' };
+  if (parts.length === 2) {
+    // "pack:base" (= S facing) or legacy "base:DIR" — a real pack name disambiguates.
+    if (THEME_ISO[parts[0]]) return { pack: parts[0], base: parts[1], dir: 'S' };
+    return { pack: null, base: parts[0], dir: parts[1].toUpperCase() };
+  }
+  return { pack: THEME_ISO[parts[0]] ? parts[0] : null, base: parts[1], dir: parts[2].toUpperCase() };
 }
 
-function imgFor(base, dir) {
-  return join(ISO, `${base}_${dir}.png`);
+function imgFor(base, dir, pack) {
+  const root = (pack && THEME_ISO[pack]) || ISO;
+  return join(root, `${base}_${dir}.png`);
 }
 
 // --- wall autotile v1 (MUST match wallVariantFor in GameScene.ts) ---
@@ -183,11 +206,13 @@ export function doorSpriteFor(slot) {
 }
 
 function main() {
-  const [roomPath, outPath] = process.argv.slice(2);
+  const [roomPath, outPath, themeArg] = process.argv.slice(2);
   if (!roomPath || !outPath) {
-    console.error('usage: node scripts/iso-preview.mjs <room.json> <out.png>');
+    console.error('usage: node scripts/iso-preview.mjs <room.json> <out.png> [theme]');
     process.exit(1);
   }
+  const theme = THEME_ISO[themeArg] ? themeArg : null;
+  const groundBase = theme ? THEME_GROUND[theme] : 'floor';
   const room = JSON.parse(readFileSync(roomPath, 'utf8'));
   const tiles = room.tiles;
   const H = tiles.length;
@@ -233,7 +258,7 @@ function main() {
         if (x + y !== s) continue;
         const ch = tiles[y][x];
         const { sx, sy } = pos(x, y);
-        jobs.push({ img: imgFor('floor', 'S'), sx, sy });
+        jobs.push({ img: imgFor(groundBase, 'S', theme), sx, sy });
         if (ch === '#') {
           const v = process.env.WALLTEST ?? wallVariantFor(x, y, isRunWall, isOpen);
           const { base, dir } = parseSprite(v);
@@ -258,9 +283,9 @@ function main() {
     }
   }
   for (const pr of room.props ?? []) {
-    const { base, dir } = parseSprite(pr.sprite);
+    const { pack, base, dir } = parseSprite(pr.sprite);
     const { sx, sy } = pos(pr.x, pr.y);
-    jobs.push({ img: imgFor(base, dir), sx, sy });
+    jobs.push({ img: imgFor(base, dir, pack ?? theme), sx, sy });
   }
 
   const minSx = Math.min(...jobs.map((j) => j.sx)) - TW / 2;

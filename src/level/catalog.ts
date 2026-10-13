@@ -88,6 +88,7 @@ export const THEME_CATALOGS: Record<LevelTheme, ThemeCatalog> = {
     grounds: ['dirt', 'dirtFarmland', 'planks'],
     walls: [
       'woodWall',
+      'woodWallCorner',
       'woodWallDoorClosed',
       'woodWallDoorOpen',
       'woodWallDoorway',
@@ -103,7 +104,7 @@ export const THEME_CATALOGS: Record<LevelTheme, ThemeCatalog> = {
     theme: 'base',
     grounds: ['base_grass_flat', 'base_grass_detail', 'square_grass_flat', 'base_stone_flat'],
     walls: [],
-    furniture: ['base_grass_high', 'square_stone_high', 'base_wood_high'],
+    furniture: ['base_grass_high', 'square_stone_high', 'base_stone_high', 'base_wood_high'],
     pickups: ['base_grass_high_detail', 'square_stone_high_detail'],
     defaultChaser: 'base_grass_high:S',
   },
@@ -199,6 +200,11 @@ export function entityThumb(sprite: string): string {
     return `${b}prototype_sprites/Isometric/${bare}_${dir}.png`;
   }
   return `${b}${PACK_DIR[pack]}/Isometric/${base}_${dir}.png`;
+}
+
+/** Phaser texture key for a real-pack sprite (matches preloadSpritesForTheme). */
+export function levelTextureKey(theme: LevelTheme, base: string, dir: string): string {
+  return `lvl_${theme}_${base}_${dir}`;
 }
 
 export interface PreloadSprite {

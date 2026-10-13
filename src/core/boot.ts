@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GameScene, GAME_SCENE } from './GameScene';
+import { LevelScene, LEVEL_SCENE } from './LevelScene';
 import type { Clock } from '../time/TimeManager';
 import type { Dialogue } from '../text/TextEngine';
 
@@ -27,10 +28,10 @@ export function createGame(canvasParent: HTMLElement, initData?: GameInit): Phas
       width: window.innerWidth,
       height: window.innerHeight,
     },
-    scene: [GameScene],
+    scene: [GameScene, LevelScene],
     input: { keyboard: true },
   });
-  // Boot straight into the movement scene, optionally from a save file.
-  game.scene.start(GAME_SCENE, initData ?? {});
+  // DEV boots generated real-pack levels; prod boots the demo manor rooms.
+  game.scene.start(import.meta.env.DEV ? LEVEL_SCENE : GAME_SCENE, initData ?? {});
   return game;
 }

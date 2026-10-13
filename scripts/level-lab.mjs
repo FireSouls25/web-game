@@ -57,7 +57,8 @@ export { normalizeAiLevel, extractJson, designLevelWithAi, providerFromEnv } fro
 export { validateLevel, levelWalkability } from ${JSON.stringify(join(ROOT, 'src', 'level', 'validate.ts'))};
 export { fallbackLevel } from ${JSON.stringify(join(ROOT, 'src', 'level', 'fallback.ts'))};
 export { certifyAvoidable, prepareSolver, applyAction } from ${JSON.stringify(join(ROOT, 'src', 'level', 'solve.ts'))};
-export { isKnownSprite, preloadSpritesForTheme, CATALOG_BASES, THEME_CATALOGS } from ${JSON.stringify(join(ROOT, 'src', 'level', 'catalog.ts'))};
+export { isKnownSprite, preloadSpritesForTheme, levelTextureKey, CHARACTER_SET, CATALOG_BASES, THEME_CATALOGS } from ${JSON.stringify(join(ROOT, 'src', 'level', 'catalog.ts'))};
+export { themeGround, themeWallFor, themeExitSprites } from ${JSON.stringify(join(ROOT, 'src', 'level', 'themeRender.ts'))};
 export { bfsNextStep, bfsDistance, floodFill } from ${JSON.stringify(join(ROOT, 'src', 'enemies', 'pathfind.ts'))};
 export { TileActor } from ${JSON.stringify(join(ROOT, 'src', 'movement', 'IsoTiles.ts'))};
 export { resolveTurn, waitTurn } from ${JSON.stringify(join(ROOT, 'src', 'level', 'turn.ts'))};
@@ -361,6 +362,54 @@ for (const dp of [1, 2, 4]) {
   check(`twin-d${dp}`, ok, why);
 }
 console.log(`  compared ${diffSteps} transitions`);
+
+// 12. theme render map: every key the scene requests must preload + exist -----
+console.log('12. theme render map (scene keys resolve to real files)');
+for (const th of ['dungeon', 'library', 'farm', 'base']) {
+  const pre = new Map(L.preloadSpritesForTheme(th, `lvl_${th}`).map((p) => [p.key, p.file]));
+  const need = [];
+  need.push(L.themeGround(th));
+  // wall orientations on a plus-shaped fixture
+  const isWall = (x, y) => x === 1 && y >= 0 && y <= 2 ? true : y === 1 && x >= 0 && x <= 2;
+  need.push(L.themeWallFor(th, 1, 1, isWall));
+  need.push(L.themeWallFor(th, 0, 1, isWall));
+  need.push(L.themeWallFor(th, 1, 0, isWall));
+  const ex = L.themeExitSprites(th);
+  need.push(ex.closed, ex.open);
+  let okIds = true;
+  let okKeys = true;
+  const missingFiles = [];
+  for (const id of need) {
+    const m = id.match(/^(dungeon|library|farm|base):([^:]+):([NESW])$/);
+    if (!m || !L.isKnownSprite(id)) { okIds = false; break; }
+    const key = L.levelTextureKey(m[1], m[2], m[3]);
+    const file = pre.get(key);
+    if (!file) { okKeys = false; break; }
+    if (!existsSync(join(ROOT, 'public', file))) missingFiles.push(file);
+  }
+  check(`render-${th}-ids-known`, okIds, need.join(' '));
+  check(`render-${th}-keys-preloaded`, okKeys);
+  check(`render-${th}-files-exist`, missingFiles.length === 0, missingFiles.slice(0, 2).join('; '));
+  // a real fallback level's pickups/props resolve too
+  const lv = L.fallbackLevel({ seed: seedArg, theme: th, depth: 2 });
+  const sprites = [...lv.pickups.map((p) => p.sprite), ...lv.props.map((p) => p.sprite)];
+  check(
+    `render-${th}-level-sprites-resolve`,
+    sprites.every((s) => {
+      const m = s.match(/^(dungeon|library|farm|base):([^:]+):([NESW])$/);
+      return m !== null && pre.has(L.levelTextureKey(m[1], m[2], m[3]));
+    }),
+    sprites.join(' '),
+  );
+}
+for (const d of L.CHARACTER_SET.facings) {
+  const idle = `dungeon_sprites/Characters/Male/Male_${d}_Idle0.png`;
+  const run5 = `dungeon_sprites/Characters/Male/Male_${d}_Run5.png`;
+  if (!existsSync(join(ROOT, 'public', idle)) || !existsSync(join(ROOT, 'public', run5))) {
+    check(`render-male-${d}-files`, false, idle);
+  }
+}
+check('render-male-files', true);
 
 // 7 + 8. mock file + prompt ------------------------------------------------------------
 if (args['mock-file']) {

@@ -19,7 +19,7 @@ library, no state library — all three are ~50-line hand modules.
 
 | Script | What |
 |---|---|
-| `npm run dev` | Dev server with test rooms + editor |
+| `npm run dev` | Dev server: generated real-pack levels (`LevelScene`) + editor |
 | `npm run build` | `tsc --noEmit && vite build` (prod; dev code eliminated) |
 | `npm run build:dev` | Dev-mode bundle (keeps test rooms) |
 | `npm run typecheck` | `tsc --noEmit` |

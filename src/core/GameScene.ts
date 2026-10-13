@@ -33,6 +33,7 @@ import type {
 import { SPRITE_BASES, parsePropSprite } from '../rooms/spriteCatalog';
 import {
   CHARACTER_SET,
+  levelTextureKey,
   parseEntitySprite,
   preloadSpritesForTheme,
 } from '../level/catalog';
@@ -40,10 +41,6 @@ import type { LevelTheme } from '../level/types';
 import { noonsCrossed, resolveStep } from '../manor/turns';
 
 const LEVEL_THEMES: LevelTheme[] = ['dungeon', 'library', 'farm', 'base'];
-/** Phaser texture key for a real-pack sprite (mirrors catalog preload list). */
-export function levelTextureKey(theme: LevelTheme, base: string, dir: string): string {
-  return `lvl_${theme}_${base}_${dir}`;
-}
 
 export const GAME_SCENE = 'game';
 

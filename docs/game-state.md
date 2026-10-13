@@ -39,12 +39,22 @@ One step per keypress edge.
 
 ## Dev profile (`npm run dev` only)
 
-11 test rooms replicating `manor-layout.md` (`src/dev/testLevels.ts`), time
-slider + day jumps + room jumper (`DevTools.tsx`, which drives the
-`timeManager` singleton directly rather than the scene's injected clock —
-dev-only exception), full level editor
-(`LevelEditor.tsx`): paint, spawn, hitboxes, props, doors, resize, export to
-`manor.ts`. None of it ships in prod (see `tech-stack.md` guards).
+Boots the real game: `LevelScene` (`src/core/LevelScene.ts`) generates a
+certified `LevelDef` per depth (fallback generator today, AI via
+`/api/generate-level` next) and renders it with real theme-pack sprites
+— ground, theme walls, locking exit door, pickups, red-tinted chasers
+(dungeon `Male` actors on all themes). Arrows/WASD move, `Space` waits,
+`R` retries the same seed, `N` jumps to the next depth; death reloads the
+level, the exit advances depth (theme rotates via the difficulty curve).
+Status (depth/theme/keys) is a Phaser HUD line; pickups, deaths, and
+clears narrate through the dialogue box.
+
+Still around (legacy v1): 11 test rooms replicating `manor-layout.md`
+(`src/dev/testLevels.ts`, reachable only inside `GameScene`, which dev no
+longer boots), time slider + day jumps + room jumper (`DevTools.tsx` —
+its room/editor commands no-op against the level scene), full level editor
+(`LevelEditor.tsx`, now on the real-pack palette). None of it ships in
+prod (see `tech-stack.md` guards).
 
 ## Known limits (by design, for now)
 

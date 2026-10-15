@@ -44,7 +44,7 @@ export interface ThemeCatalog {
 export const THEME_CATALOGS: Record<LevelTheme, ThemeCatalog> = {
   dungeon: {
     theme: 'dungeon',
-    grounds: ['stone', 'stoneTile', 'dirt', 'dirtTiles', 'planks'],
+    grounds: ['stone', 'stoneTile', 'stoneUneven', 'stoneInset', 'dirt', 'dirtTiles', 'planks'],
     walls: [
       'stoneWall',
       'stoneWallDoor',
@@ -94,9 +94,9 @@ export const THEME_CATALOGS: Record<LevelTheme, ThemeCatalog> = {
   farm: {
     theme: 'farm',
     grounds: ['dirt', 'dirtFarmland', 'planks'],
-    // woodWallCorner excluded: the corner sprites are narrow joint posts
-    // that float above the runs and leave gaps, so L-turns butt-joint
-    // through woodWall:W instead (see themeRender.ts).
+    // woodWallCorner excluded: the corner sprites are narrow joint posts,
+    // so L-turns render both woodWall edge panels instead (see
+    // themeRender.ts farmCornerPair).
     walls: [
       'woodWall',
       'woodWallSupport',

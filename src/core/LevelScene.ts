@@ -19,7 +19,7 @@ import {
   preloadSpritesForTheme,
   textureKeyFor,
 } from '../level/catalog';
-import { themeExitSprites, themeGround, themeWallFor } from '../level/themeRender';
+import { themeExitSprites, themeGroundFor, themeSubstrate, themeWallFor } from '../level/themeRender';
 import type { LevelDef, LevelTheme } from '../level/types';
 import { textEngine, type Dialogue } from '../text/TextEngine';
 import type {
@@ -218,19 +218,35 @@ export class LevelScene extends Phaser.Scene {
       if (y === H - 1) return 'N';
       return undefined;
     };
-    const groundKey = textureKeyFor(themeGround(level.theme));
+    // Grounds ride far below everything so neighbor tiles can never cover
+    // wall feet; per-tile variety + base substrate; farm L-corners render
+    // both edge panels ('a+b' ids); exit landing doorstep outside the door.
+    const substrateKey = themeSubstrate(level.theme);
     level.tiles.forEach((row, y) => {
       [...row].forEach((ch, x) => {
         // Ground under everything, walls included (like GameScene): tall
         // wall feet sit above their tile's front vertex, so without this a
         // void band shows between wall bases and the floor.
-        this.put(x, y, groundKey, -2);
+        if (substrateKey) this.put(x, y, textureKeyFor(substrateKey), -1000);
+        this.put(x, y, textureKeyFor(themeGroundFor(level.theme, x, y)), -1000);
         if (ch === '#') {
           const wid = themeWallFor(level.theme, x, y, isWall, interiorOf(x, y));
-          this.put(x, y, textureKeyFor(wid), 0.15);
+          for (const one of wid.split('+')) this.put(x, y, textureKeyFor(one), 0.15);
         }
       });
     });
+    {
+      // Doorstep outside the exit: the open doorway looks onto floor,
+      // not void, and the destination reads before stepping through.
+      const dx = level.exit.x === 0 ? -1 : level.exit.x === W - 1 ? 1 : 0;
+      const dy = level.exit.y === 0 ? -1 : level.exit.y === H - 1 ? 1 : 0;
+      if (dx !== 0 || dy !== 0) {
+        const lx = level.exit.x + dx;
+        const ly = level.exit.y + dy;
+        if (substrateKey) this.put(lx, ly, textureKeyFor(substrateKey), -1000);
+        this.put(lx, ly, textureKeyFor(themeGroundFor(level.theme, level.exit.x, level.exit.y)), -1000);
+      }
+    }
     for (const pr of level.props) {
       this.put(pr.anchor.x, pr.anchor.y, this.textureFor(pr.sprite), 0.12);
     }

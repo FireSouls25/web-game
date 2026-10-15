@@ -5,11 +5,14 @@ import type { LevelTheme } from './types';
  * Pure (no Phaser) so level-lab pins every emitted id to KNOWN_SPRITES.
  *
  * Level tiles only use '#', '.', 'S', 'E' — no doors/windows/stairs chars —
- * so walls render from each theme's wall family with GameScene-like
- * orientation (x-runs face S, y-runs face W, corners use the corner piece).
- * Library and base have no corner/door variants in their packs; they reuse
- * the base wall (library) or a tinted block (base exit) — placeholders
- * until those packs grow, documented at each site.
+ * so walls render from each theme's wall family with border-specific
+ * facings: every border shows its OUTER edge (x-runs face N on the south
+ * border else S; y-runs face W on the east border else E), which keeps the
+ * exterior silhouette clean and the wall feet on the tile. L-turns take
+ * the arm-matched convex corner block; farm has no L-block so its
+ * corners render both edge panels ('a+b' ids — renderers split on '+').
+ * Library and base have no corner/door variants in their packs; library
+ * reuses the dungeon stone corner and doorway, base reuses a block.
  */
 
 /**
@@ -28,6 +31,51 @@ const GROUND_FILE: Record<LevelTheme, { pack: string; base: string }> = {
 export function themeGround(theme: LevelTheme): string {
   const g = GROUND_FILE[theme];
   return `${g.pack}:${g.base}:S`;
+}
+
+/** Deterministic 0..1 hash for per-tile ground variation (stable per tile). */
+function hash2(x: number, y: number, salt: number): number {
+  let h = (x * 374761393 + y * 668265263 + salt * 974634211) | 0;
+  h = (h ^ (h >>> 13)) | 0;
+  h = (h * 1274126177) | 0;
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
+}
+
+/**
+ * Ground sprite id for a floor tile, with bounded deterministic variety:
+ * dungeon mixes uneven/tile/inset/dirt accents into the stone; farm
+ * rotates the dirt facing per tile with tilled patches; library stays
+ * planks and base stays grass (their variety comes from rugs/substrate
+ * and platform edges, verified cleaner as singles).
+ */
+export function themeGroundFor(theme: LevelTheme, x: number, y: number): string {
+  switch (theme) {
+    case 'dungeon': {
+      // Accents cluster in 2x2 blocks and stay on the same plane: raised
+      // stoneTile reads as holes, inset panels as pits, dirtTiles as
+      // stains (all verified in renders). Uneven mottling is the only
+      // safe wear accent.
+      const b = hash2(Math.floor(x / 2), Math.floor(y / 2), 7);
+      return b < 0.78 ? 'dungeon:stone:S' : 'dungeon:stoneUneven:S';
+    }
+    case 'farm': {
+      if (hash2(x, y, 21) < 0.14) return 'farm:dirtFarmland:S';
+      const dirs = ['N', 'E', 'S', 'W'] as const;
+      return `farm:dirt:${dirs[Math.floor(hash2(x, y, 7) * 4) % 4]}`;
+    }
+    default:
+      return themeGround(theme);
+  }
+}
+
+/**
+ * Extra substrate sprite rendered UNDER a theme's ground (same tile, same
+ * layer, painted first): base pads float over void at platform gaps, so
+ * a stone slab beneath closes the see-through seams. Null for themes
+ * whose grounds are already full-bleed.
+ */
+export function themeSubstrate(theme: LevelTheme): string | null {
+  return theme === 'base' ? 'dungeon:stone:S' : null;
 }
 
 const WALL_BASE: Record<LevelTheme, string> = {
@@ -51,32 +99,16 @@ const WALL_PILLAR: Record<LevelTheme, string> = {
 };
 
 /**
- * Y-run facing per theme, chosen by LOOKING at the sprites (fronts vs
- * backs), not by convention: dungeon/farm/base pieces are symmetric, but
- * wallBooks shows shelves only on S and E (N/W are plain stone backs).
- */
-const WALL_YDIR: Record<LevelTheme, string> = {
-  dungeon: 'W',
-  library: 'E',
-  farm: 'W',
-  base: 'W',
-};
-
-/**
  * Convex corner block per theme. Library has no corner piece of its own,
  * so it reuses the dungeon stone corner: wallBooks carries stone jambs in
  * the same Kenney light, so a stone pier between shelf runs reads as built.
  *
- * Facing choice is lean-matched, not arm-matched: every wall art leans to
- * one side (S runs lean east, W runs lean east, E runs lean west). The
- * centered S tower covers the (e,s)/(w,n) diagonal pair; the east-leaning
- * W block covers (s,w) and (n,e): its mass sits over the x-run ends (whose
- * west tips are thin) and gives a clean outer silhouette on the east side.
- * The west-leaning E block chips the skyline and notches the south face;
- * the short N block dents below run tops: neither is used for L-turns.
- * Farm has no L-block at all (its corner sprites are narrow joint posts
- * that float above the runs), so farm L-turns bypass this table and
- * butt-joint through the y-run.
+ * Facing is arm-matched: each L-turn takes the corner facing whose arms
+ * run along the same edges (es->S, sw->W, ne->E, wn->N), so both run ends
+ * tuck under the block's mass and the exterior silhouette stays clean.
+ * Farm has no L-block (its corner sprites are narrow joint posts), so
+ * farm L-turns render BOTH edge panels ('a+b' ids) forming a real L-joint.
+ * Base pads are symmetric blocks; corners render the block itself.
  */
 const WALL_CORNER_FILE: Record<LevelTheme, { pack: string; base: string }> = {
   dungeon: { pack: 'dungeon', base: 'stoneWallCorner' },
@@ -85,22 +117,29 @@ const WALL_CORNER_FILE: Record<LevelTheme, { pack: string; base: string }> = {
   base: { pack: 'base', base: 'square_stone_high' },
 };
 
+/** Farm L-corner as both edge panels (no L-block in the pack). */
+function farmCornerPair(e: boolean, s: boolean, w: boolean, n: boolean): string {
+  if (e && s) return 'farm:woodWall:E+farm:woodWall:S';
+  if (s && w) return 'farm:woodWall:S+farm:woodWall:W';
+  if (n && e) return 'farm:woodWall:E+farm:woodWall:N';
+  return 'farm:woodWall:W+farm:woodWall:N'; // w && n
+}
+
 /**
  * Wall sprite id for a '#' tile from its 4-neighborhood — the connection
- * rules. Every sprite may only side tiles it visually joins:
- * - straight runs share one facing (x-runs S, y-runs W), so side faces
- *   tile continuously with no notches;
- * - L-turns take the lean-matched convex corner block: (e,s)->S, (w,n)->S,
- *   (s,w)->W, (n,e)->W. Farm has no
- *   L-block, so its L-turns butt-joint: the y-run continues through and
- *   the x-run ends into its side (verified joint, no floating posts);
- * - T-junctions/crossings run straight through the majority axis (the
- *   side arm butts its end face into the run, like real masonry);
+ * rules. Every border shows its OUTER edge (x-runs face N on the south
+ * border else S; y-runs face W on the east border else E), so the
+ * exterior silhouette is clean and low fronts let you see over them:
+ * - straight runs share one facing per border, tiling continuously;
+ * - L-turns take the arm-matched convex corner block: (e,s)->S, (s,w)->W,
+ *   (n,e)->E, (w,n)->N. Farm has no L-block, so its L-turns render both
+ *   edge panels ('a+b' — renderers split on '+') forming a real L-joint;
+ * - T-junctions/crossings run straight through the majority axis with
+ *   the same border facings (the side arm butts into the run);
  * - isolated tiles become pillars, never a lone wall block.
  *
- * Facing baselines differ per art (S walls sit ~12px above W walls at
- * native scale); the wide corner blocks and panel overlaps hide the step
- * at joints, so no per-sprite offset is needed for border rooms.
+ * Base pads are symmetric blocks and keep the old faces (x-runs S,
+ * y-runs W, corners the block itself).
  */
 /** Direction from a wall tile toward the room interior (border tiles). */
 export type InteriorSide = 'N' | 'S' | 'E' | 'W';
@@ -118,44 +157,33 @@ export function themeWallFor(
   const w = isWall(x - 1, y);
   const count = (n ? 1 : 0) + (s ? 1 : 0) + (e ? 1 : 0) + (w ? 1 : 0);
   if (count === 0) return `${theme}:${WALL_PILLAR[theme]}:S`;
-  // Library fronts exist only on S/E: runs whose interior faces N/W get
-  // the low half-shelf (faced outward) so you see over it instead of
-  // stone backs. Other themes are symmetric and stay tall everywhere.
-  if (theme === 'library') {
-    const xRun = (int: InteriorSide | undefined): string =>
-      int === 'N' ? 'library:bookcaseHalfBooks:S' : 'library:wallBooks:S';
-    const yRun = (int: InteriorSide | undefined): string =>
-      int === 'W' ? 'library:bookcaseHalfBooks:E' : 'library:wallBooks:E';
+  // Base pads are symmetric: fixed faces, block corners (unchanged).
+  if (theme === 'base') {
     const alongX = e || w;
     const alongY = n || s;
-    if (alongX && !alongY) return xRun(interior);
-    if (alongY && !alongX) return yRun(interior);
-    if (count === 2) {
-      const corner = WALL_CORNER_FILE[theme];
-      const cid = `${corner.pack}:${corner.base}`;
-      if (e && s) return `${cid}:S`;
-      if (w && n) return `${cid}:S`;
-      return `${cid}:W`; // (s,w) and (n,e) both take the east-leaning block
-    }
-    return e && w ? xRun(interior) : yRun(interior);
+    if (alongX && !alongY) return 'base:square_stone_high:S';
+    if (alongY && !alongX) return 'base:square_stone_high:W';
+    if (count === 2) return 'base:square_stone_high:S';
+    return e && w ? 'base:square_stone_high:S' : 'base:square_stone_high:W';
   }
+  const base = WALL_BASE[theme];
+  const xFace = interior === 'N' ? 'N' : 'S';
+  const yFace = interior === 'W' ? 'W' : 'E';
   const alongX = e || w;
   const alongY = n || s;
-  const yDir = WALL_YDIR[theme];
-  if (alongX && !alongY) return `${theme}:${WALL_BASE[theme]}:S`;
-  if (alongY && !alongX) return `${theme}:${WALL_BASE[theme]}:${yDir}`;
-  const corner = WALL_CORNER_FILE[theme];
-  const cid = `${corner.pack}:${corner.base}`;
+  if (alongX && !alongY) return `${theme}:${base}:${xFace}`;
+  if (alongY && !alongX) return `${theme}:${base}:${yFace}`;
   if (count === 2) {
-    // Farm corner sprites are joint posts, not L-blocks: butt-joint the
-    // y-run straight through instead (verified connected in renders).
-    if (theme === 'farm') return `${theme}:${WALL_BASE[theme]}:${yDir}`;
+    if (theme === 'farm') return farmCornerPair(e, s, w, n);
+    const corner = WALL_CORNER_FILE[theme];
+    const cid = `${corner.pack}:${corner.base}`;
     if (e && s) return `${cid}:S`;
-    if (w && n) return `${cid}:S`;
-    return `${cid}:W`; // (s,w) and (n,e) both take the east-leaning block
+    if (s && w) return `${cid}:W`;
+    if (n && e) return `${cid}:E`;
+    return `${cid}:N`; // w && n
   }
   // T-junction or crossing: straight through the majority axis.
-  return `${theme}:${WALL_BASE[theme]}:${e && w ? 'S' : yDir}`;
+  return e && w ? `${theme}:${base}:${xFace}` : `${theme}:${base}:${yFace}`;
 }
 
 export interface ExitSprites {
@@ -168,15 +196,19 @@ export interface ExitSprites {
   tintClosed?: number;
 }
 
-/** Exit-door sprites: locked (keys remain) vs unlocked. */
+/**
+ * Exit-door sprites: locked (keys remain) vs unlocked. Doors sit in the
+ * south border run, which faces N (outer edge), so doors face N too and
+ * share the run's height — no step at the jambs.
+ */
 export function themeExitSprites(theme: LevelTheme): ExitSprites {
   switch (theme) {
     case 'dungeon':
-      return { closed: 'dungeon:stoneWallDoorClosed:S', open: 'dungeon:stoneWallDoorOpen:S' };
+      return { closed: 'dungeon:stoneWallDoorClosed:N', open: 'dungeon:stoneWallDoorOpen:N' };
     case 'farm':
-      return { closed: 'farm:woodWallDoorClosed:S', open: 'farm:woodWallDoorOpen:S' };
+      return { closed: 'farm:woodWallDoorClosed:N', open: 'farm:woodWallDoorOpen:N' };
     case 'library':
-      return { closed: 'library:wallDoorway:S', open: 'library:wallDoorway:S', tintClosed: 0x8899bb };
+      return { closed: 'library:wallDoorway:N', open: 'library:wallDoorway:N', tintClosed: 0x8899bb };
     case 'base':
       return { closed: 'base:square_stone_high:S', open: 'base:square_stone_high:S', tintClosed: 0x8899bb };
   }

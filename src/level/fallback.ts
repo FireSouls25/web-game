@@ -119,8 +119,12 @@ export function fallbackLevel(opts: FallbackOpts): LevelDef {
 
   for (let attempt = 0; attempt < 40; attempt++) {
     const rnd = mulberry32(opts.seed * 1000 + attempt * 77 + depth);
-    // '#' is border-only: interior obstacles are furniture props (crates,
-    // shelves, bales), which read as objects instead of broken wall stubs.
+    // '#' is the border shell plus interior ruin stubs (dungeon/farm):
+    // short straight runs that break up big rooms. The validator allows
+    // 3+ connected interior tiles; connectivity below rejects
+    // disconnecting placements (the attempt loop just tries again).
+    // Other interior obstacles are furniture props (crates, shelves,
+    // bales), which read as objects instead of broken wall stubs.
     const tiles: string[][] = Array.from({ length: height }, (_, y) =>
       Array.from({ length: width }, (_, x) =>
         x === 0 || y === 0 || x === width - 1 || y === height - 1 ? '#' : '.',
@@ -143,6 +147,38 @@ export function fallbackLevel(opts: FallbackOpts): LevelDef {
     }
     tiles[spawn.y][spawn.x] = 'S';
     tiles[exit.y][exit.x] = 'E';
+    // Ruin stubs (dungeon/farm, big rooms only): 1-2 straight segments,
+    // 3-4 tiles, kept off the border, spawn/exit clearings and each other
+    // so they can't merge into room-bisecting runs.
+    const ruinTiles: TilePos[] = [];
+    if ((theme === 'dungeon' || theme === 'farm') && width >= 11 && height >= 10) {
+      const segs = 1 + Math.floor(rnd() * 2);
+      for (let sgi = 0; sgi < segs; sgi++) {
+        const len = 3 + Math.floor(rnd() * 2);
+        const horiz = rnd() < 0.5;
+        const x0 = 2 + Math.floor(rnd() * Math.max(1, width - 3 - (horiz ? len : 0)));
+        const y0 = 2 + Math.floor(rnd() * Math.max(1, height - 3 - (horiz ? 0 : len)));
+        const seg: TilePos[] = [];
+        let ok = true;
+        for (let i = 0; i < len; i++) {
+          const tx = x0 + (horiz ? i : 0);
+          const ty = y0 + (horiz ? 0 : i);
+          if (tx < 2 || ty < 2 || tx > width - 3 || ty > height - 3 || tiles[ty][tx] !== '.') {
+            ok = false;
+            break;
+          }
+          if (Math.abs(tx - spawn.x) + Math.abs(ty - spawn.y) < 4) { ok = false; break; }
+          if (Math.abs(tx - exit.x) + Math.abs(ty - exit.y) < 3) { ok = false; break; }
+          if (ruinTiles.some((t) => Math.abs(t.x - tx) + Math.abs(t.y - ty) < 2)) { ok = false; break; }
+          seg.push({ x: tx, y: ty });
+        }
+        if (!ok) continue;
+        for (const t of seg) {
+          tiles[t.y][t.x] = '#';
+          ruinTiles.push(t);
+        }
+      }
+    }
 
     const rows = tiles.map((r) => r.join(''));
     const walk = (t: TilePos): boolean => {
@@ -225,16 +261,75 @@ export function fallbackLevel(opts: FallbackOpts): LevelDef {
       ...enemies.map((e) => `${e.x},${e.y}`),
       ...patrols.flatMap((e) => (e.path ?? []).map((t) => `${t.x},${t.y}`)),
     ]);
+    const props: LevelDef['props'] = [];
+    // Signature ensembles per theme (blocking, spaced): library stack
+    // aisles + reading tables, farm pen fragments. Placed before generic
+    // props so the set-pieces get the best floor; the final validator
+    // still gates connectivity, so bad placements just retry.
+    const ensembleTaken: TilePos[] = [];
+    const farFromEnsemble = (t: TilePos): boolean =>
+      ensembleTaken.every((u) => Math.abs(u.x - t.x) + Math.abs(u.y - t.y) >= 2);
+    const claimRun = (spriteBase: string, len: number, idPrefix: string): boolean => {
+      for (let tries = 0; tries < 30; tries++) {
+        const horiz = rnd() < 0.5;
+        const sx = 1 + Math.floor(rnd() * (width - 2));
+        const sy = 1 + Math.floor(rnd() * (height - 2));
+        const cells: TilePos[] = [];
+        let ok = true;
+        for (let i = 0; i < len; i++) {
+          const tx = sx + (horiz ? i : 0);
+          const ty = sy + (horiz ? 0 : i);
+          if (tx < 1 || ty < 1 || tx > width - 2 || ty > height - 2 || rows[ty][tx] !== '.') {
+            ok = false;
+            break;
+          }
+          if (taken.has(`${tx},${ty}`) || !farFromEnsemble({ x: tx, y: ty })) {
+            ok = false;
+            break;
+          }
+          if (manhattan({ x: tx, y: ty }, spawn) < 3) { ok = false; break; }
+          cells.push({ x: tx, y: ty });
+        }
+        if (!ok) continue;
+        cells.forEach((t) => {
+          taken.add(`${t.x},${t.y}`);
+          ensembleTaken.push(t);
+          props.push({
+            id: `${idPrefix}_${props.length + 1}`,
+            sprite: `${theme}:${spriteBase}:S`,
+            anchor: { ...t },
+            footprint: [{ ...t }],
+            blocksMovement: true,
+          });
+        });
+        return true;
+      }
+      return false;
+    };
+    const bigRoom = width >= 11 && height >= 10;
+    if (theme === 'library' && bigRoom) {
+      const runs = width >= 13 ? 2 : 1;
+      for (let r = 0; r < runs; r++) claimRun('bookcaseWideBooks', 2 + Math.floor(rnd() * 2), 'stack');
+      if (rnd() < 0.6) claimRun(rnd() < 0.5 ? 'longTable' : 'longTableLarge', 1, 'table');
+    }
+    if (theme === 'farm' && bigRoom) {
+      const pens = 1 + (rnd() < 0.4 ? 1 : 0);
+      for (let r = 0; r < pens; r++) claimRun('fenceLow', 2 + Math.floor(rnd() * 2), 'pen');
+    }
     const free = floors.filter(
       (t) => !taken.has(`${t.x},${t.y}`) && manhattan(t, spawn) >= 2,
     );
     const propsWant = Math.min(free.length, Math.floor((width * height) / 28) + depth);
-    const props: LevelDef['props'] = [];
+    const adjacentWall = (t: TilePos): boolean =>
+      rows[t.y - 1]?.[t.x] === '#' || rows[t.y + 1]?.[t.x] === '#' ||
+      rows[t.y]?.[t.x - 1] === '#' || rows[t.y]?.[t.x + 1] === '#';
     for (let i = 0; i < propsWant; i++) {
       const t = free[(i * 2 + Math.floor(rnd() * free.length)) % free.length];
       if (taken.has(`${t.x},${t.y}`)) continue;
-      taken.add(`${t.x},${t.y}`);
       const base = cat.blockers[(i + attempt) % cat.blockers.length];
+      // Ladders lean: only against a wall (border or ruin stub).
+      if (base === 'ladderStand' && !adjacentWall(t)) continue;
+      taken.add(`${t.x},${t.y}`);
       props.push({
         id: `prop_${i + 1}`,
         sprite: `${theme}:${base}:S`,

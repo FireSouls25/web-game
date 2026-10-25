@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import { GameScene, GAME_SCENE } from './GameScene';
 import { LevelScene, LEVEL_SCENE } from './LevelScene';
 import type { Clock } from '../time/TimeManager';
 import type { Dialogue } from '../text/TextEngine';
@@ -30,11 +29,14 @@ export function createGame(canvasParent: HTMLElement, initData?: GameInit): Phas
     },
     // Only the needed scene is registered: config entries auto-start, and
     // stopping an unstarted scene is a no-op, so sharing one array left
-    // GameScene rendering behind LevelScene in dev. Prod keeps GameScene.
-    scene: import.meta.env.DEV ? [LevelScene] : [GameScene],
+    // scenes rendering behind each other. LevelScene (generated levels,
+    // real theme packs) is the game in dev and prod; GameScene stays for
+    // the dev editor / prototype rooms only and never ships in the prod
+    // bundle.
+    scene: [LevelScene],
     input: { keyboard: true },
   });
   // Boot straight into the movement scene, optionally from a save file.
-  game.scene.start(import.meta.env.DEV ? LEVEL_SCENE : GAME_SCENE, initData ?? {});
+  game.scene.start(LEVEL_SCENE, initData ?? {});
   return game;
 }

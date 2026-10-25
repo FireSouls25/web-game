@@ -20,6 +20,7 @@ import {
   textureKeyFor,
 } from '../level/catalog';
 import { themeExitSprites, themeGroundFor, themeSubstrate, themeWallFor } from '../level/themeRender';
+import { isMuted, playDoorOpen, playPickup, toggleMuted } from '../audio/sfx';
 import type { LevelDef, LevelTheme } from '../level/types';
 import { textEngine, type Dialogue } from '../text/TextEngine';
 import type {
@@ -64,6 +65,8 @@ export class LevelScene extends Phaser.Scene {
   private pickups = new Map<string, { x: number; y: number }>();
   private pickupSprites = new Map<string, Phaser.GameObjects.Image>();
   private exitSprite: Phaser.GameObjects.Image | null = null;
+  private exitOpenShown = false;
+  private doorPulse: Phaser.Tweens.Tween | null = null;
   private playerSprite: Phaser.GameObjects.Image | null = null;
   private hud: Phaser.GameObjects.Text | null = null;
   private moving = false;
@@ -74,6 +77,7 @@ export class LevelScene extends Phaser.Scene {
   private space?: Phaser.Input.Keyboard.Key;
   private keyR?: Phaser.Input.Keyboard.Key;
   private keyN?: Phaser.Input.Keyboard.Key;
+  private keyM?: Phaser.Input.Keyboard.Key;
   private dialogue: Dialogue = textEngine;
 
   constructor() {
@@ -107,6 +111,7 @@ export class LevelScene extends Phaser.Scene {
       this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
       this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
       this.keyN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+      this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
     }
     const bridge: ManorBridge = {
       send: () => undefined,
@@ -189,11 +194,16 @@ export class LevelScene extends Phaser.Scene {
 
   private loadLevel(level: LevelDef): void {
     this.level = level;
+    // Kill level-scoped tweens (key bobs, door pulse) before dropping
+    // their sprites, or orphaned infinite tweens pile up across reloads.
+    this.tweens.killAll();
     this.children.removeAll();
     this.enemies = [];
     this.pickups = new Map();
     this.pickupSprites = new Map();
     this.exitSprite = null;
+    this.exitOpenShown = false;
+    this.doorPulse = null;
     this.moving = false;
 
     const grid = Grid.fromAscii(level.tiles);
@@ -252,7 +262,18 @@ export class LevelScene extends Phaser.Scene {
     }
     for (const p of level.pickups) {
       this.pickups.set(p.id, { x: p.x, y: p.y });
-      this.pickupSprites.set(p.id, this.put(p.x, p.y, this.textureFor(p.sprite), 0.18));
+      // Keys glow gold and bob so they read as collectibles, not clutter.
+      const spr = this.put(p.x, p.y, this.textureFor(p.sprite), 0.18);
+      spr.postFX.addGlow(0xffd34d, 2, 0);
+      this.tweens.add({
+        targets: spr,
+        y: spr.y - 5 * SPRITE_SCALE,
+        duration: 850,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+      });
+      this.pickupSprites.set(p.id, spr);
     }
     this.refreshExit(true);
     this.player = new TileActor({ ...level.spawn }, 4);
@@ -296,18 +317,41 @@ export class LevelScene extends Phaser.Scene {
     const key = this.textureFor(locked ? ex.closed : ex.open);
     if (first || !this.exitSprite) {
       this.exitSprite = this.put(this.level.exit.x, this.level.exit.y, key, 0.18);
+      this.exitOpenShown = !locked;
     } else {
       this.exitSprite.setTexture(key);
     }
     if (locked && ex.tintClosed !== undefined) this.exitSprite.setTint(ex.tintClosed);
     else this.exitSprite.clearTint();
+    // Door glow follows lock state (set up once per transition, not per
+    // turn): unlocked doors glow gold with an intermittent pulse.
+    if (!locked !== this.exitOpenShown) {
+      this.exitOpenShown = !locked;
+      this.doorPulse?.stop();
+      this.doorPulse = null;
+      this.exitSprite.postFX.clear();
+      if (!locked && this.exitSprite) {
+        this.exitSprite.postFX.addGlow(0xffc44d, 2.5, 0);
+        this.doorPulse = this.tweens.add({
+          targets: this.exitSprite,
+          alpha: 0.72,
+          duration: 700,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut',
+        });
+      } else if (this.exitSprite) {
+        this.exitSprite.setAlpha(1);
+      }
+    }
   }
 
   private refreshHud(): void {
     if (!this.level || !this.hud) return;
     const total = this.level.pickups.length;
     const left = this.pickups.size;
-    this.hud.setText(`depth ${this.depth} · ${this.level.theme} · keys ${total - left}/${total} · (R)etry (N)ext (Space)wait`);
+    const sound = isMuted() ? 'muted' : 'sound';
+    this.hud.setText(`depth ${this.depth} · ${this.level.theme} · keys ${total - left}/${total} · (R)etry (N)ext (M)${sound} (Space)wait`);
   }
 
   private frameCamera(): void {
@@ -328,6 +372,11 @@ export class LevelScene extends Phaser.Scene {
     }
     if (this.keyN && Phaser.Input.Keyboard.JustDown(this.keyN)) {
       this.loadLevelSession(this.depth + 1, this.seed);
+      return;
+    }
+    if (this.keyM && Phaser.Input.Keyboard.JustDown(this.keyM)) {
+      toggleMuted();
+      this.refreshHud();
       return;
     }
     if (this.space && Phaser.Input.Keyboard.JustDown(this.space)) {
@@ -471,9 +520,16 @@ export class LevelScene extends Phaser.Scene {
 
   private afterTurn(collectedId: string | undefined, died: boolean, exited: boolean): void {
     if (collectedId) {
-      this.pickupSprites.get(collectedId)?.destroy();
+      const spr = this.pickupSprites.get(collectedId);
+      if (spr) {
+        this.tweens.killTweensOf(spr);
+        spr.destroy();
+      }
       this.pickupSprites.delete(collectedId);
       const total = this.level?.pickups.length ?? 0;
+      playPickup();
+      // Last key doubles as the unlock moment: chime then the door swell.
+      if (this.pickups.size === 0) playDoorOpen();
       this.dialogue.say('', `Key ${total - this.pickups.size}/${total} — exit ${this.pickups.size === 0 ? 'OPEN' : 'locked'}.`);
     }
     this.refreshExit();
